@@ -1,0 +1,1317 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Profile - {{ settings.platform_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ============================================
+   FILE: edit_profile.html
+   FundiConnect - Tier-Based Edit Profile Page
+   Version: 6.0.0 - Customer Premium Features Added
+   ============================================ */
+
+.edit-profile-page {
+    padding: 2rem 0;
+    background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+    min-height: calc(100vh - 200px);
+}
+
+/* ========== TIER-BASED STYLES ========== */
+.edit-profile-container.free-tier .edit-profile-card,
+.edit-profile-container.daily-tier .edit-profile-card {
+    border-top: 4px solid #3B82F6;
+}
+
+.edit-profile-container.free-tier .edit-profile-header,
+.edit-profile-container.daily-tier .edit-profile-header {
+    border-bottom-color: #3B82F6;
+}
+
+.edit-profile-container.free-tier .form-section-title i,
+.edit-profile-container.daily-tier .form-section-title i {
+    color: #3B82F6;
+}
+
+.edit-profile-container.free-tier .btn-primary,
+.edit-profile-container.daily-tier .btn-primary {
+    background: linear-gradient(135deg, #3B82F6, #2563EB);
+}
+
+.edit-profile-container.weekly-tier .edit-profile-card {
+    border-top: 4px solid #F59E0B;
+    box-shadow: 0 10px 30px rgba(245, 158, 11, 0.1);
+}
+
+.edit-profile-container.weekly-tier .edit-profile-header {
+    border-bottom-color: #F59E0B;
+}
+
+.edit-profile-container.weekly-tier .form-section-title i {
+    color: #F59E0B;
+}
+
+.edit-profile-container.weekly-tier .btn-primary {
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+}
+
+.edit-profile-container.weekly-tier .premium-banner {
+    background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    animation: goldGlow 2s infinite;
+}
+
+.edit-profile-container.monthly-tier .edit-profile-card {
+    border-top: 4px solid #8B5CF6;
+    box-shadow: 0 10px 30px rgba(139, 92, 246, 0.15);
+}
+
+.edit-profile-container.monthly-tier .edit-profile-header {
+    border-bottom-color: #8B5CF6;
+}
+
+.edit-profile-container.monthly-tier .form-section-title i {
+    color: #8B5CF6;
+}
+
+.edit-profile-container.monthly-tier .btn-primary {
+    background: linear-gradient(135deg, #8B5CF6, #6366F1);
+}
+
+.edit-profile-container.monthly-tier .premium-banner {
+    background: linear-gradient(135deg, #F5F3FF, #EDE9FE);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    animation: purpleGlow 2s infinite;
+}
+
+.edit-profile-container.annual-tier .edit-profile-card {
+    border-top: 4px solid transparent;
+    border-image: linear-gradient(90deg, #F59E0B, #8B5CF6) 1;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(135deg, #FFFFFF, #FEF9E8);
+}
+
+.edit-profile-container.annual-tier .edit-profile-header {
+    border-bottom: 2px solid transparent;
+    border-image: linear-gradient(90deg, #F59E0B, #8B5CF6);
+    border-image-slice: 1;
+}
+
+.edit-profile-container.annual-tier .form-section-title i {
+    background: linear-gradient(135deg, #F59E0B, #8B5CF6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.edit-profile-container.annual-tier .btn-primary {
+    background: linear-gradient(135deg, #F59E0B, #8B5CF6);
+    box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
+}
+
+.edit-profile-container.annual-tier .premium-banner {
+    background: linear-gradient(135deg, #0F172A, #1E293B);
+    color: white;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    animation: diamondGlow 2s infinite;
+}
+
+.edit-profile-container.annual-tier .premium-banner h3,
+.edit-profile-container.annual-tier .premium-banner p {
+    color: #FDE68A;
+}
+
+.edit-profile-container.annual-tier .premium-badge-sm {
+    background: linear-gradient(135deg, #F59E0B, #8B5CF6);
+}
+
+/* Tier Animations */
+@keyframes goldGlow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.2); }
+    50% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); }
+}
+
+@keyframes purpleGlow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.2); }
+    50% { box-shadow: 0 0 0 10px rgba(139, 92, 246, 0); }
+}
+
+@keyframes diamondGlow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.3); }
+    50% { box-shadow: 0 0 0 12px rgba(139, 92, 246, 0.2); }
+}
+
+.edit-profile-card {
+    background: white;
+    border-radius: 28px;
+    padding: 2rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    max-width: 900px;
+    margin: 0 auto;
+    border: 1px solid #E5E7EB;
+    transition: all 0.3s;
+}
+
+.edit-profile-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px -8px rgba(0, 0, 0, 0.15);
+}
+
+.edit-profile-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #059669;
+}
+
+.edit-profile-header h2 {
+    font-size: 1.5rem;
+    color: #1F2937;
+    margin-bottom: 0.5rem;
+}
+
+.edit-profile-header p {
+    color: #6B7280;
+    font-size: 0.85rem;
+}
+
+/* Premium Banner */
+.premium-banner {
+    border-radius: 20px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    transition: all 0.3s;
+}
+
+.premium-banner-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.premium-banner i {
+    font-size: 1.5rem;
+}
+
+.premium-banner h3 {
+    font-size: 1rem;
+    margin: 0;
+}
+
+.premium-banner p {
+    margin: 0;
+    font-size: 0.8rem;
+}
+
+.premium-badge-sm {
+    padding: 0.25rem 0.75rem;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: white;
+}
+
+/* Profile Image Section */
+.profile-image-section {
+    text-align: center;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.profile-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    overflow: hidden;
+    border: 3px solid #059669;
+    background: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+    position: relative;
+}
+
+.profile-image:hover {
+    transform: scale(1.02);
+}
+
+.profile-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.verified-overlay {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white;
+    color: white;
+    font-size: 0.8rem;
+}
+
+/* Form Sections */
+.form-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #F3F4F6;
+}
+
+.form-section-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1F2937;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-section-title i {
+    color: #059669;
+}
+
+.form-section-title .premium-tag {
+    font-size: 0.65rem;
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+    color: white;
+    padding: 0.2rem 0.6rem;
+    border-radius: 100px;
+    margin-left: 0.5rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.85rem;
+}
+
+.form-group label .optional {
+    font-weight: normal;
+    color: #9CA3AF;
+    font-size: 0.7rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+    background: #F9FAFB;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #059669;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+}
+
+.form-group input:hover,
+.form-group select:hover,
+.form-group textarea:hover {
+    border-color: #9CA3AF;
+}
+
+.form-check {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.form-check input {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: #059669;
+}
+
+.form-check label {
+    margin-bottom: 0;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.form-text {
+    font-size: 0.7rem;
+    color: #6B7280;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+/* Company Details Grid - For Customers */
+.company-details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Customer Preferences Grid */
+.preferences-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+/* Portfolio Upload */
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.portfolio-item {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 1;
+    background: #F9FAFB;
+    border: 1px solid #E5E7EB;
+}
+
+.portfolio-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.portfolio-item .remove-portfolio {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(239, 68, 68, 0.9);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    z-index: 10;
+}
+
+.portfolio-add {
+    border: 2px dashed #E5E7EB;
+    background: #F9FAFB;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.portfolio-add:hover {
+    border-color: #059669;
+    background: rgba(5, 150, 105, 0.05);
+}
+
+.portfolio-add i {
+    font-size: 1.5rem;
+    color: #9CA3AF;
+    margin-bottom: 0.5rem;
+}
+
+.portfolio-add span {
+    font-size: 0.7rem;
+    color: #6B7280;
+}
+
+/* Certifications */
+.certification-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: #F9FAFB;
+    border-radius: 12px;
+    margin-bottom: 0.75rem;
+    border: 1px solid #E5E7EB;
+}
+
+.certification-item i {
+    color: #F59E0B;
+    font-size: 1.1rem;
+}
+
+.certification-item .cert-info {
+    flex: 1;
+}
+
+.certification-item .cert-name {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #1F2937;
+}
+
+.certification-item .cert-issuer {
+    font-size: 0.7rem;
+    color: #6B7280;
+}
+
+.certification-item .remove-cert {
+    background: none;
+    border: none;
+    color: #EF4444;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.25rem;
+}
+
+/* Social Links */
+.social-links-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.social-link-input {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #F9FAFB;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    padding: 0.5rem;
+}
+
+.social-link-input i {
+    width: 32px;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.social-link-input input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 0.5rem;
+    font-size: 0.85rem;
+}
+
+.social-link-input input:focus {
+    outline: none;
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    justify-content: flex-end;
+    padding-top: 1rem;
+    border-top: 1px solid #F3F4F6;
+}
+
+.btn-upload {
+    background: #F3F4F6;
+    color: #374151;
+    border: 1px solid #E5E7EB;
+}
+
+.btn-upload:hover {
+    background: #E5E7EB;
+    transform: translateY(-1px);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #059669, #047857);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 100px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(5, 150, 105, 0.3);
+}
+
+.btn-outline {
+    background: #F3F4F6;
+    color: #374151;
+    border: 1px solid #E5E7EB;
+    padding: 0.75rem 1.5rem;
+    border-radius: 100px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-outline:hover {
+    background: #E5E7EB;
+    transform: translateY(-2px);
+}
+
+/* Toast Notifications */
+.toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.toast {
+    background: white;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-top: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 300px;
+    animation: slideIn 0.3s ease;
+}
+
+.toast.success { border-left: 4px solid #10B981; }
+.toast.error { border-left: 4px solid #EF4444; }
+.toast.info { border-left: 4px solid #3B82F6; }
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+.empty-state {
+    text-align: center;
+    padding: 1rem;
+    color: #9CA3AF;
+}
+
+.empty-state i {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.5;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .edit-profile-page {
+        padding: 1rem;
+    }
+    .edit-profile-card {
+        padding: 1.25rem;
+    }
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+    .form-actions {
+        flex-direction: column;
+    }
+    .form-actions button,
+    .form-actions a {
+        width: 100%;
+        justify-content: center;
+    }
+    .portfolio-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .social-links-grid {
+        grid-template-columns: 1fr;
+    }
+    .company-details-grid {
+        grid-template-columns: 1fr;
+    }
+    .preferences-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+{% set subscription = get_user_active_subscription() %}
+{% set is_premium = subscription and subscription.plan_type in ['weekly', 'monthly', 'annual'] and subscription.is_active and not subscription.is_expired() %}
+{% set tier_class = '' %}
+{% if subscription and subscription.plan_type == 'weekly' %}
+    {% set tier_class = 'weekly-tier' %}
+{% elif subscription and subscription.plan_type == 'monthly' %}
+    {% set tier_class = 'monthly-tier' %}
+{% elif subscription and subscription.plan_type == 'annual' %}
+    {% set tier_class = 'annual-tier' %}
+{% elif subscription and subscription.plan_type == 'daily' %}
+    {% set tier_class = 'daily-tier' %}
+{% else %}
+    {% set tier_class = 'free-tier' %}
+{% endif %}
+
+<div class="edit-profile-page">
+    <div class="container">
+        <div class="edit-profile-container {{ tier_class }}">
+            <div class="edit-profile-card">
+                <div class="edit-profile-header">
+                    <h2><i class="fas fa-user-edit"></i> Edit Profile</h2>
+                    <p>Update your personal information and professional details</p>
+                </div>
+
+                {% if is_premium %}
+                <div class="premium-banner">
+                    <div class="premium-banner-content">
+                        <i class="fas fa-crown"></i>
+                        <div>
+                            <h3>Premium Profile Features Unlocked! 🎉</h3>
+                            <p>As a {{ subscription.plan_type|title }} subscriber, you have access to premium features</p>
+                        </div>
+                    </div>
+                    <span class="premium-badge-sm"><i class="fas fa-star"></i> Premium Active</span>
+                </div>
+                {% endif %}
+
+                <form method="POST" enctype="multipart/form-data" id="profile-form" action="{{ url_for('edit_profile') }}">
+                    <!-- Basic Information Section -->
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-user-circle"></i>
+                            Basic Information
+                        </div>
+
+                        <div class="profile-image-section">
+                            <div class="profile-image">
+                                <img id="profile-preview" src="{{ url_for('static', filename='uploads/' + (user.profile_picture if user.profile_picture else 'default-avatar.png')) }}" alt="Profile Picture">
+                                {% if worker and worker.is_verified and is_premium %}
+                                <div class="verified-overlay">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-camera"></i> Profile Picture</label>
+                                <input type="file" name="profile_picture" accept="image/*" onchange="previewImage(this, 'profile-preview')" class="btn-upload" style="padding: 0.5rem;">
+                                <small class="form-text">Upload a professional profile picture (JPG, PNG) - Max 2MB</small>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fas fa-user"></i> Full Name</label>
+                                <input type="text" name="name" value="{{ user.name }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-envelope"></i> Email Address</label>
+                                <input type="email" name="email" value="{{ user.email or '' }}" placeholder="your@email.com">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ==================== CUSTOMER PREMIUM SECTION ==================== -->
+                    {% if user.user_type == 'customer' %}
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-building"></i>
+                            Company Information
+                        </div>
+
+                        <div class="company-details-grid">
+                            <div class="form-group">
+                                <label><i class="fas fa-building"></i> Company/Business Name</label>
+                                <input type="text" name="company_name" value="{{ user.company_name or '' }}" placeholder="Your company name">
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-map-marker-alt"></i> Business Location</label>
+                                <input type="text" name="business_location" value="{{ user.business_location or '' }}" placeholder="e.g., Nairobi, Kenya">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CUSTOMER PREMIUM FEATURES - Only for Weekly, Monthly, Annual -->
+                    {% if is_premium %}
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-crown"></i>
+                            Premium Business Features
+                            <span class="premium-tag"><i class="fas fa-crown"></i> Premium</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-file-alt"></i> Company Description</label>
+                            <textarea name="company_description" rows="3" placeholder="Tell workers about your company and what you're looking for...">{{ user.company_description or '' }}</textarea>
+                            <small class="form-text">Share information about your business to attract the best workers</small>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fas fa-tag"></i> Preferred Worker Categories</label>
+                                <input type="text" name="preferred_categories" value="{{ user.preferred_categories or '' }}" placeholder="e.g., Plumbing, Electrical, Construction">
+                                <small class="form-text">Categories of workers you frequently hire</small>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-chart-line"></i> Hiring Budget Range</label>
+                                <input type="text" name="budget_range" value="{{ user.budget_range or '' }}" placeholder="e.g., KES 1,000 - 10,000">
+                            </div>
+                        </div>
+
+                        <div class="preferences-grid">
+                            <div class="form-check">
+                                <input type="checkbox" name="verified_only" id="verified_only" {% if user.verified_only %}checked{% endif %}>
+                                <label for="verified_only"><i class="fas fa-check-circle" style="color: #059669;"></i> Only show verified workers</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" name="priority_listing" id="priority_listing" {% if user.priority_listing %}checked{% endif %}>
+                                <label for="priority_listing"><i class="fas fa-chart-line" style="color: #F59E0B;"></i> Priority job listing</label>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="premium-banner" style="background: #FEF3C7; margin-bottom: 1rem;">
+                        <div class="premium-banner-content">
+                            <i class="fas fa-crown" style="color: #D97706;"></i>
+                            <div>
+                                <h3 style="color: #92400E;">Unlock Premium Business Features</h3>
+                                <p style="color: #92400E;">Upgrade to Weekly, Monthly, or Annual plan to access company description, preferred categories, and more!</p>
+                            </div>
+                        </div>
+                        <a href="{{ url_for('subscribe') }}" class="btn-primary" style="background: linear-gradient(135deg, #F59E0B, #D97706); text-decoration: none;">Upgrade Now →</a>
+                    </div>
+                    {% endif %}
+                    <!-- ==================== END CUSTOMER SECTION ==================== -->
+
+                    <!-- ==================== WORKER SECTION (UNCHANGED) ==================== -->
+                    {% elif user.user_type == 'worker' %}
+                    {% set worker = user.worker_profile %}
+
+                    <!-- Professional Information Section -->
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-briefcase"></i>
+                            Professional Information
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fas fa-building"></i> Business/Trade Name</label>
+                                <input type="text" name="business_name" value="{{ worker.business_name or user.name }}">
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-map-marker-alt"></i> Location</label>
+                                <input type="text" name="location" value="{{ worker.location or '' }}" placeholder="e.g., Nairobi CBD">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fas fa-tags"></i> Primary Category</label>
+                                <select name="primary_category">
+                                    <option value="general">Select Category</option>
+                                    {% for key, cat in categories.items() %}
+                                    <option value="{{ key }}" {% if worker.primary_category == key %}selected{% endif %}>
+                                        {{ cat.icon }} {{ cat.name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-code-branch"></i> Secondary Categories</label>
+                                <input type="text" name="secondary_categories" value="{{ worker.secondary_categories or '' }}" placeholder="e.g., plumbing, electrical">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-code-branch"></i> Skills & Expertise</label>
+                            <input type="text" name="skills" value="{{ worker.skills or '' }}" placeholder="e.g., Plumbing, Pipe fitting, Leak repair">
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-file-alt"></i> About Me / Bio</label>
+                            <textarea name="description" rows="4" placeholder="Tell customers about your experience and services...">{{ worker.description or '' }}</textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fas fa-money-bill-wave"></i> Hourly Rate (KES)</label>
+                                <input type="number" name="hourly_rate" value="{{ worker.hourly_rate or '' }}" placeholder="e.g., 500">
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-briefcase"></i> Years of Experience</label>
+                                <input type="number" name="years_experience" value="{{ worker.years_experience or 0 }}" min="0">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fas fa-clock"></i> Response Time (minutes)</label>
+                                <input type="number" name="response_time" value="{{ worker.response_time_avg or 60 }}" min="1">
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" name="is_available" id="is_available" {% if worker.is_available %}checked{% endif %}>
+                                <label for="is_available"><i class="fas fa-circle" style="color: #10B981;"></i> Available for work</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PREMIUM FEATURES SECTION - Only for premium users -->
+                    {% if is_premium %}
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-crown"></i>
+                            Premium Profile Enhancements
+                            <span class="premium-tag"><i class="fas fa-crown"></i> Premium Only</span>
+                        </div>
+
+                        <!-- Portfolio Upload -->
+                        <div class="form-group">
+                            <label><i class="fas fa-images"></i> Portfolio Gallery <span class="premium-tag">Premium</span></label>
+                            <input type="file" name="portfolio_images" id="portfolio-upload" accept="image/*" multiple style="display: none;">
+                            <div class="portfolio-grid" id="portfolio-grid">
+                                {% if worker.portfolio_images and worker.portfolio_images != '[]' and worker.portfolio_images|trim != '' %}
+                                    {% set portfolio_list = worker.portfolio_images.split(',') %}
+                                    {% for img in portfolio_list %}
+                                        {% if img and img|trim != '' %}
+                                        <div class="portfolio-item existing" data-filename="{{ img }}">
+                                            <img src="{{ url_for('static', filename='uploads/' + img) }}" alt="Portfolio" onerror="this.src='{{ url_for('static', filename='img/placeholder.jpg') }}'">
+                                            <button type="button" class="remove-portfolio" onclick="removeExistingPortfolioImage(this, '{{ img }}')">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                                <div class="portfolio-item portfolio-add" onclick="document.getElementById('portfolio-upload').click()">
+                                    <i class="fas fa-plus-circle"></i>
+                                    <span>Add Image</span>
+                                </div>
+                            </div>
+                            <small class="form-text">Upload images of your best work (JPG, PNG) - Max 5 images, 2MB each</small>
+                        </div>
+
+                        <!-- Certifications -->
+                        <div class="form-group">
+                            <label><i class="fas fa-certificate"></i> Certifications & Licenses <span class="premium-tag">Premium</span></label>
+                            <div id="certifications-container">
+                                <div id="cert-list">
+                                    {% set certs = [] %}
+                                    {% if worker.certifications and worker.certifications != '[]' %}
+                                        {% set certs = worker.certifications|safe %}
+                                    {% endif %}
+                                    {% if certs and certs|length > 0 %}
+                                        {% for cert in certs %}
+                                        <div class="certification-item">
+                                            <i class="fas fa-certificate"></i>
+                                            <div class="cert-info">
+                                                <div class="cert-name">{{ cert.name }}</div>
+                                                <div class="cert-issuer">{{ cert.issuer }} • {{ cert.year }}</div>
+                                            </div>
+                                            <button type="button" class="remove-cert" onclick="removeCertificationItem(this, '{{ cert.name }}')">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        <div class="empty-state">
+                                            <i class="fas fa-certificate"></i>
+                                            <p style="margin-top: 0.5rem; font-size: 0.8rem;">No certifications added yet. Click "Add Certification" to showcase your credentials.</p>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <button type="button" class="btn-outline" id="cert-add" style="margin-top: 0.5rem; font-size: 0.8rem;" onclick="addCertification()">
+                                    <i class="fas fa-plus"></i> Add Certification
+                                </button>
+                            </div>
+                            <input type="hidden" name="certifications_data" id="certifications-data" value='{{ worker.certifications if worker.certifications else "[]" }}'>
+                            <small class="form-text">Add your professional certifications, licenses, and training</small>
+                        </div>
+
+                        <!-- Social Links -->
+                        <div class="form-group">
+                            <label><i class="fas fa-share-alt"></i> Social Media Links <span class="premium-tag">Premium</span></label>
+                            <div class="social-links-grid">
+                                <div class="social-link-input">
+                                    <i class="fab fa-whatsapp" style="color: #25D366;"></i>
+                                    <input type="text" name="whatsapp" placeholder="WhatsApp Number" value="{{ worker.whatsapp or '' }}">
+                                </div>
+                                <div class="social-link-input">
+                                    <i class="fab fa-facebook" style="color: #1877F2;"></i>
+                                    <input type="text" name="facebook" placeholder="Facebook Profile URL" value="{{ worker.facebook or '' }}">
+                                </div>
+                                <div class="social-link-input">
+                                    <i class="fab fa-instagram" style="color: #E4405F;"></i>
+                                    <input type="text" name="instagram" placeholder="Instagram Handle" value="{{ worker.instagram or '' }}">
+                                </div>
+                                <div class="social-link-input">
+                                    <i class="fab fa-twitter" style="color: #1DA1F2;"></i>
+                                    <input type="text" name="twitter" placeholder="Twitter Handle" value="{{ worker.twitter or '' }}">
+                                </div>
+                                <div class="social-link-input">
+                                    <i class="fab fa-linkedin" style="color: #0077B5;"></i>
+                                    <input type="text" name="linkedin" placeholder="LinkedIn Profile URL" value="{{ worker.linkedin or '' }}">
+                                </div>
+                                <div class="social-link-input">
+                                    <i class="fas fa-globe"></i>
+                                    <input type="text" name="website" placeholder="Website/Portfolio URL" value="{{ worker.website or '' }}">
+                                </div>
+                            </div>
+                            <small class="form-text">Connect your professional social media accounts to build trust</small>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="premium-banner" style="background: #FEF3C7; margin-bottom: 1rem;">
+                        <div class="premium-banner-content">
+                            <i class="fas fa-crown" style="color: #D97706;"></i>
+                            <div>
+                                <h3 style="color: #92400E;">Unlock Premium Worker Features</h3>
+                                <p style="color: #92400E;">Upgrade to Weekly, Monthly, or Annual plan to access portfolio, certifications, and social links!</p>
+                            </div>
+                        </div>
+                        <a href="{{ url_for('subscribe') }}" class="btn-primary" style="background: linear-gradient(135deg, #F59E0B, #D97706); text-decoration: none;">Upgrade Now →</a>
+                    </div>
+                    {% endif %}
+
+                    <!-- Cover Image -->
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-image"></i>
+                            Cover Image
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-image"></i> Cover Image</label>
+                            <input type="file" name="cover_image" accept="image/*" onchange="previewImage(this, 'cover-preview')" style="padding: 0.5rem;">
+                            <small class="form-text">Upload a cover image for your profile - Recommended: 1200x400px</small>
+                            {% if worker.cover_image and worker.cover_image != 'default-cover.jpg' %}
+                            <div style="margin-top: 0.75rem;">
+                                <img id="cover-preview" src="{{ url_for('static', filename='uploads/' + worker.cover_image) }}" style="max-width: 100%; border-radius: 12px;">
+                            </div>
+                            {% else %}
+                            <div style="margin-top: 0.75rem;">
+                                <img id="cover-preview" style="max-width: 100%; border-radius: 12px; display: none;">
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    <!-- ==================== END WORKER SECTION ==================== -->
+
+                    <div class="form-actions">
+                        <a href="{{ url_for('dashboard') }}" class="btn-outline">Cancel</a>
+                        <button type="submit" class="btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Image preview
+function previewImage(input, previewId) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const preview = document.getElementById(previewId);
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+// Portfolio handling
+let removedFilenames = [];
+
+function handlePortfolioUpload(input) {
+    const maxImages = 5;
+    const currentCount = document.querySelectorAll('.portfolio-item:not(.portfolio-add)').length;
+    const filesToAdd = input.files.length;
+
+    if (currentCount + filesToAdd > maxImages) {
+        showToast(`Maximum ${maxImages} portfolio images allowed. You currently have ${currentCount}.`, 'error');
+        input.value = '';
+        return;
+    }
+
+    for (let i = 0; i < input.files.length; i++) {
+        const file = input.files[i];
+        if (file.size > 2 * 1024 * 1024) {
+            showToast(`Image ${file.name} exceeds 2MB limit`, 'error');
+            continue;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const grid = document.getElementById('portfolio-grid');
+            const newItem = document.createElement('div');
+            newItem.className = 'portfolio-item new';
+            newItem.innerHTML = `
+                <img src="${e.target.result}" alt="Portfolio">
+                <button type="button" class="remove-portfolio" onclick="removeNewPortfolioImage(this)">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            newItem.fileObj = file;
+            grid.insertBefore(newItem, grid.lastElementChild);
+        };
+        reader.readAsDataURL(file);
+    }
+    input.value = '';
+}
+
+function removeExistingPortfolioImage(btn, filename) {
+    if (confirm('Remove this image from your portfolio?')) {
+        const item = btn.closest('.portfolio-item');
+        item.remove();
+        removedFilenames.push(filename);
+        const removedInput = document.createElement('input');
+        removedInput.type = 'hidden';
+        removedInput.name = 'removed_portfolio_images';
+        removedInput.value = filename;
+        document.getElementById('profile-form').appendChild(removedInput);
+        showToast('Image removed from portfolio', 'success');
+    }
+}
+
+function removeNewPortfolioImage(btn) {
+    const item = btn.closest('.portfolio-item');
+    item.remove();
+    showToast('Image removed', 'success');
+}
+
+// Certifications handling
+let certifications = [];
+
+function addCertification() {
+    const certName = prompt('Enter certification name:', '');
+    if (!certName || certName.trim() === '') return;
+
+    const certIssuer = prompt('Enter issuing organization:', '');
+    if (!certIssuer || certIssuer.trim() === '') return;
+
+    const certYear = prompt('Enter year obtained (YYYY):', new Date().getFullYear());
+    if (!certYear || certYear.length !== 4 || isNaN(certYear)) {
+        showToast('Please enter a valid year (YYYY)', 'error');
+        return;
+    }
+
+    certifications.push({
+        name: certName.trim(),
+        issuer: certIssuer.trim(),
+        year: certYear
+    });
+
+    updateCertificationsDisplay();
+    document.getElementById('certifications-data').value = JSON.stringify(certifications);
+    showToast('Certification added successfully', 'success');
+}
+
+function removeCertificationItem(btn, certName) {
+    if (confirm('Remove this certification?')) {
+        const item = btn.closest('.certification-item');
+        certifications = certifications.filter(c => c.name !== certName);
+        if (item) item.remove();
+        document.getElementById('certifications-data').value = JSON.stringify(certifications);
+        showToast('Certification removed', 'success');
+
+        if (certifications.length === 0) {
+            const certList = document.getElementById('cert-list');
+            if (certList) {
+                certList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-certificate"></i>
+                        <p style="margin-top: 0.5rem; font-size: 0.8rem;">No certifications added yet. Click "Add Certification" to showcase your credentials.</p>
+                    </div>
+                `;
+            }
+        }
+    }
+}
+
+function updateCertificationsDisplay() {
+    const certList = document.getElementById('cert-list');
+    if (!certList) return;
+
+    certList.innerHTML = '';
+
+    if (!certifications || certifications.length === 0) {
+        const emptyMsg = document.createElement('div');
+        emptyMsg.className = 'empty-state';
+        emptyMsg.innerHTML = '<i class="fas fa-certificate"></i><p style="margin-top: 0.5rem; font-size: 0.8rem;">No certifications added yet. Click "Add Certification" to showcase your credentials.</p>';
+        certList.appendChild(emptyMsg);
+        return;
+    }
+
+    certifications.forEach(cert => {
+        const certItem = document.createElement('div');
+        certItem.className = 'certification-item';
+        certItem.innerHTML = `
+            <i class="fas fa-certificate"></i>
+            <div class="cert-info">
+                <div class="cert-name">${escapeHtml(cert.name)}</div>
+                <div class="cert-issuer">${escapeHtml(cert.issuer)} • ${cert.year}</div>
+            </div>
+            <button type="button" class="remove-cert" onclick="removeCertificationItem(this, '${escapeHtml(cert.name)}')">
+                <i class="fas fa-trash-alt"></i>
+            </button>
+        `;
+        certList.appendChild(certItem);
+    });
+}
+
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function showToast(message, type = 'success') {
+    const existingToasts = document.querySelectorAll('.toast');
+    existingToasts.forEach(toast => toast.remove());
+
+    const container = document.getElementById('toast-container') || (() => {
+        const div = document.createElement('div');
+        div.id = 'toast-container';
+        div.className = 'toast-container';
+        document.body.appendChild(div);
+        return div;
+    })();
+
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.innerHTML = `
+        <i class="fas ${type === 'success' ? 'fa-check-circle' : (type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle')}"></i>
+        <span>${escapeHtml(message)}</span>
+    `;
+
+    container.appendChild(toast);
+
+    setTimeout(() => {
+        toast.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => {
+            if (toast.parentNode) toast.remove();
+        }, 300);
+    }, 5000);
+}
+
+// Add slideOut animation
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+    }
+`;
+document.head.appendChild(style);
+
+// Form submission - Updated to ensure all customer fields are sent
+document.getElementById('profile-form').addEventListener('submit', function(e) {
+    const certsData = document.getElementById('certifications-data');
+    if (certsData && certifications.length > 0) {
+        certsData.value = JSON.stringify(certifications);
+    }
+
+    const newItems = document.querySelectorAll('.portfolio-item.new');
+    for (let i = 0; i < newItems.length; i++) {
+        const item = newItems[i];
+        if (item.fileObj) {
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(item.fileObj);
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.name = 'portfolio_images';
+            fileInput.files = dataTransfer.files;
+            this.appendChild(fileInput);
+        }
+    }
+
+    // Log customer fields for debugging
+    const customerFields = ['company_name', 'business_location', 'company_description', 'preferred_categories', 'budget_range', 'verified_only', 'priority_listing'];
+    console.log('Customer fields being submitted:', customerFields);
+
+    const submitBtn = this.querySelector('button[type="submit"]');
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+    }
+});
+
+// Portfolio upload trigger
+const portfolioUpload = document.getElementById('portfolio-upload');
+if (portfolioUpload) {
+    portfolioUpload.addEventListener('change', function(e) {
+        handlePortfolioUpload(this);
+    });
+}
+
+// Initialize certifications on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const certsDataInput = document.getElementById('certifications-data');
+    if (certsDataInput && certsDataInput.value && certsDataInput.value !== '[]') {
+        try {
+            const parsed = JSON.parse(certsDataInput.value);
+            if (Array.isArray(parsed)) {
+                certifications = parsed;
+                updateCertificationsDisplay();
+            }
+        } catch(e) {
+            console.error('Error parsing certifications:', e);
+        }
+    }
+});
+</script>
+{% endblock %}

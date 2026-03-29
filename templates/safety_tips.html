@@ -1,0 +1,232 @@
+{% extends "base.html" %}
+
+{% block title %}Safety Tips - {{ settings.platform_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ============================================
+   FILE: safety_tips.html
+   FundiConnect - Safety Tips Page
+   ============================================ */
+
+.safety-page {
+    padding: 2rem 0;
+    background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+    min-height: calc(100vh - 200px);
+}
+
+.hero-section {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    border-radius: 28px;
+    padding: 3rem 2rem;
+    margin-bottom: 3rem;
+    text-align: center;
+    color: white;
+}
+
+.hero-section h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: white;
+}
+
+.safety-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.safety-card {
+    background: white;
+    border-radius: 24px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid #E5E7EB;
+    transition: all 0.3s;
+}
+
+.safety-card:hover {
+    transform: translateY(-5px);
+    border-color: #059669;
+}
+
+.safety-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(5, 150, 105, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.safety-icon i {
+    font-size: 1.75rem;
+    color: #059669;
+}
+
+.safety-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+    color: #1F2937;
+}
+
+.safety-card p {
+    color: #6B7280;
+    line-height: 1.6;
+    font-size: 0.9rem;
+}
+
+.safety-tips-list {
+    margin-top: 1rem;
+    padding-left: 1.25rem;
+}
+
+.safety-tips-list li {
+    margin: 0.5rem 0;
+    color: #6B7280;
+    font-size: 0.85rem;
+}
+
+.emergency-section {
+    background: linear-gradient(135deg, #FEF2F2, #FEE2E2);
+    border-radius: 24px;
+    padding: 2rem;
+    margin-top: 2rem;
+    text-align: center;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.emergency-section h2 {
+    color: #DC2626;
+    margin-bottom: 1rem;
+}
+
+.emergency-section p {
+    color: #6B7280;
+    margin-bottom: 1.5rem;
+}
+
+.emergency-number {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #DC2626;
+    background: white;
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    border-radius: 100px;
+}
+
+@media (max-width: 768px) {
+    .hero-section h1 {
+        font-size: 1.75rem;
+    }
+    .safety-grid {
+        grid-template-columns: 1fr;
+    }
+    .emergency-number {
+        font-size: 1.2rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="safety-page">
+    <div class="container">
+        <div class="hero-section">
+            <h1>Safety Tips</h1>
+            <p>Your safety is our priority. Follow these guidelines for a secure experience</p>
+        </div>
+
+        <div class="safety-grid">
+            <div class="safety-card">
+                <div class="safety-icon">
+                    <i class="fas fa-user-check"></i>
+                </div>
+                <h3>Verify Before Hiring</h3>
+                <p>Always check worker profiles for verification badges, reviews, and ratings before hiring. Verified workers have undergone identity verification.</p>
+                <ul class="safety-tips-list">
+                    <li>✓ Look for the verified badge</li>
+                    <li>✓ Read recent reviews</li>
+                    <li>✓ Check their completed jobs count</li>
+                </ul>
+            </div>
+
+            <div class="safety-card">
+                <div class="safety-icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <h3>Communicate on Platform</h3>
+                <p>Keep all communication within FundiConnect. This helps us protect your information and provides a record of all discussions.</p>
+                <ul class="safety-tips-list">
+                    <li>✓ Use our messaging system</li>
+                    <li>✓ Don't share personal contact info</li>
+                    <li>✓ Report suspicious messages</li>
+                </ul>
+            </div>
+
+            <div class="safety-card">
+                <div class="safety-icon">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <h3>Secure Payments</h3>
+                <p>Always use M-Pesa through our platform for secure transactions. Never pay in cash without a receipt or proof of payment.</p>
+                <ul class="safety-tips-list">
+                    <li>✓ Use M-Pesa Paybill</li>
+                    <li>✓ Get receipt numbers</li>
+                    <li>✓ Never pay fully upfront</li>
+                </ul>
+            </div>
+
+            <div class="safety-card">
+                <div class="safety-icon">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <h3>Meet in Safe Locations</h3>
+                <p>For in-person jobs, meet in public spaces first or ensure someone knows your location. Trust your instincts.</p>
+                <ul class="safety-tips-list">
+                    <li>✓ Meet in public areas</li>
+                    <li>✓ Tell someone your plans</li>
+                    <li>✓ Trust your gut feeling</li>
+                </ul>
+            </div>
+
+            <div class="safety-card">
+                <div class="safety-icon">
+                    <i class="fas fa-file-contract"></i>
+                </div>
+                <h3>Get Everything in Writing</h3>
+                <p>Document job details, timelines, and pricing. Clear agreements prevent misunderstandings.</p>
+                <ul class="safety-tips-list">
+                    <li>✓ Confirm scope of work</li>
+                    <li>✓ Agree on payment terms</li>
+                    <li>✓ Set clear deadlines</li>
+                </ul>
+            </div>
+
+            <div class="safety-card">
+                <div class="safety-icon">
+                    <i class="fas fa-flag"></i>
+                </div>
+                <h3>Report Suspicious Activity</h3>
+                <p>If something feels wrong, report it immediately. Our team reviews all reports within 24 hours.</p>
+                <ul class="safety-tips-list">
+                    <li>✓ Report scam attempts</li>
+                    <li>✓ Flag inappropriate behavior</li>
+                    <li>✓ Contact support for help</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="emergency-section">
+            <h2><i class="fas fa-phone-alt"></i> Emergency Contacts</h2>
+            <p>If you're in immediate danger, contact local authorities immediately.</p>
+            <div class="emergency-number">Police Emergency: 999 / 112</div>
+            <div class="emergency-number" style="margin-top: 1rem; background: #FEF2F2; color: #059669;">FundiConnect Support: {{ settings.contact_phone }}</div>
+        </div>
+    </div>
+</div>
+{% endblock %}

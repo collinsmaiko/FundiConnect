@@ -1,0 +1,370 @@
+{% extends "base.html" %}
+
+{% block title %}Job Alerts - {{ settings.platform_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+.alerts-page {
+    padding: 2rem 0;
+    background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+    min-height: calc(100vh - 200px);
+}
+
+.alerts-card {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 28px;
+    padding: 2rem;
+    border: 1px solid #E5E7EB;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.alerts-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.alerts-header i {
+    font-size: 3rem;
+    color: #059669;
+    margin-bottom: 1rem;
+}
+
+.alerts-header h1 {
+    font-size: 1.5rem;
+    color: #1F2937;
+    margin-bottom: 0.5rem;
+}
+
+.alerts-header p {
+    color: #6B7280;
+}
+
+.alert-settings {
+    margin: 2rem 0;
+}
+
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #F3F4F6;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.setting-info h4 {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    color: #1F2937;
+}
+
+.setting-info p {
+    font-size: 0.75rem;
+    color: #6B7280;
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 52px;
+    height: 28px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #D1D5DB;
+    transition: 0.3s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #059669;
+}
+
+input:checked + .slider:before {
+    transform: translateX(24px);
+}
+
+.category-selector {
+    margin: 1.5rem 0;
+}
+
+.category-selector h4 {
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: #1F2937;
+}
+
+.category-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 0.5rem;
+    border: 1px solid #F3F4F6;
+    border-radius: 16px;
+}
+
+.category-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid #E5E7EB;
+    border-radius: 100px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.85rem;
+}
+
+.category-btn.selected {
+    background: #059669;
+    color: white;
+    border-color: #059669;
+}
+
+.category-btn:hover:not(.selected) {
+    border-color: #059669;
+    color: #059669;
+}
+
+.location-input {
+    margin: 1.5rem 0;
+}
+
+.location-input h4 {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: #1F2937;
+}
+
+.location-input input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+}
+
+.location-input input:focus {
+    outline: none;
+    border-color: #059669;
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+}
+
+.save-btn {
+    width: 100%;
+    padding: 0.875rem;
+    background: #059669;
+    color: white;
+    border: none;
+    border-radius: 100px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 1rem;
+}
+
+.save-btn:hover {
+    background: #047857;
+    transform: translateY(-2px);
+}
+
+.upgrade-message {
+    text-align: center;
+    padding: 3rem;
+    background: white;
+    border-radius: 24px;
+    border: 1px solid #E5E7EB;
+}
+
+.upgrade-message i {
+    font-size: 4rem;
+    color: #F59E0B;
+    margin-bottom: 1rem;
+}
+
+.upgrade-message h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.alert-example {
+    background: #F9FAFB;
+    padding: 1rem;
+    border-radius: 16px;
+    margin-top: 1.5rem;
+    border: 1px solid #E5E7EB;
+}
+
+.alert-example h4 {
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    color: #059669;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.alert-example p {
+    font-size: 0.8rem;
+    color: #6B7280;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .alerts-card {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+    .setting-item {
+        flex-direction: column;
+        text-align: center;
+    }
+    .category-buttons {
+        max-height: 150px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="alerts-page">
+    <div class="container">
+        {% if user_has_feature('job_alerts') %}
+        <div class="alerts-card">
+            <div class="alerts-header">
+                <i class="fas fa-bell"></i>
+                <h1>Job Alerts</h1>
+                <p>Get notified when new jobs match your skills and preferences</p>
+            </div>
+
+            <form method="POST" id="alerts-form">
+                <div class="alert-settings">
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h4><i class="fas fa-envelope"></i> Email Alerts</h4>
+                            <p>Receive job alerts directly to your email inbox</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" name="email_alerts" {% if alert_settings.email_alerts %}checked{% endif %}>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h4><i class="fas fa-sms"></i> SMS Alerts</h4>
+                            <p>Receive job alerts via SMS (standard SMS rates apply)</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" name="sms_alerts" {% if alert_settings.sms_alerts %}checked{% endif %}>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="category-selector">
+                    <h4><i class="fas fa-tags"></i> Categories I'm Interested In</h4>
+                    <div class="category-buttons" id="category-buttons">
+                        {% for key, cat in categories.items() %}
+                        <button type="button" class="category-btn {% if key in selected_categories %}selected{% endif %}" data-category="{{ key }}">
+                            {{ cat.icon }} {{ cat.name }}
+                        </button>
+                        {% endfor %}
+                    </div>
+                    <input type="hidden" name="categories" id="selected-categories" value="{{ selected_categories|join(',') }}">
+                    <small class="form-text" style="display: block; margin-top: 0.5rem; color: #6B7280;">Select categories you want to receive alerts for</small>
+                </div>
+
+                <div class="location-input">
+                    <h4><i class="fas fa-map-marker-alt"></i> Preferred Location (Optional)</h4>
+                    <input type="text" name="location" placeholder="e.g., Nairobi, Kisumu, Mombasa" value="{{ alert_settings.location or '' }}">
+                    <small class="form-text">Leave blank to receive alerts from all locations</small>
+                </div>
+
+                <div class="alert-example">
+                    <h4><i class="fas fa-star"></i> Example Alert You'll Receive</h4>
+                    <p>🔔 <strong>New Job Alert!</strong> A plumbing job has been posted in Nairobi. Budget: KES 2,000 - 5,000. Apply now before it's taken!</p>
+                </div>
+
+                <button type="submit" class="save-btn">
+                    <i class="fas fa-save"></i> Save Alert Preferences
+                </button>
+            </form>
+
+            <div style="margin-top: 1.5rem; padding: 1rem; background: #FEF3C7; border-radius: 12px;">
+                <p style="font-size: 0.75rem; color: #92400E; margin: 0;">
+                    <i class="fas fa-info-circle"></i> You'll receive alerts within minutes of new job postings. You can change these preferences anytime.
+                </p>
+            </div>
+        </div>
+
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoryBtns = document.querySelectorAll('.category-btn');
+            const selectedCategoriesInput = document.getElementById('selected-categories');
+            let selectedCategories = selectedCategoriesInput.value ? selectedCategoriesInput.value.split(',') : [];
+
+            categoryBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const category = this.dataset.category;
+                    if (this.classList.contains('selected')) {
+                        this.classList.remove('selected');
+                        selectedCategories = selectedCategories.filter(c => c !== category);
+                    } else {
+                        this.classList.add('selected');
+                        selectedCategories.push(category);
+                    }
+                    selectedCategoriesInput.value = selectedCategories.join(',');
+                });
+            });
+        });
+        </script>
+        {% else %}
+        <div class="upgrade-message">
+            <i class="fas fa-bell"></i>
+            <h2>Job Alerts Unlocked with Premium</h2>
+            <p>Upgrade to any premium plan to get notified when new jobs are posted.</p>
+            <p style="margin-top: 1rem; font-size: 0.9rem;">With Job Alerts you'll:</p>
+            <ul style="text-align: left; max-width: 300px; margin: 1rem auto;">
+                <li>✓ Get instant notifications for new jobs</li>
+                <li>✓ Never miss an opportunity</li>
+                <li>✓ Be the first to apply</li>
+                <li>✓ Customize alerts by category and location</li>
+            </ul>
+            <a href="{{ url_for('subscribe') }}" class="btn-primary" style="margin-top: 1rem; display: inline-block;">
+                <i class="fas fa-crown"></i> Upgrade to Premium
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

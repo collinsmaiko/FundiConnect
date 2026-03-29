@@ -1,0 +1,231 @@
+{% extends "base.html" %}
+
+{% block title %}Get Verified - {{ settings.platform_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ============================================
+   FILE: verify.html
+   FundiConnect - Modern Verification Page
+   ============================================ */
+
+.verify-page {
+    padding: 2rem 0;
+    background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+    min-height: calc(100vh - 200px);
+}
+
+.verify-card {
+    background: white;
+    border-radius: 28px;
+    padding: 2rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    max-width: 600px;
+    margin: 0 auto;
+    border: 1px solid #E5E7EB;
+}
+
+.verify-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #059669;
+}
+
+.verify-icon {
+    font-size: 3rem;
+    color: #059669;
+    margin-bottom: 1rem;
+}
+
+.verify-header h2 {
+    font-size: 1.5rem;
+    color: #1F2937;
+    margin-bottom: 0.5rem;
+}
+
+.verify-header p {
+    color: #6B7280;
+    font-size: 0.85rem;
+}
+
+.benefits-list {
+    background: #F9FAFB;
+    padding: 1.25rem;
+    border-radius: 16px;
+    margin-bottom: 1.5rem;
+    border: 1px solid #E5E7EB;
+}
+
+.benefits-list h4 {
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
+    color: #1F2937;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.benefits-list h4 i {
+    color: #059669;
+}
+
+.benefits-list ul {
+    margin-left: 1.5rem;
+    color: #6B7280;
+}
+
+.benefits-list li {
+    margin: 0.5rem 0;
+    font-size: 0.85rem;
+}
+
+.benefits-list li i {
+    color: #10B981;
+    margin-right: 0.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.85rem;
+}
+
+.form-group select,
+.form-group input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+    background: #F9FAFB;
+}
+
+.form-group select:focus,
+.form-group input:focus {
+    outline: none;
+    border-color: #059669;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+}
+
+.form-group input[type="file"] {
+    padding: 0.6rem;
+    background: #F9FAFB;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.warning-box {
+    background: rgba(245, 158, 11, 0.1);
+    border-left: 4px solid #F59E0B;
+    padding: 1rem;
+    border-radius: 12px;
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.warning-box i {
+    color: #F59E0B;
+    font-size: 1.1rem;
+}
+
+.warning-box p {
+    margin: 0;
+    color: #6B7280;
+    font-size: 0.8rem;
+}
+
+@media (max-width: 768px) {
+    .verify-page {
+        padding: 1rem;
+    }
+    .verify-card {
+        padding: 1.25rem;
+    }
+    .form-actions {
+        flex-direction: column;
+    }
+    .form-actions button,
+    .form-actions a {
+        width: 100%;
+        justify-content: center;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="verify-page">
+    <div class="container">
+        <div class="verify-card">
+            <div class="verify-header">
+                <div class="verify-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h2>Get Verified Badge</h2>
+                <p>Build trust with customers and get more jobs</p>
+            </div>
+
+            <div class="benefits-list">
+                <h4><i class="fas fa-star"></i> Benefits of Verification:</h4>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> Trust badge on your profile</li>
+                    <li><i class="fas fa-check-circle"></i> Higher ranking in search results</li>
+                    <li><i class="fas fa-check-circle"></i> More customer confidence</li>
+                    <li><i class="fas fa-check-circle"></i> Priority support</li>
+                    <li><i class="fas fa-check-circle"></i> Featured in "Verified Workers" section</li>
+                </ul>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label><i class="fas fa-id-card"></i> Verification Type</label>
+                    <select name="verification_type" required>
+                        <option value="">Select verification type</option>
+                        <option value="id_card">National ID Card</option>
+                        <option value="passport">Passport</option>
+                        <option value="driver_license">Driver's License</option>
+                        <option value="certificate">Professional Certificate</option>
+                        <option value="business_permit">Business Permit</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-upload"></i> Upload Evidence</label>
+                    <input type="file" name="evidence" accept="image/*,.pdf" required>
+                    <small class="form-text">Upload a clear photo or scan of your document (JPG, PNG, PDF) - Max 5MB</small>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-info-circle"></i> Additional Notes (Optional)</label>
+                    <textarea name="notes" rows="3" class="form-control" placeholder="Any additional information for the verification team..." style="width: 100%; padding: 0.75rem 1rem; border: 1.5px solid #E5E7EB; border-radius: 12px; background: #F9FAFB;"></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <a href="{{ url_for('dashboard') }}" class="btn-outline">Cancel</a>
+                    <button type="submit" class="btn-primary">Submit Verification Request</button>
+                </div>
+            </form>
+
+            <div class="warning-box">
+                <i class="fas fa-clock"></i>
+                <p><strong>Verification takes 24-48 hours.</strong> You will be notified once your verification is approved. Make sure your documents are clear and legible.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

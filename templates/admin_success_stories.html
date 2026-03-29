@@ -1,0 +1,709 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Success Stories - Admin Panel{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ============================================
+   FILE: admin_success_stories.html
+   FundiConnect - Admin Success Stories Management
+   ============================================ */
+
+.admin-stories-page {
+    padding: 2rem 0;
+    background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+    min-height: calc(100vh - 200px);
+}
+
+.admin-header {
+    background: linear-gradient(135deg, #1F2937 0%, #111827 100%);
+    border-radius: 24px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    color: white;
+}
+
+.admin-header h1 {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+    color: white;
+}
+
+.admin-header p {
+    opacity: 0.9;
+    font-size: 0.9rem;
+}
+
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-box {
+    background: white;
+    border-radius: 20px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid #E5E7EB;
+    transition: all 0.3s;
+}
+
+.stat-box:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    border-color: #059669;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+}
+
+.stat-label {
+    color: #6B7280;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+}
+
+.stat-box.pending .stat-number {
+    color: #F59E0B;
+}
+
+.stat-box.approved .stat-number {
+    color: #059669;
+}
+
+.stories-tabs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    padding: 0.75rem 1.5rem;
+    background: white;
+    border: none;
+    border-radius: 100px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: #374151;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid #E5E7EB;
+}
+
+.tab-btn:hover {
+    background: #F3F4F6;
+    color: #059669;
+}
+
+.tab-btn.active {
+    background: linear-gradient(135deg, #059669, #047857);
+    color: white;
+    border-color: transparent;
+}
+
+.tab-pane {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+.story-card {
+    background: white;
+    border-radius: 20px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #E5E7EB;
+    transition: all 0.3s;
+}
+
+.story-card:hover {
+    transform: translateX(5px);
+    border-color: #059669;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.story-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.story-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1F2937;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.featured-badge {
+    background: rgba(245, 158, 11, 0.2);
+    color: #F59E0B;
+    padding: 0.25rem 0.75rem;
+    border-radius: 100px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.story-category {
+    background: rgba(5, 150, 105, 0.1);
+    color: #059669;
+    padding: 0.25rem 0.75rem;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.story-author {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.85rem;
+    color: #6B7280;
+    flex-wrap: wrap;
+}
+
+.story-author i {
+    margin-right: 0.25rem;
+}
+
+.story-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: #F59E0B;
+    margin-bottom: 0.75rem;
+}
+
+.story-quote {
+    color: #374151;
+    font-style: italic;
+    line-height: 1.6;
+    margin: 0.75rem 0;
+    padding: 0.75rem 1rem;
+    background: #F9FAFB;
+    border-radius: 12px;
+    font-size: 0.9rem;
+}
+
+.story-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #F3F4F6;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.story-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.btn-approve, .btn-reject, .btn-feature, .btn-unfeature, .btn-delete {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-approve {
+    background: rgba(5, 150, 105, 0.1);
+    color: #059669;
+}
+.btn-approve:hover {
+    background: #059669;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.btn-reject {
+    background: rgba(239, 68, 68, 0.1);
+    color: #EF4444;
+}
+.btn-reject:hover {
+    background: #EF4444;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.btn-feature {
+    background: rgba(245, 158, 11, 0.1);
+    color: #F59E0B;
+}
+.btn-feature:hover {
+    background: #F59E0B;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.btn-unfeature {
+    background: rgba(107, 114, 128, 0.1);
+    color: #4B5563;
+}
+.btn-unfeature:hover {
+    background: #6B7280;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.btn-delete {
+    background: rgba(107, 114, 128, 0.1);
+    color: #6B7280;
+}
+.btn-delete:hover {
+    background: #6B7280;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    background: white;
+    border-radius: 24px;
+    border: 1px solid #E5E7EB;
+}
+
+.empty-state i {
+    font-size: 3rem;
+    color: #9CA3AF;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.empty-state h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: #374151;
+}
+
+.empty-state p {
+    color: #6B7280;
+    margin-bottom: 0;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 24px;
+    max-width: 450px;
+    width: 90%;
+}
+
+.modal-header {
+    padding: 1.25rem;
+    border-bottom: 1px solid #F3F4F6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+    color: #9CA3AF;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.modal-close:hover {
+    background: #F3F4F6;
+    color: #EF4444;
+}
+
+.modal-body {
+    padding: 1.25rem;
+}
+
+.modal-body textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    resize: vertical;
+}
+
+.modal-body textarea:focus {
+    outline: none;
+    border-color: #059669;
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+}
+
+.modal-footer {
+    padding: 1.25rem;
+    border-top: 1px solid #F3F4F6;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+    .admin-stories-page {
+        padding: 1rem;
+    }
+    .admin-header {
+        padding: 1.5rem;
+    }
+    .admin-header h1 {
+        font-size: 1.5rem;
+    }
+    .stats-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    .stories-tabs {
+        flex-direction: column;
+    }
+    .tab-btn {
+        text-align: center;
+    }
+    .story-header {
+        flex-direction: column;
+    }
+    .story-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .story-actions {
+        width: 100%;
+    }
+    .story-actions button {
+        flex: 1;
+        justify-content: center;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-stories-page">
+    <div class="container">
+        <div class="admin-header">
+            <h1><i class="fas fa-star"></i> Manage Success Stories</h1>
+            <p>Approve, feature/unfeature, or remove user-submitted success stories</p>
+        </div>
+
+        <div class="stats-row">
+            <div class="stat-box pending">
+                <div class="stat-number">{{ pending_stories|length }}</div>
+                <div class="stat-label">Pending Approval</div>
+            </div>
+            <div class="stat-box approved">
+                <div class="stat-number">{{ approved_stories|length }}</div>
+                <div class="stat-label">Approved Stories</div>
+            </div>
+        </div>
+
+        <div class="stories-tabs">
+            <button class="tab-btn active" data-tab="pending">
+                <i class="fas fa-clock"></i> Pending Approval
+                {% if pending_stories|length > 0 %}
+                <span style="background: #F59E0B; color: white; padding: 0.1rem 0.4rem; border-radius: 20px; margin-left: 0.5rem;">{{ pending_stories|length }}</span>
+                {% endif %}
+            </button>
+            <button class="tab-btn" data-tab="approved">
+                <i class="fas fa-check-circle"></i> Approved Stories
+                <span style="background: #10B981; color: white; padding: 0.1rem 0.4rem; border-radius: 20px; margin-left: 0.5rem;">{{ approved_stories|length }}</span>
+            </button>
+        </div>
+
+        <!-- Pending Stories Tab -->
+        <div id="pending-tab" class="tab-pane active">
+            {% if pending_stories %}
+                {% for story in pending_stories %}
+                <div class="story-card">
+                    <div class="story-header">
+                        <div class="story-title">
+                            {{ story.title }}
+                        </div>
+                        <div class="story-category">
+                            {% if story.category in categories %}
+                                {{ categories[story.category].icon }} {{ categories[story.category].name }}
+                            {% else %}
+                                📋 {{ story.category|title }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="story-author">
+                        <span><i class="fas fa-user-circle"></i> {{ story.name }}</span>
+                        {% if story.email %}
+                        <span><i class="fas fa-envelope"></i> {{ story.email }}</span>
+                        {% endif %}
+                        <span><i class="fas fa-calendar"></i> {{ story.created_at.strftime('%b %d, %Y at %H:%M') }}</span>
+                    </div>
+                    <div class="story-rating">
+                        {% for i in range(5) %}
+                            {% if i < story.rating %}
+                                <i class="fas fa-star"></i>
+                            {% else %}
+                                <i class="far fa-star"></i>
+                            {% endif %}
+                        {% endfor %}
+                        <span style="color: #6B7280; margin-left: 0.25rem;">({{ story.rating }}/5)</span>
+                    </div>
+                    <div class="story-quote">
+                        <i class="fas fa-quote-left" style="color: #9CA3AF; margin-right: 0.5rem;"></i>
+                        {{ story.story }}
+                    </div>
+                    <div class="story-footer">
+                        <small><i class="fas fa-clock"></i> Submitted: {{ story.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+                        <div class="story-actions">
+                            <form method="POST" action="{{ url_for('approve_story', story_id=story.id) }}" style="display: inline;">
+                                <button type="submit" class="btn-approve" onclick="return confirm('Approve this story? It will be published immediately.')">
+                                    <i class="fas fa-check"></i> Approve
+                                </button>
+                            </form>
+                            <button class="btn-reject" onclick="openRejectModal({{ story.id }}, '{{ story.title|replace("'", "\\'") }}')">
+                                <i class="fas fa-times"></i> Reject
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-check-circle" style="color: #10B981;"></i>
+                    <h3>No Pending Stories</h3>
+                    <p>All stories have been reviewed. Great job!</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Approved Stories Tab -->
+        <div id="approved-tab" class="tab-pane">
+            {% if approved_stories %}
+                {% for story in approved_stories %}
+                <div class="story-card">
+                    <div class="story-header">
+                        <div class="story-title">
+                            {{ story.title }}
+                            {% if story.featured %}
+                            <span class="featured-badge">
+                                <i class="fas fa-star"></i> Featured
+                            </span>
+                            {% endif %}
+                        </div>
+                        <div class="story-category">
+                            {% if story.category in categories %}
+                                {{ categories[story.category].icon }} {{ categories[story.category].name }}
+                            {% else %}
+                                📋 {{ story.category|title }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="story-author">
+                        <span><i class="fas fa-user-circle"></i> {{ story.name }}</span>
+                        <span><i class="fas fa-calendar"></i> {{ story.created_at.strftime('%b %d, %Y') }}</span>
+                        {% if story.approved_at %}
+                        <span><i class="fas fa-check-circle" style="color: #10B981;"></i> Approved: {{ story.approved_at.strftime('%b %d, %Y') }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="story-rating">
+                        {% for i in range(5) %}
+                            {% if i < story.rating %}
+                                <i class="fas fa-star"></i>
+                            {% else %}
+                                <i class="far fa-star"></i>
+                            {% endif %}
+                        {% endfor %}
+                        <span style="color: #6B7280; margin-left: 0.25rem;">({{ story.rating }}/5)</span>
+                    </div>
+                    <div class="story-quote">
+                        <i class="fas fa-quote-left" style="color: #9CA3AF; margin-right: 0.5rem;"></i>
+                        {{ story.story }}
+                    </div>
+                    <div class="story-footer">
+                        <small><i class="fas fa-file-alt"></i> {{ story.story|length }} characters</small>
+                        <div class="story-actions">
+                            {% if story.featured %}
+                            <form method="POST" action="{{ url_for('unfeature_story', story_id=story.id) }}" style="display: inline;">
+                                <button type="submit" class="btn-unfeature" onclick="return confirm('Remove this story from featured section?')">
+                                    <i class="fas fa-star-half-alt"></i> Unfeature
+                                </button>
+                            </form>
+                            {% else %}
+                            <form method="POST" action="{{ url_for('feature_story', story_id=story.id) }}" style="display: inline;">
+                                <button type="submit" class="btn-feature" onclick="return confirm('Feature this story on the homepage?')">
+                                    <i class="fas fa-star"></i> Feature
+                                </button>
+                            </form>
+                            {% endif %}
+                            <form method="POST" action="{{ url_for('delete_story', story_id=story.id) }}" style="display: inline;">
+                                <button type="submit" class="btn-delete" onclick="return confirm('Permanently delete this story? This action cannot be undone.')">
+                                    <i class="fas fa-trash-alt"></i> Delete
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-star"></i>
+                    <h3>No Approved Stories</h3>
+                    <p>Approve pending stories to see them here.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Reject Modal -->
+<div id="rejectModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3><i class="fas fa-times-circle" style="color: #EF4444;"></i> Reject Story</h3>
+            <button class="modal-close" onclick="closeRejectModal()">&times;</button>
+        </div>
+        <form id="rejectForm" method="POST">
+            <div class="modal-body">
+                <p>Please provide a reason for rejecting this story:</p>
+                <textarea name="rejection_reason" rows="3" placeholder="e.g., Inappropriate content, Not a success story, Spam, etc." required></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-outline" onclick="closeRejectModal()">Cancel</button>
+                <button type="submit" class="btn-reject">Reject Story</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// Tab switching
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const tabId = this.dataset.tab;
+
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+
+        this.classList.add('active');
+        document.getElementById(`${tabId}-tab`).classList.add('active');
+    });
+});
+
+// Reject modal functions
+function openRejectModal(storyId, storyTitle) {
+    const modal = document.getElementById('rejectModal');
+    const form = document.getElementById('rejectForm');
+    form.action = `/admin/reject-story/${storyId}`;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeRejectModal() {
+    const modal = document.getElementById('rejectModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// Close modal when clicking outside
+document.getElementById('rejectModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeRejectModal();
+    }
+});
+
+// Show success message for approved stories (if flashed)
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            {% if category == 'success' %}
+            setTimeout(function() {
+                const toast = document.createElement('div');
+                toast.className = 'toast-notification success';
+                toast.style.position = 'fixed';
+                toast.style.bottom = '20px';
+                toast.style.right = '20px';
+                toast.style.zIndex = '1001';
+                toast.style.background = 'white';
+                toast.style.borderLeft = '4px solid #10B981';
+                toast.style.padding = '1rem';
+                toast.style.borderRadius = '12px';
+                toast.style.boxShadow = '0 10px 25px rgba(0,0,0,0.15)';
+                toast.innerHTML = `
+                    <div style="display: flex; gap: 0.75rem; align-items: center;">
+                        <i class="fas fa-check-circle" style="color: #10B981; font-size: 1.25rem;"></i>
+                        <div>
+                            <div style="font-weight: 600;">Success</div>
+                            <div style="font-size: 0.8rem; color: #6B7280;">${"{{ message }}"}</div>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 5000);
+            }, 100);
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+</script>
+{% endblock %}

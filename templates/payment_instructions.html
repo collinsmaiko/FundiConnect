@@ -1,0 +1,319 @@
+{% extends "base.html" %}
+
+{% block title %}Payment Instructions - {{ settings.platform_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ============================================
+   FILE: payment_instructions.html
+   FundiConnect - Payment Instructions with Pochi La Biashara
+   ============================================ */
+
+.payment-page {
+    padding: 2rem 0;
+    background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+    min-height: calc(100vh - 200px);
+}
+
+.payment-card {
+    background: white;
+    border-radius: 28px;
+    padding: 2rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    max-width: 600px;
+    margin: 0 auto;
+    border: 1px solid #E5E7EB;
+}
+
+.payment-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #059669;
+}
+
+.payment-header i {
+    font-size: 3rem;
+    color: #059669;
+    margin-bottom: 1rem;
+}
+
+.payment-header h2 {
+    font-size: 1.5rem;
+    color: #1F2937;
+    margin-bottom: 0.5rem;
+}
+
+.payment-header p {
+    color: #6B7280;
+    font-size: 0.85rem;
+}
+
+.payment-details {
+    background: #F9FAFB;
+    padding: 1.5rem;
+    border-radius: 20px;
+    margin-bottom: 1.5rem;
+    border: 1px solid #E5E7EB;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: #374151;
+}
+
+.detail-value {
+    color: #059669;
+    font-weight: 700;
+}
+
+.mpesa-instructions {
+    background: #F0FDF4;
+    padding: 1.25rem;
+    border-radius: 20px;
+    margin: 1.5rem 0;
+    border: 1px solid rgba(5, 150, 105, 0.2);
+}
+
+.mpesa-instructions h4 {
+    margin-bottom: 1rem;
+    color: #059669;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.mpesa-steps {
+    margin-left: 1.25rem;
+    color: #4B5563;
+}
+
+.mpesa-steps li {
+    margin: 0.75rem 0;
+    line-height: 1.5;
+    font-size: 0.85rem;
+}
+
+.mpesa-steps li strong {
+    color: #059669;
+}
+
+.highlight-box {
+    background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+    padding: 1rem;
+    border-radius: 16px;
+    margin: 1rem 0;
+    text-align: center;
+    border: 1px solid #F59E0B;
+}
+
+.highlight-box .phone-number {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #D97706;
+    letter-spacing: 1px;
+}
+
+.info-box {
+    background: #EFF6FF;
+    border-left: 4px solid #3B82F6;
+    padding: 1rem;
+    border-radius: 12px;
+    margin: 1rem 0;
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+}
+
+.info-box i {
+    color: #3B82F6;
+    font-size: 1.1rem;
+}
+
+.info-box p {
+    margin: 0;
+    color: #4B5563;
+    font-size: 0.8rem;
+    flex: 1;
+}
+
+.warning-box {
+    background: rgba(245, 158, 11, 0.1);
+    border-left: 4px solid #F59E0B;
+    padding: 1rem;
+    border-radius: 12px;
+    margin-top: 1rem;
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+}
+
+.warning-box i {
+    color: #F59E0B;
+    font-size: 1.1rem;
+}
+
+.warning-box p {
+    margin: 0;
+    color: #6B7280;
+    font-size: 0.8rem;
+    flex: 1;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.85rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+    background: #F9FAFB;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #059669;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+}
+
+.form-group input[type="file"] {
+    padding: 0.6rem;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.btn-submit {
+    flex: 1;
+}
+
+@media (max-width: 768px) {
+    .payment-page {
+        padding: 1rem;
+    }
+    .payment-card {
+        padding: 1.25rem;
+    }
+    .form-actions {
+        flex-direction: column;
+    }
+    .btn-submit {
+        width: 100%;
+    }
+    .highlight-box .phone-number {
+        font-size: 1.2rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="payment-page">
+    <div class="container">
+        <div class="payment-card">
+            <div class="payment-header">
+                <i class="fas fa-money-bill-wave"></i>
+                <h2>Complete Your Payment</h2>
+                <p>Follow the instructions below to complete your subscription</p>
+            </div>
+
+            <div class="payment-details">
+                <div class="detail-row">
+                    <span class="detail-label">Plan:</span>
+                    <span class="detail-value">{{ plan|title }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Amount:</span>
+                    <span class="detail-value">KES {{ price }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Transaction ID:</span>
+                    <span class="detail-value">{{ transaction_id }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Your Phone:</span>
+                    <span class="detail-value">{{ user.phone }}</span>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <i class="fas fa-phone-alt" style="color: #D97706;"></i>
+                <p style="margin: 0.25rem 0; font-size: 0.8rem;">Send payment to Pochi La Biashara Number:</p>
+                <div class="phone-number">0713 324 672</div>
+            </div>
+
+            <div class="mpesa-instructions">
+                <h4><i class="fas fa-phone-alt"></i> M-Pesa Pochi La Biashara Instructions</h4>
+                <ol class="mpesa-steps">
+                    <li>Go to M-Pesa on your phone</li>
+                    <li>Select <strong>"Lipa Na M-Pesa"</strong></li>
+                    <li>Select <strong>"Pochi La Biashara"</strong></li>
+                    <li>Enter Phone Number: <strong style="font-size: 1rem;">0713 324 672</strong></li>
+                    <li>Enter Amount: <strong>KES {{ price }}</strong></li>
+                    <li>Enter your M-Pesa PIN and confirm</li>
+                    <li>You will receive a confirmation SMS with a receipt number</li>
+                </ol>
+            </div>
+
+            <div class="info-box">
+                <i class="fas fa-info-circle"></i>
+                <p><strong>Important:</strong> Make sure to send the exact amount to <strong>0713 324 672</strong>. After payment, you'll receive an M-Pesa confirmation message. Please enter the receipt number below to complete your subscription.</p>
+            </div>
+
+            <form method="POST" action="{{ url_for('submit_payment_proof') }}" enctype="multipart/form-data">
+                <input type="hidden" name="transaction_id" value="{{ transaction_id }}">
+
+                <div class="form-group">
+                    <label><i class="fas fa-receipt"></i> M-Pesa Receipt Number</label>
+                    <input type="text" name="mpesa_receipt_number" placeholder="e.g., QWER1234" required>
+                    <small class="form-text">Enter the receipt number from the M-Pesa confirmation SMS</small>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-camera"></i> Screenshot of Payment (Optional)</label>
+                    <input type="file" name="mpesa_screenshot" accept="image/*">
+                    <small class="form-text">Upload a screenshot of the M-Pesa confirmation for faster verification</small>
+                </div>
+
+                <div class="form-actions">
+                    <a href="{{ url_for('subscribe') }}" class="btn-outline">Cancel</a>
+                    <button type="submit" class="btn-primary btn-submit">Submit Payment Proof</button>
+                </div>
+            </form>
+
+            <div class="warning-box">
+                <i class="fas fa-clock"></i>
+                <p><strong>Verification takes 24-48 hours.</strong> You will receive an email notification once your subscription is activated. For any issues, contact support at {{ settings.contact_email }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

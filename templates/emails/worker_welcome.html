@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to FundiConnect - Worker</title>
+    <style>
+        /* ============================================
+           FILE: worker_welcome.html
+           FundiConnect - Modern Worker Welcome Email
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+            padding: 2rem;
+            line-height: 1.6;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.1);
+        }
+
+        .email-header {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .email-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.05"><path fill="white" d="M50,0 L61.8,38.2 L100,38.2 L70,61.8 L81.8,100 L50,77.2 L18.2,100 L30,61.8 L0,38.2 L38.2,38.2 L50,0 Z"/></svg>') repeat;
+            pointer-events: none;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .logo-icon {
+            background: white;
+            border-radius: 12px;
+            padding: 0.5rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-icon svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        .logo-text {
+            color: white;
+        }
+
+        .hero-icon {
+            font-size: 3rem;
+            margin: 1rem 0;
+        }
+
+        .email-body {
+            padding: 2.5rem;
+        }
+
+        .welcome-badge {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            color: #1F2937;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        .highlight {
+            color: #059669;
+        }
+
+        .greeting {
+            font-size: 1rem;
+            color: #6B7280;
+            margin-bottom: 1.5rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+            padding: 1rem;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid #E5E7EB;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #059669;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: #6B7280;
+            margin-top: 0.25rem;
+        }
+
+        .feature-list {
+            margin: 1.5rem 0;
+            background: #F9FAFB;
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 1px solid #E5E7EB;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        .feature-item:last-child {
+            border-bottom: none;
+        }
+
+        .feature-icon {
+            width: 36px;
+            height: 36px;
+            background: rgba(5, 150, 105, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #059669;
+            font-size: 1rem;
+        }
+
+        .feature-text {
+            flex: 1;
+        }
+
+        .feature-title {
+            font-weight: 600;
+            color: #1F2937;
+            font-size: 0.9rem;
+        }
+
+        .feature-desc {
+            font-size: 0.75rem;
+            color: #6B7280;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            padding: 0.875rem 1.75rem;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 1rem 0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(5, 150, 105, 0.4);
+        }
+
+        .subscribe-section {
+            background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .subscribe-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #F59E0B;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .subscribe-button:hover {
+            background: #D97706;
+            transform: translateY(-2px);
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, #E5E7EB, transparent);
+            margin: 2rem 0;
+        }
+
+        .email-footer {
+            background: #F9FAFB;
+            padding: 1.5rem;
+            text-align: center;
+            border-top: 1px solid #E5E7EB;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .social-link {
+            color: #6B7280;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .social-link:hover {
+            color: #059669;
+        }
+
+        .footer-text {
+            font-size: 0.7rem;
+            color: #9CA3AF;
+            line-height: 1.5;
+        }
+
+        .footer-text a {
+            color: #059669;
+            text-decoration: none;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 1rem;
+            }
+            .email-body {
+                padding: 1.5rem;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="email-header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="48" stroke="white" stroke-width="2" fill="#059669"/>
+                        <path d="M30 50 L45 65 L70 35" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                        <circle cx="50" cy="50" r="8" fill="white"/>
+                    </svg>
+                </div>
+                <span class="logo-text">FundiConnect</span>
+            </div>
+            <div class="hero-icon">
+                <svg width="60" height="60" viewBox="0 0 100 100" fill="none">
+                    <circle cx="50" cy="50" r="45" fill="white" stroke="#059669" stroke-width="2"/>
+                    <path d="M35 50 L45 60 L65 40" stroke="#059669" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    <circle cx="50" cy="50" r="8" fill="#059669"/>
+                </svg>
+            </div>
+        </div>
+
+        <div class="email-body">
+            <div style="text-align: center;">
+                <div class="welcome-badge">
+                    <i class="fas fa-tools" style="margin-right: 0.5rem;">🔧</i> Worker Account
+                </div>
+                <h1>Welcome to <span class="highlight">FundiConnect</span>, {{ user_name }}!</h1>
+                <p class="greeting">You're now part of Kenya's fastest-growing community of skilled workers. We're excited to help you grow your business and connect with customers who need your expertise.</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Active Jobs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">4.8⭐</div>
+                    <div class="stat-label">Avg. Rating</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">24h</div>
+                    <div class="stat-label">Avg. Response</div>
+                </div>
+            </div>
+
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="feature-icon">📋</div>
+                    <div class="feature-text">
+                        <div class="feature-title">Complete Your Profile</div>
+                        <div class="feature-desc">Add your skills, portfolio, and rates to stand out to customers</div>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🎯</div>
+                    <div class="feature-text">
+                        <div class="feature-title">Browse Jobs</div>
+                        <div class="feature-desc">Find jobs that match your skills and experience level</div>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">⭐</div>
+                    <div class="feature-text">
+                        <div class="feature-title">Get Verified</div>
+                        <div class="feature-desc">Build trust with customers by getting the verified badge</div>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📈</div>
+                    <div class="feature-text">
+                        <div class="feature-title">Track Your Growth</div>
+                        <div class="feature-desc">Monitor applications, reviews, and completed jobs</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center;">
+                <a href="{{ dashboard_url }}" class="cta-button">
+                    🚀 Go to Dashboard
+                </a>
+            </div>
+
+            <div class="subscribe-section">
+                <strong style="font-size: 1rem; color: #F59E0B;">📧 Stay Updated!</strong>
+                <p style="font-size: 0.85rem; color: #6B7280; margin-top: 0.5rem;">Get the latest job alerts, tips, and platform updates delivered to your inbox</p>
+                <a href="{{ subscribe_url }}" class="subscribe-button">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                    Subscribe to Updates
+                </a>
+                <p style="font-size: 0.7rem; color: #9CA3AF; margin-top: 0.75rem;">No spam, unsubscribe anytime</p>
+            </div>
+
+            <div class="divider"></div>
+
+            <div style="text-align: center;">
+                <h3 style="font-size: 1rem; margin-bottom: 1rem;">Ready to Start Your Journey?</h3>
+                <p style="font-size: 0.85rem; color: #6B7280; margin-bottom: 1rem;">
+                    Complete your profile and start applying to jobs today. The more complete your profile, the more likely customers will choose you!
+                </p>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <a href="{{ workers_url }}" style="color: #059669; text-decoration: none; font-size: 0.85rem;">Find Jobs →</a>
+                    <a href="{{ verify_url }}" style="color: #059669; text-decoration: none; font-size: 0.85rem;">Get Verified →</a>
+                    <a href="{{ pricing_url }}" style="color: #059669; text-decoration: none; font-size: 0.85rem;">View Plans →</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="email-footer">
+            <div class="social-links">
+                <a href="#" class="social-link">📘 Facebook</a>
+                <a href="#" class="social-link">🐦 Twitter</a>
+                <a href="#" class="social-link">📸 Instagram</a>
+                <a href="#" class="social-link">💬 WhatsApp</a>
+            </div>
+            <div class="footer-text">
+                <p>© 2026 FundiConnect. All rights reserved.</p>
+                <p>{{ contact_email }} | {{ contact_phone }}</p>
+                <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+                <p style="margin-top: 0.5rem;">Connect with Kenya's trusted skilled workers</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

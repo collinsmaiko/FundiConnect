@@ -1,0 +1,820 @@
+{% extends "base.html" %}
+
+{% block title %}Find Skilled Workers - {{ settings.platform_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ============================================
+   FILE: workers.html
+   FundiConnect - Tier-Based Workers Listing Page
+   Version: 5.0.0 - Premium Tier Styling
+   ============================================ */
+
+.workers-page {
+    padding: 2rem 0;
+    background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+    min-height: calc(100vh - 200px);
+}
+
+/* ========== TIER-BASED STYLES ========== */
+/* These styles are applied dynamically based on the logged-in user's subscription */
+
+/* Free & Daily Tier - Professional $100K Dashboard */
+.workers-container.free-tier .workers-hero,
+.workers-container.daily-tier .workers-hero {
+    background: linear-gradient(135deg, #1F2937 0%, #111827 100%);
+}
+
+.workers-container.free-tier .results-count-modern strong,
+.workers-container.daily-tier .results-count-modern strong {
+    color: #3B82F6;
+}
+
+.workers-container.free-tier .filter-group-modern input:focus,
+.workers-container.free-tier .filter-group-modern select:focus,
+.workers-container.daily-tier .filter-group-modern input:focus,
+.workers-container.daily-tier .filter-group-modern select:focus {
+    border-color: #3B82F6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.workers-container.free-tier .btn-primary,
+.workers-container.daily-tier .btn-primary {
+    background: linear-gradient(135deg, #3B82F6, #2563EB);
+}
+
+/* Weekly Tier - Millionaire Style (Gold) */
+.workers-container.weekly-tier .workers-hero {
+    background: linear-gradient(135deg, #cc7511 0%, #b46f16 100%);
+    animation: goldGlow 2s infinite;
+}
+
+.workers-container.weekly-tier .results-count-modern strong {
+    color: #F59E0B;
+}
+
+.workers-container.weekly-tier .filter-group-modern input:focus,
+.workers-container.weekly-tier .filter-group-modern select:focus {
+    border-color: #F59E0B;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+}
+
+.workers-container.weekly-tier .btn-primary {
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+}
+
+.workers-container.weekly-tier .verified-badge-worker {
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+}
+
+/* Monthly Tier - Billionaire Style (Purple) */
+.workers-container.monthly-tier .workers-hero {
+    background: linear-gradient(135deg, #262893 0%, #7c43b9 100%);
+    animation: purpleGlow 2s infinite;
+}
+
+.workers-container.monthly-tier .results-count-modern strong {
+    color: #8B5CF6;
+}
+
+.workers-container.monthly-tier .filter-group-modern input:focus,
+.workers-container.monthly-tier .filter-group-modern select:focus {
+    border-color: #8B5CF6;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.workers-container.monthly-tier .btn-primary {
+    background: linear-gradient(135deg, #8B5CF6, #6366F1);
+}
+
+.workers-container.monthly-tier .verified-badge-worker {
+    background: linear-gradient(135deg, #8B5CF6, #6366F1);
+}
+
+/* Annual Tier - Trillionaire Style (Diamond + Gold) */
+.workers-container.annual-tier .workers-hero {
+    background: linear-gradient(135deg, #0F172A 0%, #1E293B 30%, #905b00 70%, #4d1dbf 100%);
+    animation: diamondGlow 2s infinite;
+}
+
+.workers-container.annual-tier .results-count-modern strong {
+    background: linear-gradient(135deg, #F59E0B, #8B5CF6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.workers-container.annual-tier .filter-group-modern input:focus,
+.workers-container.annual-tier .filter-group-modern select:focus {
+    border-color: #F59E0B;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2), 0 0 0 6px rgba(139, 92, 246, 0.1);
+}
+
+.workers-container.annual-tier .btn-primary {
+    background: linear-gradient(135deg, #F59E0B, #8B5CF6);
+    box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
+}
+
+.workers-container.annual-tier .btn-primary:hover {
+    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+}
+
+.workers-container.annual-tier .verified-badge-worker {
+    background: linear-gradient(135deg, #F59E0B, #8B5CF6);
+}
+
+/* Tier Animations */
+@keyframes goldGlow {
+    0%, 100% { box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3); }
+    50% { box-shadow: 0 10px 40px rgba(245, 158, 11, 0.6); }
+}
+
+@keyframes purpleGlow {
+    0%, 100% { box-shadow: 0 10px 40px rgba(139, 92, 246, 0.4); }
+    50% { box-shadow: 0 10px 50px rgba(139, 92, 246, 0.7); }
+}
+
+@keyframes diamondGlow {
+    0%, 100% {
+        box-shadow: 0 15px 45px rgba(245, 158, 11, 0.5);
+        filter: brightness(1);
+    }
+    50% {
+        box-shadow: 0 20px 60px rgba(139, 92, 246, 0.6);
+        filter: brightness(1.05);
+    }
+}
+
+.workers-hero {
+    border-radius: 28px;
+    padding: 3rem 2rem;
+    margin-bottom: 2rem;
+    color: white;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s ease;
+}
+
+.workers-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.workers-hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: white;
+    background: none;
+}
+
+.workers-hero p {
+    opacity: 0.9;
+    font-size: 1.1rem;
+}
+
+/* Filters Section */
+.filters-section-modern {
+    background: white;
+    border-radius: 24px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid #E5E7EB;
+}
+
+.filters-form-modern {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    align-items: flex-end;
+}
+
+.filter-group-modern {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-group-modern label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #6B7280;
+    margin-bottom: 0.5rem;
+}
+
+.filter-group-modern input,
+.filter-group-modern select {
+    padding: 0.75rem 1rem;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 14px;
+    font-size: 0.9rem;
+    width: 100%;
+    transition: all 0.3s;
+    background: #F9FAFB;
+}
+
+.filter-group-modern input:focus,
+.filter-group-modern select:focus {
+    outline: none;
+    background: white;
+}
+
+.filter-group-modern.checkbox {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.filter-group-modern.checkbox label {
+    margin-bottom: 0;
+    text-transform: none;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.filter-group-modern.checkbox input {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: #059669;
+}
+
+.filter-actions-modern {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.results-header-modern {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.results-count-modern {
+    color: #6B7280;
+    font-size: 0.9rem;
+}
+
+.results-count-modern strong {
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+
+.sort-select-modern {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.sort-select-modern label {
+    font-size: 0.8rem;
+    color: #6B7280;
+    font-weight: 500;
+}
+
+.sort-select-modern select {
+    padding: 0.5rem 1rem;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    background: white;
+    cursor: pointer;
+}
+
+/* Worker Cards Grid */
+.workers-grid-modern {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.worker-card-modern {
+    background: white;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    border: 1px solid #E5E7EB;
+}
+
+.worker-card-modern:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    border-color: #059669;
+}
+
+.worker-image-modern {
+    position: relative;
+    height: 240px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #10B981, #059669);
+}
+
+.worker-image-modern img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.worker-card-modern:hover .worker-image-modern img {
+    transform: scale(1.1);
+}
+
+.available-badge-modern {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: linear-gradient(135deg, #3B82F6, #2563EB);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.worker-info-modern {
+    padding: 1.5rem;
+}
+
+.worker-name-modern {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    color: #1F2937;
+    line-height: 1.4;
+}
+
+/* Professional Verification Badge */
+.verified-badge-worker {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+    padding: 0.25rem 0.75rem;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: white;
+    box-shadow: 0 2px 4px rgba(245, 158, 11, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    vertical-align: middle;
+    line-height: 1;
+}
+
+.verified-badge-worker i {
+    font-size: 0.7rem;
+    color: white;
+}
+
+.worker-category {
+    display: inline-block;
+    background: #F3F4F6;
+    color: #059669;
+    padding: 0.25rem 0.75rem;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.worker-rating-modern {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.stars-modern {
+    color: #F59E0B;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+}
+
+.worker-skills-modern {
+    color: #6B7280;
+    font-size: 0.85rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
+}
+
+.worker-location-modern {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #9CA3AF;
+    font-size: 0.8rem;
+    margin-bottom: 0.75rem;
+}
+
+.worker-rate-modern {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #059669;
+    margin-bottom: 1rem;
+}
+
+.worker-rate-modern span {
+    font-size: 0.8rem;
+    font-weight: normal;
+    color: #6B7280;
+}
+
+.worker-stats-modern {
+    display: flex;
+    gap: 1rem;
+    margin: 0.75rem 0;
+    padding: 0.75rem 0;
+    border-top: 1px solid #F3F4F6;
+    border-bottom: 1px solid #F3F4F6;
+}
+
+.stat-item-modern {
+    flex: 1;
+    text-align: center;
+}
+
+.stat-value-modern {
+    font-weight: 700;
+    color: #1F2937;
+    font-size: 0.9rem;
+}
+
+.stat-label-modern {
+    font-size: 0.65rem;
+    color: #9CA3AF;
+}
+
+.btn-view-modern {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 100px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s;
+    margin-top: 0.5rem;
+    background-color: #3B82F6;
+    color: white;
+}
+
+.btn-view-modern:hover {
+    box-shadow: 0 5px 15px rgba(5, 150, 105, 0.3);
+    transform: translateY(-2px);
+    background-color: #2a75ec;
+}
+
+/* Admin Alert */
+.admin-alert-modern {
+    background: rgba(59, 130, 246, 0.08);
+    border-left: 4px solid #3B82F6;
+    padding: 1rem 1.25rem;
+    border-radius: 16px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.admin-alert-modern i {
+    font-size: 1.25rem;
+    color: #3B82F6;
+}
+
+.admin-alert-modern p {
+    margin: 0;
+    color: #4B5563;
+    flex: 1;
+    font-size: 0.85rem;
+}
+
+/* Empty State */
+.empty-state-modern {
+    text-align: center;
+    padding: 3rem;
+    background: white;
+    border-radius: 24px;
+    border: 1px solid #E5E7EB;
+}
+
+.empty-state-modern i {
+    font-size: 3.5rem;
+    color: #9CA3AF;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.empty-state-modern h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: #374151;
+}
+
+.empty-state-modern p {
+    color: #6B7280;
+    margin-bottom: 1.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .workers-page {
+        padding: 1rem;
+    }
+
+    .workers-hero {
+        padding: 2rem 1rem;
+    }
+
+    .workers-hero h1 {
+        font-size: 1.75rem;
+    }
+
+    .filters-form-modern {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-actions-modern {
+        flex-direction: column;
+    }
+
+    .filter-actions-modern button,
+    .filter-actions-modern a {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .workers-grid-modern {
+        grid-template-columns: 1fr;
+    }
+
+    .results-header-modern {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .sort-select-modern {
+        width: 100%;
+    }
+
+    .sort-select-modern select {
+        flex: 1;
+    }
+}
+
+@media (max-width: 480px) {
+    .worker-stats-modern {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .verified-badge-worker {
+        padding: 0.2rem 0.6rem;
+        font-size: 0.65rem;
+    }
+    .verified-badge-worker i {
+        font-size: 0.65rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+{% set subscription = get_user_active_subscription() %}
+{% set tier_class = '' %}
+{% if subscription and subscription.plan_type == 'weekly' %}
+    {% set tier_class = 'weekly-tier' %}
+{% elif subscription and subscription.plan_type == 'monthly' %}
+    {% set tier_class = 'monthly-tier' %}
+{% elif subscription and subscription.plan_type == 'annual' %}
+    {% set tier_class = 'annual-tier' %}
+{% elif subscription and subscription.plan_type == 'daily' %}
+    {% set tier_class = 'daily-tier' %}
+{% else %}
+    {% set tier_class = 'free-tier' %}
+{% endif %}
+
+<div class="workers-container {{ tier_class }}">
+    <div class="workers-page">
+        <div class="container">
+            <div class="workers-hero">
+                <h1>Find Your Perfect Fundi</h1>
+                <p>Connect with Kenya's most trusted and verified skilled workers</p>
+            </div>
+
+            <!-- Admin Worker Alert -->
+            {% if is_admin_worker() %}
+            <div class="admin-alert-modern">
+                <i class="fas fa-shield-alt"></i>
+                <p><strong>Admin Mode:</strong> You are viewing the platform as a customer. Your worker profile is hidden from other users because you have admin privileges.</p>
+            </div>
+            {% endif %}
+
+            <!-- Modern Filters Section -->
+            <div class="filters-section-modern">
+                <form method="GET" action="{{ url_for('workers') }}" class="filters-form-modern">
+                    <div class="filter-group-modern">
+                        <label><i class="fas fa-search"></i> Skill / Keyword</label>
+                        <input type="text" name="skill" placeholder="e.g., plumber, electrician" value="{{ request.args.get('skill', '') }}">
+                    </div>
+                    <div class="filter-group-modern">
+                        <label><i class="fas fa-map-marker-alt"></i> Location</label>
+                        <input type="text" name="location" placeholder="e.g., Nairobi, Kisumu" value="{{ request.args.get('location', '') }}">
+                    </div>
+                    <div class="filter-group-modern">
+                        <label><i class="fas fa-tags"></i> Category</label>
+                        <select name="category">
+                            <option value="">All Categories</option>
+                            {% for key, cat in categories.items() %}
+                            <option value="{{ key }}" {% if request.args.get('category') == key %}selected{% endif %}>
+                                {{ cat.icon }} {{ cat.name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="filter-group-modern checkbox">
+                        <input type="checkbox" name="verified" id="verified" value="true" {% if request.args.get('verified') == 'true' %}checked{% endif %}>
+                        <label for="verified"><i class="fas fa-check-circle"></i> Verified Only</label>
+                    </div>
+                    <div class="filter-actions-modern">
+                        <button type="submit" class="btn-primary"><i class="fas fa-search"></i> Search</button>
+                        {% if request.args %}
+                        <a href="{{ url_for('workers') }}" class="btn-outline"><i class="fas fa-times"></i> Clear</a>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+
+            <div class="results-header-modern">
+                <div class="results-count-modern">
+                    <strong>{{ workers|length }}</strong> skilled worker{% if workers|length != 1 %}s{% endif %} found
+                </div>
+                <div class="sort-select-modern">
+                    <label><i class="fas fa-sort-amount-down"></i> Sort by:</label>
+                    <select id="sort-select" onchange="sortWorkers()">
+                        <option value="rating">Highest Rated</option>
+                        <option value="experience">Most Experienced</option>
+                        <option value="rate">Lowest Rate</option>
+                        <option value="jobs">Most Jobs Completed</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="workers-grid-modern" id="workers-grid">
+                {% for worker in workers %}
+                <div class="worker-card-modern"
+                     data-rating="{{ worker.get_rating() }}"
+                     data-experience="{{ worker.years_experience or 0 }}"
+                     data-rate="{{ worker.hourly_rate or 0 }}"
+                     data-jobs="{{ worker.total_jobs_completed or 0 }}">
+                    <div class="worker-image-modern">
+                        <img src="{{ url_for('static', filename='uploads/' + (worker.cover_image if worker.cover_image and worker.cover_image != 'default-cover.jpg' else 'default-cover.jpg')) }}" alt="{{ worker.business_name or worker.user.name }}" loading="lazy">
+                        {% if worker.is_available %}
+                        <span class="available-badge-modern">
+                            <i class="fas fa-circle"></i> Available
+                        </span>
+                        {% endif %}
+                    </div>
+                    <div class="worker-info-modern">
+                        <div class="worker-name-modern">
+                            {{ worker.business_name or worker.user.name }}
+                            {% if worker.is_verified %}
+                            <span class="verified-badge-worker">
+                                <i class="fas fa-check-circle"></i> Verified
+                            </span>
+                            {% endif %}
+                        </div>
+                        <div class="worker-category">
+                            {% if worker.primary_category and categories[worker.primary_category] %}
+                                {{ categories[worker.primary_category].icon }} {{ categories[worker.primary_category].name }}
+                            {% else %}
+                                📋 General
+                            {% endif %}
+                        </div>
+                        <div class="worker-rating-modern">
+                            <div class="stars-modern">
+                                {% set rating = worker.get_rating() %}
+                                {% for i in range(5) %}
+                                    {% if i < rating|int %}
+                                        <i class="fas fa-star"></i>
+                                    {% elif i < rating %}
+                                        <i class="fas fa-star-half-alt"></i>
+                                    {% else %}
+                                        <i class="far fa-star"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <span style="font-size: 0.7rem; color: #9CA3AF;">({{ worker.rating_count }} reviews)</span>
+                        </div>
+                        <p class="worker-skills-modern">{{ worker.skills[:100] if worker.skills else 'No skills listed' }}{% if worker.skills and worker.skills|length > 100 %}...{% endif %}</p>
+                        <div class="worker-location-modern">
+                            <i class="fas fa-map-marker-alt"></i> {{ worker.location or 'Location not specified' }}
+                        </div>
+                        {% if worker.hourly_rate %}
+                        <div class="worker-rate-modern">
+                            KES {{ "%.0f"|format(worker.hourly_rate) }} <span>/hour</span>
+                        </div>
+                        {% endif %}
+                        <div class="worker-stats-modern">
+                            <div class="stat-item-modern">
+                                <div class="stat-value-modern">{{ worker.total_jobs_completed }}</div>
+                                <div class="stat-label-modern">Jobs Done</div>
+                            </div>
+                            <div class="stat-item-modern">
+                                <div class="stat-value-modern">{{ worker.years_experience or 0 }}</div>
+                                <div class="stat-label-modern">Years Exp</div>
+                            </div>
+                            <div class="stat-item-modern">
+                                <div class="stat-value-modern">{{ worker.response_time_avg }}min</div>
+                                <div class="stat-label-modern">Response</div>
+                            </div>
+                        </div>
+                        <a href="{{ url_for('worker_profile', worker_id=worker.user_id) }}" class="btn-view-modern">
+                            View Profile <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                {% else %}
+                <div class="empty-state-modern">
+                    <i class="fas fa-users-slash"></i>
+                    <h3>No Workers Found</h3>
+                    <p>Try adjusting your search filters or browse all workers</p>
+                    <a href="{{ url_for('workers') }}" class="btn-primary">Clear Filters</a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function sortWorkers() {
+    const sortBy = document.getElementById('sort-select').value;
+    const grid = document.getElementById('workers-grid');
+    const cards = Array.from(grid.children);
+
+    const validCards = cards.filter(card => card.classList && card.classList.contains('worker-card-modern'));
+
+    validCards.sort((a, b) => {
+        let aVal, bVal;
+        switch(sortBy) {
+            case 'rating':
+                aVal = parseFloat(a.dataset.rating);
+                bVal = parseFloat(b.dataset.rating);
+                return bVal - aVal;
+            case 'experience':
+                aVal = parseInt(a.dataset.experience);
+                bVal = parseInt(b.dataset.experience);
+                return bVal - aVal;
+            case 'rate':
+                aVal = parseFloat(a.dataset.rate);
+                bVal = parseFloat(b.dataset.rate);
+                return aVal - bVal;
+            case 'jobs':
+                aVal = parseInt(a.dataset.jobs);
+                bVal = parseInt(b.dataset.jobs);
+                return bVal - aVal;
+            default:
+                return 0;
+        }
+    });
+
+    grid.innerHTML = '';
+    validCards.forEach(card => grid.appendChild(card));
+
+    if (validCards.length === 0) {
+        grid.innerHTML = `
+            <div class="empty-state-modern">
+                <i class="fas fa-users-slash"></i>
+                <h3>No Workers Found</h3>
+                <p>Try adjusting your search filters or browse all workers</p>
+                <a href="{{ url_for('workers') }}" class="btn-primary">Clear Filters</a>
+            </div>
+        `;
+    }
+}
+</script>
+{% endblock %}

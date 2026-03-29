@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block title %}500 - Server Error{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ============================================
+   FILE: 500.html
+   FundiConnect - Modern Server Error Page
+   ============================================ */
+
+.error-page {
+    min-height: calc(100vh - 200px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+    padding: 2rem;
+}
+
+.error-content {
+    text-align: center;
+    max-width: 500px;
+}
+
+.error-code {
+    font-size: 8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #EF4444, #DC2626);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    line-height: 1;
+    margin-bottom: 1rem;
+    letter-spacing: -0.05em;
+}
+
+.error-icon {
+    font-size: 4rem;
+    color: #F59E0B;
+    margin-bottom: 1rem;
+}
+
+.error-content h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #1F2937;
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+}
+
+.error-content p {
+    color: #6B7280;
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+}
+
+.error-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+}
+
+.support-link {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #E5E7EB;
+    font-size: 0.85rem;
+    color: #6B7280;
+}
+
+.support-link a {
+    color: #059669;
+    text-decoration: none;
+}
+
+.support-link a:hover {
+    text-decoration: underline;
+}
+
+@media (min-width: 768px) {
+    .error-code {
+        font-size: 10rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .error-actions {
+        flex-direction: column;
+    }
+    .error-actions .btn-primary,
+    .error-actions .btn-outline {
+        width: 100%;
+        justify-content: center;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="error-page">
+    <div class="error-content">
+        <div class="error-code">500</div>
+        <div class="error-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <h1>Server Error</h1>
+        <p>Something went wrong on our end. Please try again later.</p>
+        <div class="error-actions">
+            <a href="{{ url_for('index') }}" class="btn-primary">
+                <i class="fas fa-home"></i> Go Home
+            </a>
+            <a href="javascript:location.reload()" class="btn-outline">
+                <i class="fas fa-sync-alt"></i> Try Again
+            </a>
+        </div>
+        <div class="support-link">
+            <i class="fas fa-envelope"></i> If the problem persists, please contact us at
+            <a href="mailto:{{ settings.contact_email }}">{{ settings.contact_email }}</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,1088 @@
+{% extends "base.html" %}
+
+{% block title %}Success Stories - {{ settings.platform_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ============================================
+   SUCCESS STORIES PAGE - ENTERPRISE EDITION
+   Premium Design | Inspiring Stories | Modern UI
+   Version: 2.0 | Financial-Grade Styling
+   ============================================ */
+
+/* REMOVED :root SECTION - NOW INHERITS FROM BASE TEMPLATE */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.success-stories-page {
+    padding: 2rem 0;
+    background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+    min-height: calc(100vh - 200px);
+}
+
+/* ==================== HERO SECTION ==================== */
+.hero-section {
+    background: linear-gradient(135deg, #111827 0%, #1F2937 100%);
+    border-radius: 28px;
+    padding: 3rem 2rem;
+    margin-bottom: 3rem;
+    text-align: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.hero-section::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -5%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(16,185,129,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.hero-section h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: white;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-section h1 i {
+    color: #D4AF37;
+    margin-right: 0.5rem;
+}
+
+.hero-section p {
+    font-size: 1.1rem;
+    opacity: 0.85;
+    max-width: 700px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+/* ==================== STATS BANNER ==================== */
+.stats-banner {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 24px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border: 1px solid #E5E7EB;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #3B82F6, #60A5FA, #D4AF37);
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    border-color: #60A5FA;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #3B82F6, #D4AF37);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    line-height: 1.2;
+}
+
+.stat-label {
+    color: #6B7280;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ==================== STORIES GRID ==================== */
+.stories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.story-card {
+    background: white;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    border: 1px solid #E5E7EB;
+    position: relative;
+}
+
+.story-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+    border-color: #60A5FA;
+}
+
+.story-image {
+    height: 120px;
+    background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2.8rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.story-image::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(0,0,0,0.1), rgba(0,0,0,0.2));
+}
+
+.story-image span {
+    position: relative;
+    z-index: 2;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+}
+
+.story-content {
+    padding: 1.5rem;
+}
+
+.story-category {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(59,130,246,0.12);
+    color: #3B82F6;
+    padding: 0.25rem 0.75rem;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.story-content h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+    color: #1F2937;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.story-quote {
+    color: #6B7280;
+    font-style: italic;
+    line-height: 1.6;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+    position: relative;
+    padding-left: 1rem;
+    border-left: 3px solid #3B82F6;
+}
+
+.story-author {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid #F3F4F6;
+}
+
+.author-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 800;
+    font-size: 1.2rem;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+    box-shadow: 0 4px 12px rgba(59,130,246,0.3);
+}
+
+.author-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.author-avatar.initials {
+    background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+}
+
+.author-info {
+    flex: 1;
+}
+
+.author-info h4 {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    color: #1F2937;
+    font-weight: 700;
+}
+
+.author-info p {
+    font-size: 0.7rem;
+    color: #9CA3AF;
+    margin: 0;
+}
+
+.story-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-top: 0.5rem;
+}
+
+.story-rating i {
+    font-size: 0.7rem;
+}
+
+.story-rating i.fas.fa-star {
+    color: #D4AF37;
+}
+
+.story-rating i.far.fa-star {
+    color: #D1D5DB;
+}
+
+/* ==================== SUBMIT STORY SECTION ==================== */
+.submit-story {
+    background: linear-gradient(135deg, white 0%, #F9FAFB 100%);
+    border-radius: 28px;
+    padding: 3rem 2rem;
+    text-align: center;
+    margin-top: 2rem;
+    border: 1px solid #E5E7EB;
+    position: relative;
+    overflow: hidden;
+}
+
+.submit-story::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #3B82F6, #D4AF37);
+}
+
+.submit-story h2 {
+    font-size: 1.75rem;
+    margin-bottom: 0.75rem;
+    color: #1F2937;
+    font-weight: 800;
+}
+
+.submit-story p {
+    color: #6B7280;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+}
+
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: linear-gradient(135deg, #3B82F6, #2563EB);
+    color: white;
+    border-radius: 100px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    gap: 1rem;
+    background: linear-gradient(135deg, #2563EB, #3B82F6);
+}
+
+.btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    border: 2px solid #E5E7EB;
+    color: #374151;
+    padding: 0.85rem 1.8rem;
+    border-radius: 100px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-outline:hover {
+    border-color: #3B82F6;
+    color: #3B82F6;
+    transform: translateY(-2px);
+}
+
+/* ==================== MODAL STYLES ==================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-container {
+    background: white;
+    border-radius: 32px;
+    max-width: 580px;
+    width: 90%;
+    max-height: 85vh;
+    overflow-y: auto;
+    animation: modalSlideUp 0.3s ease;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes modalSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid #F3F4F6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #111827, #1F2937);
+    border-radius: 32px 32px 0 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.modal-header h3 i {
+    color: #D4AF37;
+}
+
+.modal-close {
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: rotate(90deg);
+}
+
+.modal-body {
+    padding: 1.75rem;
+}
+
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.85rem;
+}
+
+.form-group label .required {
+    color: #EF4444;
+    margin-left: 0.25rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 14px;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    background: #F9FAFB;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #3B82F6;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.rating-input {
+    display: flex;
+    gap: 0.5rem;
+    margin: 0.5rem 0;
+    cursor: pointer;
+}
+
+.rating-input i {
+    font-size: 1.5rem;
+    color: #D1D5DB;
+    transition: all 0.2s ease;
+}
+
+.rating-input i:hover,
+.rating-input i.active {
+    color: #D4AF37;
+    transform: scale(1.15);
+}
+
+.form-text {
+    font-size: 0.65rem;
+    color: #9CA3AF;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+.modal-footer {
+    padding: 1.25rem 1.5rem;
+    border-top: 1px solid #F3F4F6;
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    background: #F9FAFB;
+    border-radius: 0 0 32px 32px;
+}
+
+/* ==================== TOAST NOTIFICATIONS ==================== */
+.toast-message {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: linear-gradient(135deg, #10B981, #0B8B5A);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+    animation: slideInRight 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    max-width: 380px;
+    font-weight: 500;
+}
+
+.toast-message.error {
+    background: linear-gradient(135deg, #EF4444, #DC2626);
+}
+
+.toast-message i {
+    font-size: 1.2rem;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* ==================== EMPTY STATE ==================== */
+.empty-stories {
+    text-align: center;
+    padding: 4rem;
+    background: white;
+    border-radius: 28px;
+    border: 1px solid #E5E7EB;
+}
+
+.empty-stories i {
+    font-size: 4rem;
+    background: linear-gradient(135deg, #9CA3AF, #6B7280);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 1rem;
+    opacity: 0.6;
+}
+
+.empty-stories h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: #374151;
+}
+
+.empty-stories p {
+    color: #6B7280;
+    margin-bottom: 1.5rem;
+}
+
+/* ==================== RESPONSIVE DESIGN ==================== */
+@media (max-width: 1024px) {
+    .stats-banner {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+    .stories-grid {
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 2rem 1.5rem;
+    }
+    .hero-section h1 {
+        font-size: 1.75rem;
+    }
+    .hero-section p {
+        font-size: 0.9rem;
+    }
+    .stats-banner {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .stories-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    .story-card {
+        max-width: 100%;
+    }
+    .submit-story {
+        padding: 2rem 1.5rem;
+    }
+    .submit-story h2 {
+        font-size: 1.3rem;
+    }
+    .modal-container {
+        width: 95%;
+    }
+    .modal-body {
+        padding: 1.25rem;
+    }
+    .toast-message {
+        left: 20px;
+        right: 20px;
+        max-width: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-banner {
+        grid-template-columns: 1fr;
+    }
+    .stat-card {
+        padding: 1rem;
+    }
+    .stat-number {
+        font-size: 2rem;
+    }
+    .story-image {
+        height: 100px;
+        font-size: 2.2rem;
+    }
+    .story-content {
+        padding: 1rem;
+    }
+    .story-content h3 {
+        font-size: 1rem;
+    }
+    .story-quote {
+        font-size: 0.8rem;
+    }
+    .btn-primary, .btn-outline {
+        padding: 0.7rem 1.5rem;
+        font-size: 0.85rem;
+    }
+    .modal-footer {
+        flex-direction: column;
+    }
+    .modal-footer button {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Scrollbar Styling */
+.modal-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-container::-webkit-scrollbar-track {
+    background: #F3F4F6;
+    border-radius: 10px;
+}
+
+.modal-container::-webkit-scrollbar-thumb {
+    background: #9CA3AF;
+    border-radius: 10px;
+}
+
+.modal-container::-webkit-scrollbar-thumb:hover {
+    background: #3B82F6;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="success-stories-page">
+    <div class="container">
+        <div class="hero-section">
+            <h1>
+                <i class="fas fa-star"></i> Success Stories
+            </h1>
+            <p>Real stories from real people who found success and transformed their lives on FundiConnect</p>
+        </div>
+
+        <div class="stats-banner">
+            <div class="stat-card">
+                <div class="stat-number">{{ stats.stories|default('0') }}+</div>
+                <div class="stat-label">Success Stories</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ stats.workers|default('0') }}+</div>
+                <div class="stat-label">Skilled Workers</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ stats.jobs_completed|default('0') }}+</div>
+                <div class="stat-label">Jobs Completed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ stats.satisfaction|default('98') }}%</div>
+                <div class="stat-label">Satisfaction Rate</div>
+            </div>
+        </div>
+
+        <div class="stories-grid" id="storiesGrid">
+            {% if stories and stories|length > 0 %}
+                {% for story in stories %}
+                <div class="story-card" data-story-id="{{ story.id }}">
+                    <div class="story-image">
+                        {% set icons = {
+                            'plumbing': '🔧', 'electrical': '⚡', 'carpentry': '🪵', 'painting': '🎨',
+                            'cleaning': '🧹', 'construction': '🏗️', 'mechanical': '🔩', 'it': '💻',
+                            'delivery': '🚚', 'landscaping': '🌿', 'security': '🛡️', 'tutoring': '📚',
+                            'events': '🎉', 'general': '📋'
+                        } %}
+                        <span>{{ icons.get(story.category, '⭐') }}</span>
+                    </div>
+                    <div class="story-content">
+                        <span class="story-category">
+                            {% if story.category in categories %}
+                                {{ categories[story.category].icon }} {{ categories[story.category].name }}
+                            {% else %}
+                                📋 {{ story.category|title }}
+                            {% endif %}
+                        </span>
+                        <h3>{{ story.title }}</h3>
+                        <p class="story-quote">"{{ story.story[:150] }}{% if story.story|length > 150 %}...{% endif %}"</p>
+                        <div class="story-author">
+                            {% set profile_pic = story.get_profile_picture() if story.user_id else story.profile_picture_cache %}
+                            {% if profile_pic and profile_pic != 'default-avatar.png' %}
+                                <div class="author-avatar">
+                                    <img src="{{ url_for('static', filename='uploads/' + profile_pic) }}"
+                                         alt="{{ story.name }}"
+                                         onerror="this.parentElement.innerHTML='<div class=\'author-avatar initials\'>{{ story.get_avatar_initials() }}</div>'">
+                                </div>
+                            {% else %}
+                                <div class="author-avatar initials">
+                                    {{ story.get_avatar_initials() }}
+                                </div>
+                            {% endif %}
+                            <div class="author-info">
+                                <h4>{{ story.name }}</h4>
+                                <p>{{ story.created_at.strftime('%B %d, %Y') }}</p>
+                                <div class="story-rating">
+                                    {% for i in range(5) %}
+                                        {% if i < story.rating %}
+                                            <i class="fas fa-star"></i>
+                                        {% else %}
+                                            <i class="far fa-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-stories" style="grid-column: 1 / -1;">
+                    <i class="fas fa-star-of-life"></i>
+                    <h3>No Stories Yet</h3>
+                    <p>Be the first to share your success story and inspire others!</p>
+                    <button onclick="openStoryModal()" class="btn-primary" style="margin-top: 1rem; font-size: 1.2rem;">
+                        <i class="fas fa-pen-alt"  style="font-size: 1.5rem; color: white;"></i> Share Your Story
+                    </button>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="submit-story">
+            <h2>Have a Success Story to Share?</h2>
+            <p>Your story could inspire thousands of workers and customers across Kenya</p>
+            <button onclick="openStoryModal()" class="btn-primary" id="shareStoryBtn" style="padding: 15px 20px;">
+                <i class="fas fa-pen-alt"></i> Share Your Story
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Story Submission Modal -->
+<div id="storyModal" class="modal-overlay">
+    <div class="modal-container">
+        <div class="modal-header">
+            <h3><i class="fas fa-star"></i> Share Your Success Story</h3>
+            <button class="modal-close" onclick="closeStoryModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="storyForm" onsubmit="return false;">
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> Your Name <span class="required">*</span></label>
+                    <input type="text" id="storyName" placeholder="Enter your full name" value="{{ session.user_name if session.user_id else '' }}" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-envelope"></i> Email <span class="required">*</span></label>
+                    <input type="email" id="storyEmail" placeholder="your@email.com" value="{{ user.email if user and user.email else '' }}" required>
+                    <small class="form-text">We'll use this to contact you if needed</small>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-tag"></i> Category <span class="required">*</span></label>
+                    <select id="storyCategory" required>
+                        <option value="">Select your category</option>
+                        {% for key, cat in categories.items() %}
+                        <option value="{{ key }}">{{ cat.icon }} {{ cat.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-heading"></i> Story Title <span class="required">*</span></label>
+                    <input type="text" id="storyTitle" placeholder="e.g., How I Built My Business on FundiConnect" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-align-left"></i> Your Story <span class="required">*</span></label>
+                    <textarea id="storyText" rows="6" placeholder="Share your experience... What did you achieve? How did FundiConnect help you? Tell us your inspiring story!" required></textarea>
+                    <small class="form-text">Minimum 20 characters. Be detailed and inspiring!</small>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-star"></i> Rate Your Experience</label>
+                    <div class="rating-input" id="ratingInput">
+                        <i class="far fa-star" data-rating="1"></i>
+                        <i class="far fa-star" data-rating="2"></i>
+                        <i class="far fa-star" data-rating="3"></i>
+                        <i class="far fa-star" data-rating="4"></i>
+                        <i class="far fa-star" data-rating="5"></i>
+                    </div>
+                    <input type="hidden" id="storyRating" value="5">
+                </div>
+                <div class="form-group">
+                    <small class="form-text" style="color: #3B82F6;">
+                        <i class="fas fa-info-circle"></i> Your profile picture from your dashboard will automatically be used with your story.
+                    </small>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button onclick="closeStoryModal()" class="btn-outline">Cancel</button>
+            <button onclick="submitStory()" class="btn-primary" id="submitStoryBtn">Submit Story</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// Rating stars functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const ratingStars = document.querySelectorAll('#ratingInput i');
+    const ratingInput = document.getElementById('storyRating');
+
+    if (ratingStars.length) {
+        // Set initial active stars (5 stars)
+        ratingStars.forEach((star, index) => {
+            if (index < 5) {
+                star.className = 'fas fa-star active';
+            }
+        });
+
+        ratingStars.forEach(star => {
+            star.addEventListener('click', function() {
+                const rating = parseInt(this.dataset.rating);
+                ratingInput.value = rating;
+
+                ratingStars.forEach((s, index) => {
+                    if (index < rating) {
+                        s.className = 'fas fa-star active';
+                    } else {
+                        s.className = 'far fa-star';
+                    }
+                });
+            });
+
+            star.addEventListener('mouseenter', function() {
+                const rating = parseInt(this.dataset.rating);
+                ratingStars.forEach((s, index) => {
+                    if (index < rating) {
+                        s.className = 'fas fa-star';
+                    } else {
+                        s.className = 'far fa-star';
+                    }
+                });
+            });
+        });
+
+        const ratingContainer = document.getElementById('ratingInput');
+        ratingContainer.addEventListener('mouseleave', function() {
+            const currentRating = parseInt(ratingInput.value) || 5;
+            ratingStars.forEach((s, index) => {
+                if (index < currentRating) {
+                    s.className = 'fas fa-star active';
+                } else {
+                    s.className = 'far fa-star';
+                }
+            });
+        });
+    }
+});
+
+function openStoryModal() {
+    const modal = document.getElementById('storyModal');
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeStoryModal() {
+    const modal = document.getElementById('storyModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+    // Reset form
+    document.getElementById('storyForm').reset();
+    document.getElementById('storyRating').value = 5;
+    // Reset stars
+    const ratingStars = document.querySelectorAll('#ratingInput i');
+    ratingStars.forEach((star, index) => {
+        if (index < 5) {
+            star.className = 'fas fa-star active';
+        } else {
+            star.className = 'far fa-star';
+        }
+    });
+}
+
+function showToast(message, type = 'success') {
+    const existingToast = document.querySelector('.toast-message');
+    if (existingToast) {
+        existingToast.remove();
+    }
+
+    const toast = document.createElement('div');
+    toast.className = `toast-message ${type}`;
+    toast.innerHTML = `
+        <i class="fas ${type === 'success' ? 'fa-check-circle' : (type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle')}"></i>
+        <span>${message}</span>
+    `;
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        toast.style.animation = 'slideInRight 0.3s reverse';
+        setTimeout(() => {
+            if (toast.parentNode) toast.remove();
+        }, 300);
+    }, 5000);
+}
+
+function submitStory() {
+    const name = document.getElementById('storyName').value.trim();
+    const email = document.getElementById('storyEmail').value.trim();
+    const category = document.getElementById('storyCategory').value;
+    const title = document.getElementById('storyTitle').value.trim();
+    const story = document.getElementById('storyText').value.trim();
+    const rating = parseInt(document.getElementById('storyRating').value);
+
+    if (!name) {
+        showToast('Please enter your name', 'error');
+        document.getElementById('storyName').focus();
+        return;
+    }
+
+    if (!email) {
+        showToast('Please enter your email address', 'error');
+        document.getElementById('storyEmail').focus();
+        return;
+    }
+
+    const emailPattern = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+        showToast('Please enter a valid email address', 'error');
+        document.getElementById('storyEmail').focus();
+        return;
+    }
+
+    if (!category) {
+        showToast('Please select a category', 'error');
+        document.getElementById('storyCategory').focus();
+        return;
+    }
+
+    if (!title) {
+        showToast('Please enter a title for your story', 'error');
+        document.getElementById('storyTitle').focus();
+        return;
+    }
+
+    if (!story || story.length < 20) {
+        showToast('Please share your story (minimum 20 characters)', 'error');
+        document.getElementById('storyText').focus();
+        return;
+    }
+
+    const submitBtn = document.getElementById('submitStoryBtn');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+
+    fetch('/api/submit-story', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            name: name,
+            email: email,
+            category: category,
+            title: title,
+            story: story,
+            rating: rating
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showToast(data.message, 'success');
+            closeStoryModal();
+            setTimeout(() => {
+                location.reload();
+            }, 2000);
+        } else {
+            showToast(data.message || 'Failed to submit story', 'error');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showToast('An error occurred. Please try again.', 'error');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+    });
+}
+
+document.getElementById('storyModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeStoryModal();
+    }
+});
+
+document.querySelector('.modal-container').addEventListener('click', function(e) {
+    e.stopPropagation();
+});
+</script>
+{% endblock %}

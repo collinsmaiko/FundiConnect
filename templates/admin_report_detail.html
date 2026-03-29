@@ -1,0 +1,845 @@
+{% extends "base.html" %}
+
+{% block title %}Report #{{ report.id }} - {{ settings.platform_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+.report-detail {
+    padding: 2rem 0;
+    background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+    min-height: calc(100vh - 200px);
+}
+
+.detail-header {
+    background: linear-gradient(135deg, #1F2937 0%, #111827 100%);
+    border-radius: 24px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.detail-header::before {
+    content: '';
+    position: absolute;
+    top: -30%;
+    right: -10%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.detail-header h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    color: white;
+    background: none;
+}
+
+.back-link {
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s;
+}
+
+.back-link:hover {
+    color: white;
+    transform: translateX(-3px);
+}
+
+.detail-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid #E5E7EB;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s;
+}
+
+.detail-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.card-header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid #F3F4F6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    background: #F9FAFB;
+}
+
+.card-header h2 {
+    font-size: 1.1rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #1F2937;
+}
+
+.card-header h2 i {
+    color: #059669;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.info-item {
+    background: #F9FAFB;
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1px solid #E5E7EB;
+    transition: all 0.3s;
+}
+
+.info-item:hover {
+    border-color: #059669;
+    background: #F0FDF4;
+}
+
+.info-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: #9CA3AF;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+}
+
+.info-value {
+    font-weight: 600;
+    color: #1F2937;
+    font-size: 0.9rem;
+    word-break: break-word;
+}
+
+.description-box {
+    background: #F9FAFB;
+    padding: 1.25rem;
+    border-radius: 12px;
+    margin: 1rem 0;
+    white-space: pre-wrap;
+    line-height: 1.6;
+    font-size: 0.9rem;
+    border: 1px solid #E5E7EB;
+}
+
+.status-form {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.status-select {
+    padding: 0.6rem 1rem;
+    border: 1px solid #E5E7EB;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    background: white;
+    min-width: 150px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.status-select:focus {
+    outline: none;
+    border-color: #059669;
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+}
+
+.note-box {
+    background: #FEFCE8;
+    border-left: 4px solid #F59E0B;
+    padding: 1rem;
+    margin: 1rem 0;
+    font-size: 0.85rem;
+    white-space: pre-wrap;
+    border-radius: 8px;
+}
+
+.btn-primary-sm {
+    background: #059669;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 10px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-primary-sm:hover {
+    background: #047857;
+    transform: translateY(-2px);
+}
+
+.btn-danger-sm {
+    background: #EF4444;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 10px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-danger-sm:hover {
+    background: #DC2626;
+    transform: translateY(-2px);
+}
+
+.text-muted {
+    color: #6B7280;
+}
+
+textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-family: inherit;
+    resize: vertical;
+    transition: all 0.3s;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: #059669;
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+}
+
+/* Priority Badge Styles */
+.priority-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 1rem;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.priority-low {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10B981;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.priority-medium {
+    background: rgba(245, 158, 11, 0.1);
+    color: #F59E0B;
+    border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.priority-high {
+    background: rgba(239, 68, 68, 0.1);
+    color: #EF4444;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.priority-urgent {
+    background: rgba(124, 58, 237, 0.1);
+    color: #7C3AED;
+    border: 1px solid rgba(124, 58, 237, 0.2);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* Status Badge Styles */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 1rem;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.status-pending {
+    background: rgba(245, 158, 11, 0.1);
+    color: #F59E0B;
+    border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.status-in_progress {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3B82F6;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.status-resolved {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10B981;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.status-dismissed {
+    background: rgba(107, 114, 128, 0.1);
+    color: #6B7280;
+    border: 1px solid rgba(107, 114, 128, 0.2);
+}
+
+/* Report Type Badge */
+.report-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 1rem;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: rgba(5, 150, 105, 0.1);
+    color: #059669;
+}
+
+/* Action Buttons Container */
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+/* Danger Zone Styles */
+.danger-zone {
+    background: #FEF2F2;
+    border: 1px solid #FEE2E2;
+}
+
+.danger-zone .card-header {
+    background: #FEF2F2;
+    border-bottom-color: #FEE2E2;
+}
+
+.danger-zone .card-header h2 i {
+    color: #EF4444;
+}
+
+.danger-warning {
+    background: #FFF5F5;
+    border-left: 4px solid #EF4444;
+    padding: 1rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+
+.danger-warning i {
+    color: #EF4444;
+    font-size: 1.25rem;
+    margin-top: 0.1rem;
+}
+
+.danger-warning p {
+    margin: 0;
+    color: #991B1B;
+    font-size: 0.85rem;
+    flex: 1;
+}
+
+.danger-warning strong {
+    color: #DC2626;
+}
+
+.delete-confirmation-input {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #FEE2E2;
+}
+
+.delete-confirmation-input label {
+    font-size: 0.8rem;
+    color: #6B7280;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.delete-confirmation-input input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #E5E7EB;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-family: monospace;
+}
+
+.delete-confirmation-input input:focus {
+    outline: none;
+    border-color: #EF4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* Success Message */
+.success-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #10B981;
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    animation: slideInRight 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.success-message.error {
+    background: #EF4444;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/* Timestamp */
+.timestamp {
+    font-size: 0.7rem;
+    color: #9CA3AF;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .detail-header {
+        padding: 1.5rem;
+    }
+    .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .status-form {
+        flex-direction: column;
+        width: 100%;
+    }
+    .status-select {
+        width: 100%;
+    }
+    .btn-primary-sm, .btn-danger-sm {
+        width: 100%;
+        justify-content: center;
+    }
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+    .action-buttons {
+        flex-direction: column;
+    }
+    .delete-confirmation-input input {
+        font-size: 0.75rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="report-detail">
+    <div class="container">
+        <a href="{{ url_for('admin_dashboard', _anchor='issues-tab') }}" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+
+        <div class="detail-header">
+            <h1>
+                <i class="fas fa-flag-checkered"></i>
+                Report #{{ report.id }}
+                <span class="priority-badge priority-{{ report.priority }}">
+                    <i class="fas {% if report.priority == 'low' %}fa-arrow-down{% elif report.priority == 'medium' %}fa-minus{% elif report.priority == 'high' %}fa-arrow-up{% else %}fa-exclamation-triangle{% endif %}"></i>
+                    {{ report.priority|title }} Priority
+                </span>
+            </h1>
+            <p>Submitted {{ report.created_at.strftime('%B %d, %Y at %H:%M') }}</p>
+        </div>
+
+        <!-- Report Details -->
+        <div class="detail-card">
+            <div class="card-header">
+                <h2><i class="fas fa-info-circle"></i> Report Details</h2>
+                <span class="status-badge status-{{ report.status }}">
+                    {% if report.status == 'pending' %}
+                        <i class="fas fa-clock"></i> Pending
+                    {% elif report.status == 'in_progress' %}
+                        <i class="fas fa-spinner fa-spin"></i> In Progress
+                    {% elif report.status == 'resolved' %}
+                        <i class="fas fa-check-circle"></i> Resolved
+                    {% else %}
+                        <i class="fas fa-times-circle"></i> Dismissed
+                    {% endif %}
+                </span>
+            </div>
+            <div class="card-body">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Report Type</div>
+                        <div class="info-value">
+                            <span class="report-type-badge">
+                                {% if report.report_type == 'scam' %}🛡️ Suspicious User / Scam Attempt
+                                {% elif report.report_type == 'payment' %}💰 Payment Issue
+                                {% elif report.report_type == 'technical' %}🔧 Technical Problem
+                                {% elif report.report_type == 'user' %}👤 User Misconduct
+                                {% elif report.report_type == 'content' %}📝 Inappropriate Content
+                                {% elif report.report_type == 'fraud' %}⚠️ Fraudulent Activity
+                                {% elif report.report_type == 'safety' %}🛡️ Safety Concern
+                                {% else %}📋 Other Issue
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Priority</div>
+                        <div class="info-value">
+                            <span class="priority-badge priority-{{ report.priority }}">
+                                <i class="fas {% if report.priority == 'low' %}fa-arrow-down{% elif report.priority == 'medium' %}fa-minus{% elif report.priority == 'high' %}fa-arrow-up{% else %}fa-exclamation-triangle{% endif %}"></i>
+                                {{ report.priority|title }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Submitted By</div>
+                        <div class="info-value">
+                            {% if report.reporter_name %}
+                                <strong>{{ report.reporter_name }}</strong>
+                                <br>
+                                <small style="color: #6B7280;">{{ report.reporter_email or 'No email provided' }}</small>
+                            {% else %}
+                                <span class="text-muted">Anonymous User</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">IP Address</div>
+                        <div class="info-value">
+                            {{ report.reporter_ip or 'Not recorded' }}
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Related ID</div>
+                        <div class="info-value">
+                            {{ report.related_id or 'Not specified' }}
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Tracking ID</div>
+                        <div class="info-value">
+                            {{ report.tracking_id or 'N/A' }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-item" style="margin-bottom: 1rem;">
+                    <div class="info-label">Issue Title</div>
+                    <div class="info-value" style="font-size: 1rem; font-weight: 700; color: #059669;">
+                        {{ report.issue_title }}
+                    </div>
+                </div>
+
+                <div class="info-label">Description</div>
+                <div class="description-box">
+                    {{ report.description }}
+                </div>
+
+                {% if report.reporter_user_agent %}
+                <div class="timestamp">
+                    <i class="fas fa-laptop-code"></i>
+                    <small>Browser/Device: {{ report.reporter_user_agent[:100] }}{% if report.reporter_user_agent|length > 100 %}...{% endif %}</small>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Update Status -->
+        <div class="detail-card">
+            <div class="card-header">
+                <h2><i class="fas fa-tasks"></i> Update Status</h2>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('admin_update_reported_issue_status', report_id=report.id) }}" id="status-form">
+                    <div class="status-form">
+                        <select name="status" class="status-select" id="status-select">
+                            <option value="pending" {% if report.status == 'pending' %}selected{% endif %}>
+                                Pending
+                            </option>
+                            <option value="in_progress" {% if report.status == 'in_progress' %}selected{% endif %}>
+                                In Progress
+                            </option>
+                            <option value="resolved" {% if report.status == 'resolved' %}selected{% endif %}>
+                                Resolved
+                            </option>
+                            <option value="dismissed" {% if report.status == 'dismissed' %}selected{% endif %}>
+                                Dismissed
+                            </option>
+                        </select>
+                        <textarea name="resolution_notes" rows="3" placeholder="Add resolution notes (optional)" style="flex: 1;">{{ report.resolution_notes or '' }}</textarea>
+                        <button type="submit" class="btn-primary-sm">
+                            <i class="fas fa-save"></i> Update Status
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Add Note - Now uses update status with notes -->
+        <div class="detail-card">
+            <div class="card-header">
+                <h2><i class="fas fa-sticky-note"></i> Add Resolution Note</h2>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('admin_update_reported_issue_status', report_id=report.id) }}" id="note-form">
+                    <textarea name="resolution_notes" rows="3" placeholder="Add a private note about this report...">{{ report.resolution_notes or '' }}</textarea>
+                    <div class="action-buttons">
+                        <button type="submit" class="btn-primary-sm" style="margin-top: 1rem;">
+                            <i class="fas fa-plus-circle"></i> Add/Update Note
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Resolution History -->
+        {% if report.resolution_notes %}
+        <div class="detail-card">
+            <div class="card-header">
+                <h2><i class="fas fa-history"></i> Resolution History</h2>
+            </div>
+            <div class="card-body">
+                <div class="note-box">
+                    {{ report.resolution_notes|safe }}
+                </div>
+                {% if report.resolved_by %}
+                <div class="info-item" style="margin-top: 1rem;">
+                    <div class="info-label">Resolved By</div>
+                    <div class="info-value">{{ report.resolver.name if report.resolver else 'System' }}</div>
+                </div>
+                {% endif %}
+                {% if report.resolved_at %}
+                <div class="info-item">
+                    <div class="info-label">Resolved At</div>
+                    <div class="info-value">{{ report.resolved_at.strftime('%B %d, %Y at %H:%M') }}</div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Status History (if available) -->
+        {% if report.get_status_history() and report.get_status_history()|length > 0 %}
+        <div class="detail-card">
+            <div class="card-header">
+                <h2><i class="fas fa-chart-line"></i> Status Timeline</h2>
+            </div>
+            <div class="card-body">
+                {% for entry in report.get_status_history() %}
+                <div class="info-item" style="margin-bottom: 0.75rem;">
+                    <div class="info-label">
+                        <i class="fas fa-{{ 'check-circle' if entry.status == 'resolved' else 'clock' if entry.status == 'pending' else 'spinner' }}"></i>
+                        {{ entry.status|replace('_', ' ')|title }}
+                    </div>
+                    <div class="info-value">{{ entry.note }}</div>
+                    <div class="timestamp">
+                        <i class="fas fa-calendar-alt"></i> {{ entry.timestamp[:19]|replace('T', ' ') }}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Danger Zone with Confirmation -->
+        <div class="detail-card danger-zone">
+            <div class="card-header">
+                <h2><i class="fas fa-trash-alt"></i> Danger Zone</h2>
+            </div>
+            <div class="card-body">
+                <div class="danger-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p><strong>Warning:</strong> Deleting this report is permanent and cannot be undone. All data associated with this report will be permanently removed from the database.</p>
+                </div>
+
+                <form method="POST" action="{{ url_for('admin_delete_reported_issue', report_id=report.id) }}" id="delete-form" onsubmit="return confirmDelete()">
+                    <div class="delete-confirmation-input">
+                        <label><i class="fas fa-shield-alt"></i> To confirm deletion, type <strong style="color: #EF4444;">DELETE</strong> below:</label>
+                        <input type="text" id="delete-confirm" placeholder="Type DELETE to confirm" autocomplete="off">
+                        <small style="font-size: 0.65rem; color: #6B7280; margin-top: 0.25rem; display: block;">This action will permanently delete report #{{ report.id }} from the system.</small>
+                    </div>
+                    <button type="submit" class="btn-danger-sm" id="delete-btn" disabled style="margin-top: 1rem;">
+                        <i class="fas fa-trash-alt"></i> Permanently Delete Report
+                    </button>
+                </form>
+                <p class="text-muted" style="font-size: 0.7rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #FEE2E2;">
+                    <i class="fas fa-info-circle"></i> Deleting a report will remove it permanently from the system. This action cannot be reversed.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Enable delete button only when user types "DELETE"
+document.addEventListener('DOMContentLoaded', function() {
+    const deleteConfirmInput = document.getElementById('delete-confirm');
+    const deleteBtn = document.getElementById('delete-btn');
+
+    if (deleteConfirmInput && deleteBtn) {
+        deleteConfirmInput.addEventListener('input', function() {
+            if (this.value.toUpperCase() === 'DELETE') {
+                deleteBtn.disabled = false;
+                deleteBtn.style.opacity = '1';
+                deleteBtn.style.cursor = 'pointer';
+            } else {
+                deleteBtn.disabled = true;
+                deleteBtn.style.opacity = '0.5';
+                deleteBtn.style.cursor = 'not-allowed';
+            }
+        });
+    }
+
+    // Handle form submissions with loading state
+    const statusForm = document.getElementById('status-form');
+    const noteForm = document.getElementById('note-form');
+    const deleteForm = document.getElementById('delete-form');
+
+    if (statusForm) {
+        statusForm.addEventListener('submit', function(e) {
+            const submitBtn = this.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+            }
+        });
+    }
+
+    if (noteForm) {
+        noteForm.addEventListener('submit', function(e) {
+            const submitBtn = this.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
+            }
+        });
+    }
+
+    if (deleteForm) {
+        deleteForm.addEventListener('submit', function(e) {
+            const deleteBtn = this.querySelector('#delete-btn');
+            if (deleteBtn) {
+                deleteBtn.disabled = true;
+                deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
+            }
+        });
+    }
+
+    // Check for flash messages and show as toast
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                showToast('{{ message|safe }}', '{{ category }}');
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+});
+
+function confirmDelete() {
+    const confirmInput = document.getElementById('delete-confirm');
+    if (!confirmInput || confirmInput.value.toUpperCase() !== 'DELETE') {
+        showToast('Please type "DELETE" to confirm permanent deletion.', 'error');
+        return false;
+    }
+    return confirm('⚠️ WARNING: This action is permanent and cannot be undone!\n\nAre you absolutely sure you want to permanently delete this report?');
+}
+
+function showToast(message, type = 'success') {
+    const toast = document.createElement('div');
+    toast.className = 'success-message';
+    if (type === 'danger' || type === 'error') {
+        toast.classList.add('error');
+    }
+
+    const icon = type === 'success' ? 'fa-check-circle' : (type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle');
+    toast.innerHTML = `
+        <i class="fas ${icon}"></i>
+        <span>${escapeHtml(message)}</span>
+    `;
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        toast.style.animation = 'slideOutRight 0.3s ease';
+        setTimeout(() => {
+            if (toast.parentNode) toast.remove();
+        }, 300);
+    }, 5000);
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+</script>
+{% endblock %}

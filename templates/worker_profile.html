@@ -1,0 +1,1509 @@
+{% extends "base.html" %}
+
+{% block title %}{{ worker.business_name or worker.user.name }} - {{ settings.platform_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ============================================
+   FILE: worker_profile.html
+   FundiConnect - YouTube Style Worker Profile
+   Version: 6.0.0 - Channel Layout Design
+   ============================================ */
+
+.profile-page {
+    padding: 2rem 0;
+    background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+    min-height: calc(100vh - 200px);
+}
+
+/* Channel Header - YouTube Style */
+.channel-header {
+    background: white;
+    border-radius: 28px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid #E5E7EB;
+}
+
+.channel-banner {
+    position: relative;
+    height: 200px;
+    background: linear-gradient(135deg, #1F2937 0%, #111827 100%);
+    overflow: hidden;
+}
+
+.channel-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.channel-banner:hover img {
+    transform: scale(1.02);
+}
+
+/* Profile Info Section - Below Banner */
+.profile-info-section {
+    padding: 1.5rem 2rem;
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    position: relative;
+    background: white;
+}
+
+.profile-avatar {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 4px solid white;
+    background: white;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+    margin-top: -50px;
+    z-index: 2;
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.verified-badge-avatar {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white;
+    color: white;
+    font-size: 0.7rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+}
+
+.profile-details {
+    flex: 1;
+    padding-top: 0.5rem;
+}
+
+.channel-name-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.75rem;
+}
+
+.channel-name {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #1F2937;
+    letter-spacing: -0.02em;
+    margin: 0;
+}
+
+.verified-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+    padding: 0.2rem 0.7rem;
+    border-radius: 100px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: white;
+}
+
+.premium-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: linear-gradient(135deg, #8B5CF6, #6366F1);
+    padding: 0.2rem 0.7rem;
+    border-radius: 100px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: white;
+}
+
+.channel-stats {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #6B7280;
+    font-size: 0.8rem;
+}
+
+.stat-value {
+    font-weight: 700;
+    color: #1F2937;
+}
+
+.stat-label {
+    color: #6B7280;
+}
+
+.profile-actions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    flex-shrink: 0;
+    padding-top: 0.5rem;
+}
+
+.btn-hire {
+    background: linear-gradient(135deg, #3B82F6, #2563EB);
+    color: white;
+    border: none;
+    padding: 0.5rem 1.25rem;
+    border-radius: 100px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-hire:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.btn-share {
+    background: #F3F4F6;
+    color: #374151;
+    border: 1px solid #E5E7EB;
+    padding: 0.5rem 1.25rem;
+    border-radius: 100px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-share:hover {
+    background: #E5E7EB;
+    transform: translateY(-2px);
+    border-color: #3B82F6;
+    color: #3B82F6;
+}
+
+/* Channel Navigation - YouTube Style */
+.channel-nav {
+    background: white;
+    border-radius: 20px;
+    margin-bottom: 2rem;
+    padding: 0 1.5rem;
+    border: 1px solid #E5E7EB;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.channel-nav-links {
+    display: flex;
+    gap: 2rem;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.nav-link {
+    padding: 1rem 0;
+    font-weight: 600;
+    color: #6B7280;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    white-space: nowrap;
+}
+
+.nav-link:hover {
+    color: #3B82F6;
+}
+
+.nav-link.active {
+    color: #3B82F6;
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #3B82F6;
+    border-radius: 2px;
+}
+
+/* Profile Content Sections */
+.profile-sections {
+    margin-top: 2rem;
+}
+
+.profile-section {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.profile-section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Cards */
+.info-card {
+    background: white;
+    border-radius: 24px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid #E5E7EB;
+    transition: all 0.3s ease;
+}
+
+.info-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #E5E7EB;
+}
+
+.card-header i {
+    font-size: 1.2rem;
+    color: #3B82F6;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1F2937;
+}
+
+/* About Section */
+.worker-description {
+    color: #4B5563;
+    line-height: 1.6;
+    font-size: 0.9rem;
+    white-space: pre-wrap;
+}
+
+/* Skills */
+.skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 0.25rem;
+}
+
+.skill-tag {
+    background: rgba(59, 130, 246, 0.08);
+    padding: 0.4rem 0.9rem;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    color: #3B82F6;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(59, 130, 246, 0.15);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.skill-tag:hover {
+    background: #3B82F6;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Details Grid */
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 0.8rem;
+    margin-top: 0.25rem;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.7rem;
+    background: #F9FAFB;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    border: 1px solid #F3F4F6;
+}
+
+.detail-item:hover {
+    background: rgba(59, 130, 246, 0.03);
+    transform: translateX(3px);
+    border-color: #E5E7EB;
+}
+
+.detail-item i {
+    width: 28px;
+    font-size: 1rem;
+    color: #3B82F6;
+    flex-shrink: 0;
+}
+
+.detail-item div {
+    flex: 1;
+    min-width: 0;
+}
+
+.detail-label {
+    font-size: 0.6rem;
+    color: #6B7280;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+.detail-value {
+    font-weight: 600;
+    color: #1F2937;
+    font-size: 0.85rem;
+    word-break: break-word;
+}
+
+/* Availability Badge */
+.availability-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.2rem 0.7rem;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.availability-badge.available {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10B981;
+}
+
+.availability-badge.unavailable {
+    background: rgba(239, 68, 68, 0.1);
+    color: #EF4444;
+}
+
+/* Portfolio Gallery */
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.portfolio-item {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 1;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.portfolio-item:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.portfolio-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.portfolio-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.7));
+    padding: 0.6rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.portfolio-item:hover .portfolio-overlay {
+    opacity: 1;
+}
+
+/* Certifications */
+.cert-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.7rem;
+    background: #F9FAFB;
+    border-radius: 12px;
+    margin-bottom: 0.6rem;
+    transition: all 0.3s ease;
+    border: 1px solid #F3F4F6;
+}
+
+.cert-item:hover {
+    background: rgba(59, 130, 246, 0.03);
+    transform: translateX(3px);
+    border-color: #E5E7EB;
+}
+
+.cert-item i {
+    color: #F59E0B;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.cert-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.cert-name {
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #1F2937;
+}
+
+.cert-issuer {
+    font-size: 0.65rem;
+    color: #6B7280;
+}
+
+/* Social Links */
+.social-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 0.25rem;
+}
+
+.social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #F9FAFB;
+    color: #4B5563;
+    border: 1px solid #E5E7EB;
+}
+
+.social-link:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    color: white;
+}
+
+.social-link.whatsapp {
+    background: #25D366;
+    color: white;
+    border: none;
+}
+
+.social-link.facebook {
+    background: #1877F2;
+    color: white;
+    border: none;
+}
+
+.social-link.instagram {
+    background: linear-gradient(135deg, #F56040, #C13584, #833AB4);
+    color: white;
+    border: none;
+}
+
+.social-link.twitter {
+    background: #1DA1F2;
+    color: white;
+    border: none;
+}
+
+.social-link.linkedin {
+    background: #0077B5;
+    color: white;
+    border: none;
+}
+
+.social-link.website {
+    background: linear-gradient(135deg, #059669, #047857);
+    color: white;
+    border: none;
+}
+
+/* Reviews */
+.review-card {
+    border-bottom: 1px solid #F3F4F6;
+    padding: 1rem 0;
+    transition: all 0.3s ease;
+}
+
+.review-card:first-child {
+    padding-top: 0;
+}
+
+.review-card:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.6rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.reviewer-info {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+}
+
+.reviewer-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3B82F6, #2563EB);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.reviewer-name {
+    font-weight: 700;
+    color: #1F2937;
+    font-size: 0.9rem;
+}
+
+.review-stars {
+    color: #F59E0B;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    margin-top: 0.2rem;
+}
+
+.review-date {
+    font-size: 0.65rem;
+    color: #9CA3AF;
+}
+
+.review-comment {
+    color: #6B7280;
+    line-height: 1.5;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    padding-left: 3rem;
+}
+
+/* Leave Review Form */
+.leave-review {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid #F3F4F6;
+}
+
+.leave-review h4 {
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1F2937;
+}
+
+.rating-input {
+    display: flex;
+    gap: 0.4rem;
+    margin: 0.6rem 0;
+    cursor: pointer;
+}
+
+.rating-input i {
+    font-size: 1.2rem;
+    color: #D1D5DB;
+    transition: all 0.2s ease;
+}
+
+.rating-input i.active,
+.rating-input i:hover {
+    color: #F59E0B;
+    transform: scale(1.1);
+}
+
+/* Form Controls */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.4rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+    resize: vertical;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #3B82F6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Upgrade Banner */
+.premium-upgrade-banner {
+    background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+    border-radius: 16px;
+    padding: 1rem;
+    margin: 1rem 0;
+    text-align: center;
+    border: 1px solid #F59E0B;
+}
+
+.premium-upgrade-banner p {
+    margin: 0;
+    color: #92400E;
+    font-size: 0.8rem;
+}
+
+.premium-upgrade-banner a {
+    color: #D97706;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.premium-upgrade-banner a:hover {
+    text-decoration: underline;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: #6B7280;
+}
+
+.empty-state i {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+    opacity: 0.5;
+}
+
+.empty-state p {
+    font-size: 0.85rem;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    max-width: 90%;
+    max-height: 90%;
+}
+
+.modal-content img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+    transition: transform 0.3s ease;
+}
+
+.modal-close:hover {
+    transform: scale(1.1);
+}
+
+/* Share Modal */
+.share-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.share-modal.active {
+    display: flex;
+}
+
+.share-card {
+    background: white;
+    border-radius: 24px;
+    padding: 1.5rem;
+    max-width: 420px;
+    width: 90%;
+    animation: scaleIn 0.3s ease;
+}
+
+.share-card h3 {
+    margin-bottom: 0.75rem;
+    color: #1F2937;
+    font-size: 1.2rem;
+}
+
+.share-url {
+    background: #F9FAFB;
+    padding: 0.7rem;
+    border-radius: 12px;
+    font-family: monospace;
+    font-size: 0.75rem;
+    word-break: break-all;
+    margin: 0.75rem 0;
+    border: 1px solid #E5E7EB;
+}
+
+.share-buttons {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .profile-info-section {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 1rem;
+    }
+
+    .profile-avatar {
+        margin-top: -40px;
+        width: 80px;
+        height: 80px;
+    }
+
+    .verified-badge-avatar {
+        width: 24px;
+        height: 24px;
+        font-size: 0.6rem;
+    }
+
+    .channel-name {
+        font-size: 1.3rem;
+    }
+
+    .channel-name-section {
+        justify-content: center;
+    }
+
+    .channel-stats {
+        justify-content: center;
+    }
+
+    .profile-actions {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .channel-nav-links {
+        gap: 1rem;
+    }
+
+    .nav-link {
+        font-size: 0.8rem;
+        padding: 0.7rem 0;
+    }
+
+    .details-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .portfolio-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .review-comment {
+        padding-left: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .channel-banner {
+        height: 120px;
+    }
+
+    .profile-avatar {
+        width: 70px;
+        height: 70px;
+        margin-top: -35px;
+    }
+
+    .info-card {
+        padding: 1.2rem;
+    }
+
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .review-comment {
+        padding-left: 0;
+    }
+
+    .review-header {
+        flex-direction: column;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+{% set subscription = worker.user.get_active_subscription() %}
+{% set tier_class = '' %}
+{% if subscription and subscription.plan_type == 'weekly' %}
+    {% set tier_class = 'weekly-tier' %}
+{% elif subscription and subscription.plan_type == 'monthly' %}
+    {% set tier_class = 'monthly-tier' %}
+{% elif subscription and subscription.plan_type == 'annual' %}
+    {% set tier_class = 'annual-tier' %}
+{% elif subscription and subscription.plan_type == 'daily' %}
+    {% set tier_class = 'daily-tier' %}
+{% else %}
+    {% set tier_class = 'free-tier' %}
+{% endif %}
+
+<div class="profile-page">
+    <div class="container">
+        <!-- Channel Header -->
+        <div class="channel-header">
+            <div class="channel-banner">
+                <img src="{{ url_for('static', filename='uploads/' + (worker.cover_image if worker.cover_image and worker.cover_image != 'default-cover.jpg' else 'default-cover.jpg')) }}" alt="Channel Banner">
+            </div>
+
+            <!-- Profile Info - Now Below Banner -->
+            <div class="profile-info-section">
+                <div class="profile-avatar">
+                    <img src="{{ url_for('static', filename='uploads/' + (worker.user.profile_picture if worker.user.profile_picture and worker.user.profile_picture != 'default-avatar.png' else 'default-avatar.png')) }}" alt="{{ worker.user.name }}">
+                    {% if worker.is_verified %}
+                    <div class="verified-badge-avatar">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="profile-details">
+                    <div class="channel-name-section">
+                        <h1 class="channel-name">{{ worker.business_name or worker.user.name }}</h1>
+                        {% if worker.is_verified %}
+                        <span class="verified-badge">
+                            <i class="fas fa-check-circle"></i> Verified
+                        </span>
+                        {% endif %}
+                        {% if worker.user.has_premium() %}
+                        <span class="premium-badge">
+                            <i class="fas fa-crown"></i> Premium
+                        </span>
+                        {% endif %}
+                    </div>
+                    <div class="channel-stats">
+                        <div class="stat-item">
+                            <i class="fas fa-star" style="color: #F59E0B;"></i>
+                            <span class="stat-value">{{ "%.1f"|format(avg_rating) }}</span>
+                            <span class="stat-label">rating</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-comments"></i>
+                            <span class="stat-value">{{ worker.rating_count }}</span>
+                            <span class="stat-label">reviews</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-briefcase"></i>
+                            <span class="stat-value">{{ worker.total_jobs_completed }}</span>
+                            <span class="stat-label">jobs done</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span class="stat-value">{{ worker.years_experience or 0 }}+</span>
+                            <span class="stat-label">years exp</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-users"></i>
+                            <span class="stat-value">{{ worker.total_jobs_completed }}</span>
+                            <span class="stat-label">clients</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-actions">
+                    {% if session.user_id and session.user_type == 'customer' %}
+                    <a href="{{ url_for('post_job') }}?worker={{ worker.user_id }}" class="btn-hire">
+                        <i class="fas fa-briefcase"></i> Hire
+                    </a>
+                    <button onclick="openShareModal()" class="btn-share">
+                        <i class="fas fa-share-alt"></i> Share
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Channel Navigation -->
+        <div class="channel-nav">
+            <div class="channel-nav-links">
+                <div class="nav-link active" data-section="about">About</div>
+                <div class="nav-link" data-section="portfolio">Portfolio</div>
+                <div class="nav-link" data-section="reviews">Reviews</div>
+                <div class="nav-link" data-section="contact">Contact</div>
+            </div>
+        </div>
+
+        <!-- Profile Sections (same as before - unchanged) -->
+        <div class="profile-sections">
+            <!-- About Section -->
+            <div class="profile-section active" id="about-section">
+                <div class="info-card">
+                    <div class="card-header">
+                        <i class="fas fa-user-circle"></i>
+                        <h3>About</h3>
+                    </div>
+                    <div class="worker-description">
+                        {{ worker.description or 'No description provided. This professional is ready to help with your projects!' }}
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="card-header">
+                        <i class="fas fa-tools"></i>
+                        <h3>Skills & Expertise</h3>
+                    </div>
+                    {% if worker.skills %}
+                    <div class="skills-list">
+                        {% for skill in worker.skills.split(',') %}
+                        <span class="skill-tag">
+                            <i class="fas fa-check-circle" style="font-size: 0.7rem;"></i> {{ skill.strip() }}
+                        </span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-tools"></i>
+                        <p>No skills listed yet.</p>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="info-card">
+                    <div class="card-header">
+                        <i class="fas fa-info-circle"></i>
+                        <h3>Professional Details</h3>
+                    </div>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <div class="detail-label">Location</div>
+                                <div class="detail-value">{{ worker.location or 'Not specified' }}</div>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-tag"></i>
+                            <div>
+                                <div class="detail-label">Category</div>
+                                <div class="detail-value">{{ categories[worker.primary_category].name if worker.primary_category else 'General' }}</div>
+                            </div>
+                        </div>
+                        {% if worker.hourly_rate %}
+                        <div class="detail-item">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <div>
+                                <div class="detail-label">Hourly Rate</div>
+                                <div class="detail-value">KES {{ "%.0f"|format(worker.hourly_rate) }}/hour</div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div class="detail-item">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <div class="detail-label">Availability</div>
+                                <div class="detail-value">
+                                    <span class="availability-badge {{ 'available' if worker.is_available else 'unavailable' }}">
+                                        <i class="fas {{ 'fa-check-circle' if worker.is_available else 'fa-clock' }}"></i>
+                                        {{ 'Available Now' if worker.is_available else 'Currently Unavailable' }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-reply-all"></i>
+                            <div>
+                                <div class="detail-label">Response Time</div>
+                                <div class="detail-value">~{{ worker.response_time_avg }} minutes</div>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-calendar-alt"></i>
+                            <div>
+                                <div class="detail-label">Member Since</div>
+                                <div class="detail-value">{{ worker.user.created_at.strftime('%b %Y') }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% if can_see_verification and worker.is_verified %}
+                <div class="info-card" style="background: linear-gradient(135deg, rgba(5, 150, 105, 0.05), rgba(5, 150, 105, 0.02));">
+                    <div class="card-header">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Verified Professional</h3>
+                    </div>
+                    <p style="color: #059669;">This worker has been verified by FundiConnect. All verification documents have been reviewed and approved.</p>
+                </div>
+                {% endif %}
+
+                {% if not worker.user.has_premium() %}
+                <div class="premium-upgrade-banner">
+                    <p><i class="fas fa-crown"></i> <strong>Premium Profile Features</strong> — Upgrade to see portfolio, certifications, and social links. <a href="{{ url_for('subscribe') }}">Upgrade to Premium</a></p>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Portfolio Section (Premium Only) -->
+            <div class="profile-section" id="portfolio-section">
+                {% if worker.user.has_premium() %}
+                <div class="info-card">
+                    <div class="card-header">
+                        <i class="fas fa-images"></i>
+                        <h3>Portfolio Gallery</h3>
+                    </div>
+                    {% if worker.portfolio_images %}
+                    <div class="portfolio-grid">
+                        {% set portfolio_list = worker.portfolio_images.split(',') %}
+                        {% for img in portfolio_list %}
+                        <div class="portfolio-item" onclick="openImageModal('{{ url_for('static', filename='uploads/' + img) }}')">
+                            <img src="{{ url_for('static', filename='uploads/' + img) }}" alt="Portfolio image">
+                            <div class="portfolio-overlay">
+                                <i class="fas fa-search-plus"></i>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-images"></i>
+                        <p>No portfolio images added yet.</p>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="info-card">
+                    <div class="card-header">
+                        <i class="fas fa-certificate"></i>
+                        <h3>Certifications & Licenses</h3>
+                    </div>
+                    {% if certifications_list and certifications_list|length > 0 %}
+                    {% for cert in certifications_list %}
+                    <div class="cert-item">
+                        <i class="fas fa-certificate"></i>
+                        <div class="cert-info">
+                            <div class="cert-name">{{ cert.name }}</div>
+                            <div class="cert-issuer">{{ cert.issuer }} • {{ cert.year }}</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-certificate"></i>
+                        <p>No certifications added yet.</p>
+                    </div>
+                    {% endif %}
+                </div>
+                {% else %}
+                <div class="premium-upgrade-banner">
+                    <p><i class="fas fa-crown"></i> <strong>Premium Feature</strong> — Portfolio and certifications are available to premium subscribers. <a href="{{ url_for('subscribe') }}">Upgrade to view</a></p>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Reviews Section -->
+            <div class="profile-section" id="reviews-section">
+                <div class="info-card">
+                    <div class="card-header">
+                        <i class="fas fa-star"></i>
+                        <h3>Customer Reviews</h3>
+                    </div>
+                    {% if reviews %}
+                        {% for review in reviews %}
+                        <div class="review-card">
+                            <div class="review-header">
+                                <div class="reviewer-info">
+                                    <div class="reviewer-avatar">
+                                        {{ review.customer.name[0]|upper }}
+                                    </div>
+                                    <div>
+                                        <div class="reviewer-name" style="font-weight: 700; color: #1F2937;">{{ review.customer.name }}</div>
+                                        <div class="review-stars">
+                                            {% for i in range(5) %}
+                                                {% if i < review.rating %}
+                                                    <i class="fas fa-star"></i>
+                                                {% else %}
+                                                    <i class="far fa-star"></i>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="review-date">
+                                    <i class="fas fa-calendar-alt"></i> {{ review.created_at.strftime('%b %d, %Y') }}
+                                </span>
+                            </div>
+                            <p class="review-comment">
+                                <i class="fas fa-quote-left" style="color: #3B82F6; opacity: 0.5; margin-right: 0.5rem;"></i>
+                                {{ review.comment }}
+                            </p>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="empty-state">
+                            <i class="fas fa-star-half-alt"></i>
+                            <p>No reviews yet. Be the first to leave a review!</p>
+                        </div>
+                    {% endif %}
+
+                    {% if session.user_id and session.user_type == 'customer' %}
+                    <div class="leave-review">
+                        <h4><i class="fas fa-pen-alt"></i> Write a Review</h4>
+                        <form method="POST" action="{{ url_for('leave_review', worker_id=worker.user_id) }}">
+                            <div class="form-group">
+                                <label>Your Rating</label>
+                                <div class="rating-input" id="rating-input">
+                                    <i class="far fa-star" data-rating="1"></i>
+                                    <i class="far fa-star" data-rating="2"></i>
+                                    <i class="far fa-star" data-rating="3"></i>
+                                    <i class="far fa-star" data-rating="4"></i>
+                                    <i class="far fa-star" data-rating="5"></i>
+                                </div>
+                                <input type="hidden" name="rating" id="rating-value" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Your Review</label>
+                                <textarea name="comment" rows="4" class="form-control" placeholder="Share your experience working with this professional..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn-hire" style="width: 100%; justify-content: center;">
+                                <i class="fas fa-paper-plane"></i> Submit Review
+                            </button>
+                        </form>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="profile-section" id="contact-section">
+                {% if worker.user.has_premium() %}
+                <div class="info-card">
+                    <div class="card-header">
+                        <i class="fas fa-share-alt"></i>
+                        <h3>Connect With Me</h3>
+                    </div>
+                    <div class="social-links">
+                        {% if worker.whatsapp and worker.whatsapp|trim != '' %}
+                        <a href="https://wa.me/{{ worker.whatsapp|replace('+', '')|replace(' ', '') }}" target="_blank" rel="noopener noreferrer" class="social-link whatsapp" aria-label="WhatsApp">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                        {% endif %}
+
+                        {% if worker.facebook and worker.facebook|trim != '' %}
+                        <a href="{{ worker.facebook }}" target="_blank" rel="noopener noreferrer" class="social-link facebook" aria-label="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        {% endif %}
+
+                        {% if worker.instagram and worker.instagram|trim != '' %}
+                        {% set instagram_handle = worker.instagram|replace('@', '') %}
+                        <a href="https://instagram.com/{{ instagram_handle }}" target="_blank" rel="noopener noreferrer" class="social-link instagram" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        {% endif %}
+
+                        {% if worker.twitter and worker.twitter|trim != '' %}
+                        {% set twitter_handle = worker.twitter|replace('@', '') %}
+                        <a href="https://twitter.com/{{ twitter_handle }}" target="_blank" rel="noopener noreferrer" class="social-link twitter" aria-label="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        {% endif %}
+
+                        {% if worker.linkedin and worker.linkedin|trim != '' %}
+                        <a href="{{ worker.linkedin }}" target="_blank" rel="noopener noreferrer" class="social-link linkedin" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        {% endif %}
+
+                        {% if worker.website and worker.website|trim != '' %}
+                        <a href="{{ worker.website }}" target="_blank" rel="noopener noreferrer" class="social-link website" aria-label="Website">
+                            <i class="fas fa-globe"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+
+                    {% if not (worker.whatsapp and worker.whatsapp|trim != '') and not (worker.facebook and worker.facebook|trim != '') and not (worker.instagram and worker.instagram|trim != '') and not (worker.twitter and worker.twitter|trim != '') and not (worker.linkedin and worker.linkedin|trim != '') and not (worker.website and worker.website|trim != '') %}
+                    <div class="empty-state">
+                        <i class="fas fa-share-alt"></i>
+                        <p>No social links added yet.</p>
+                    </div>
+                    {% endif %}
+                </div>
+                {% else %}
+                <div class="premium-upgrade-banner">
+                    <p><i class="fas fa-crown"></i> <strong>Premium Feature</strong> — Contact information and social links are available to premium subscribers. <a href="{{ url_for('subscribe') }}">Upgrade to view</a></p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Image Modal -->
+<div id="imageModal" class="modal">
+    <button class="modal-close" onclick="closeImageModal()">&times;</button>
+    <div class="modal-content">
+        <img id="modalImage" src="" alt="Portfolio Image">
+    </div>
+</div>
+
+<!-- Share Modal -->
+<div id="shareModal" class="share-modal">
+    <div class="share-card">
+        <h3><i class="fas fa-share-alt"></i> Share Profile</h3>
+        <p>Share this professional's profile with others:</p>
+        <div class="share-url" id="shareUrl"></div>
+        <div class="share-buttons">
+            <button onclick="copyShareLink()" class="btn-hire" style="background: #F3F4F6; color: #374151;">
+                <i class="fas fa-copy"></i> Copy Link
+            </button>
+            <a href="#" id="whatsappShare" target="_blank" class="btn-hire" style="background: #25D366;">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+            </a>
+        </div>
+        <div style="margin-top: 1rem; text-align: center;">
+            <button onclick="closeShareModal()" class="btn-share">Close</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// Tab Navigation
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', function() {
+        const sectionId = this.dataset.section;
+
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        this.classList.add('active');
+
+        document.querySelectorAll('.profile-section').forEach(section => {
+            section.classList.remove('active');
+        });
+        document.getElementById(`${sectionId}-section`).classList.add('active');
+    });
+});
+
+// Rating stars
+document.addEventListener('DOMContentLoaded', function() {
+    const stars = document.querySelectorAll('#rating-input i');
+    const ratingInput = document.getElementById('rating-value');
+
+    if (stars.length && ratingInput) {
+        stars.forEach(star => {
+            star.addEventListener('click', function() {
+                const rating = parseInt(this.dataset.rating);
+                ratingInput.value = rating;
+
+                stars.forEach((s, index) => {
+                    if (index < rating) {
+                        s.className = 'fas fa-star active';
+                    } else {
+                        s.className = 'far fa-star';
+                    }
+                });
+            });
+
+            star.addEventListener('mouseenter', function() {
+                const rating = parseInt(this.dataset.rating);
+                stars.forEach((s, index) => {
+                    if (index < rating) {
+                        s.className = 'fas fa-star';
+                    } else {
+                        s.className = 'far fa-star';
+                    }
+                });
+            });
+
+            star.addEventListener('mouseleave', function() {
+                const currentRating = parseInt(ratingInput.value) || 0;
+                stars.forEach((s, index) => {
+                    if (index < currentRating) {
+                        s.className = 'fas fa-star active';
+                    } else {
+                        s.className = 'far fa-star';
+                    }
+                });
+            });
+        });
+    }
+});
+
+// Portfolio image modal
+function openImageModal(imageUrl) {
+    const modal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    modalImage.src = imageUrl;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeImageModal() {
+    const modal = document.getElementById('imageModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+document.getElementById('imageModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeImageModal();
+    }
+});
+
+// Share functionality
+function openShareModal() {
+    const shareModal = document.getElementById('shareModal');
+    const shareUrl = document.getElementById('shareUrl');
+    const currentUrl = window.location.href;
+    shareUrl.textContent = currentUrl;
+
+    const whatsappBtn = document.getElementById('whatsappShare');
+    whatsappBtn.href = `https://wa.me/?text=Check out this professional: ${encodeURIComponent(currentUrl)}`;
+
+    shareModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeShareModal() {
+    const shareModal = document.getElementById('shareModal');
+    shareModal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function copyShareLink() {
+    const shareUrl = document.getElementById('shareUrl').textContent;
+    navigator.clipboard.writeText(shareUrl).then(() => {
+        alert('Link copied to clipboard!');
+    });
+}
+
+document.getElementById('shareModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeShareModal();
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Report Notification</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #059669, #047857);
+            padding: 30px 20px;
+            text-align: center;
+            color: white;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .header p {
+            margin: 10px 0 0;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 30px;
+        }
+        .priority-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 20px;
+        }
+        .info-box {
+            background: #f8f9fa;
+            border-left: 4px solid #059669;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+        .info-box h4 {
+            margin-top: 0;
+            color: #059669;
+            font-size: 14px;
+        }
+        .detail-row {
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        .detail-label {
+            font-weight: bold;
+            color: #555;
+            width: 100px;
+            display: inline-block;
+            font-size: 13px;
+        }
+        .detail-value {
+            color: #333;
+            font-size: 13px;
+        }
+        .report-description {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            white-space: pre-wrap;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .button {
+            display: inline-block;
+            background: #059669;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-weight: 600;
+        }
+        .button:hover {
+            background: #047857;
+        }
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            border-top: 1px solid #eee;
+        }
+        .footer a {
+            color: #059669;
+            text-decoration: none;
+        }
+        @media (max-width: 600px) {
+            .content {
+                padding: 20px;
+            }
+            .detail-label {
+                display: block;
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔔 New Report Received</h1>
+            <p>FundiConnect Support Team</p>
+        </div>
+        <div class="content">
+            <div class="priority-badge" style="background: {{ priority_color }}">
+                Priority: {{ priority_label }}
+            </div>
+
+            <div class="info-box">
+                <h4>📋 Report Summary</h4>
+                <div class="detail-row">
+                    <span class="detail-label">Report ID:</span>
+                    <span class="detail-value">#{{ report.id }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Type:</span>
+                    <span class="detail-value">{{ report_type_label }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Title:</span>
+                    <span class="detail-value">{{ report.issue_title }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Submitted:</span>
+                    <span class="detail-value">{{ report.created_at.strftime('%B %d, %Y at %H:%M') }}</span>
+                </div>
+                {% if report.reporter_name %}
+                <div class="detail-row">
+                    <span class="detail-label">Reporter:</span>
+                    <span class="detail-value">{{ report.reporter_name }}</span>
+                </div>
+                {% endif %}
+                {% if report.reporter_email %}
+                <div class="detail-row">
+                    <span class="detail-label">Email:</span>
+                    <span class="detail-value">{{ report.reporter_email }}</span>
+                </div>
+                {% endif %}
+                {% if report.related_id %}
+                <div class="detail-row">
+                    <span class="detail-label">Related ID:</span>
+                    <span class="detail-value">{{ report.related_id }}</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="info-box">
+                <h4>📝 Description</h4>
+                <div class="report-description">
+                    {{ report.description }}
+                </div>
+            </div>
+
+            <div style="text-align: center;">
+                <a href="{{ admin_url }}" class="button">View in Admin Panel →</a>
+            </div>
+        </div>
+        <div class="footer">
+            <p>FundiConnect - Connecting Skilled Workers with Opportunities</p>
+            <p>This is an automated notification. Please do not reply to this email.</p>
+            <p><a href="{{ base_url }}/admin/reports">Manage Reports</a> | <a href="{{ base_url }}">Visit Website</a></p>
+        </div>
+    </div>
+</body>
+</html>

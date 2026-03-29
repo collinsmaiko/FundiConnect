@@ -1,0 +1,816 @@
+{% extends "base.html" %}
+
+{% block title %}Report an Issue - {{ settings.platform_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ============================================
+   FILE: report_issue.html
+   FundiConnect - Professional Report Issue Page
+   ============================================ */
+
+.report-page {
+    padding: 2rem 0;
+    background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+    min-height: calc(100vh - 200px);
+}
+
+.report-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.report-card {
+    background: white;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(5, 150, 105, 0.2);
+}
+
+.report-header {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    padding: 2rem;
+    text-align: center;
+    color: white;
+    position: relative;
+}
+
+.report-header::before {
+    content: '';
+    position: absolute;
+    top: -30%;
+    right: -10%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.report-header i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: inline-block;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+.report-header h1 {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+    color: white;
+}
+
+.report-header p {
+    opacity: 0.9;
+    font-size: 0.9rem;
+}
+
+.report-body {
+    padding: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.85rem;
+}
+
+.form-group label .required-star {
+    color: #EF4444;
+    margin-left: 2px;
+}
+
+.form-group select,
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 14px;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+    background: #F9FAFB;
+    font-family: inherit;
+}
+
+.form-group select:focus,
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #059669;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.priority-selector {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.priority-option {
+    flex: 1;
+    position: relative;
+}
+
+.priority-option input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.priority-option label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: #F9FAFB;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 0;
+    font-weight: 500;
+}
+
+.priority-option input:checked + label {
+    border-color: #059669;
+    background: rgba(5, 150, 105, 0.05);
+    color: #059669;
+}
+
+.priority-option.low label { color: #10B981; }
+.priority-option.medium label { color: #F59E0B; }
+.priority-option.high label { color: #EF4444; }
+.priority-option.urgent label { color: #7C3AED; }
+
+.info-box {
+    background: rgba(5, 150, 105, 0.05);
+    border-left: 4px solid #059669;
+    padding: 1rem;
+    border-radius: 12px;
+    margin: 1.5rem 0;
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+}
+
+.info-box i {
+    color: #059669;
+    font-size: 1.1rem;
+    margin-top: 0.2rem;
+}
+
+.info-box p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #4B5563;
+    line-height: 1.5;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    color: white;
+    border: none;
+    padding: 0.85rem 1.5rem;
+    border-radius: 100px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+    justify-content: center;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(5, 150, 105, 0.3);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1.5px solid #E5E7EB;
+    padding: 0.85rem 1.5rem;
+    border-radius: 100px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #6B7280;
+    text-decoration: none;
+}
+
+.btn-outline:hover {
+    border-color: #059669;
+    color: #059669;
+    background: rgba(5, 150, 105, 0.05);
+}
+
+.emergency-alert {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%);
+    border-left: 4px solid #EF4444;
+    padding: 1rem;
+    border-radius: 12px;
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.emergency-alert i {
+    color: #EF4444;
+    font-size: 1.25rem;
+}
+
+.emergency-alert strong {
+    color: #DC2626;
+}
+
+.emergency-alert p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #4B5563;
+}
+
+.success-message {
+    display: none;
+    background: rgba(5, 150, 105, 0.1);
+    border: 1px solid #059669;
+    border-radius: 16px;
+    padding: 1.5rem;
+    text-align: center;
+    animation: fadeInUp 0.5s ease;
+}
+
+.success-message i {
+    font-size: 3rem;
+    color: #059669;
+    margin-bottom: 1rem;
+}
+
+.success-message h3 {
+    color: #059669;
+    margin-bottom: 0.5rem;
+}
+
+.success-message p {
+    color: #6B7280;
+    margin-bottom: 1.5rem;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.loading-spinner {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    text-align: center;
+    animation: scaleIn 0.3s ease;
+}
+
+.loading-spinner i {
+    font-size: 3rem;
+    color: #059669;
+    animation: spin 1s linear infinite;
+}
+
+.loading-spinner p {
+    margin-top: 1rem;
+    color: #6B7280;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.character-count {
+    text-align: right;
+    font-size: 0.7rem;
+    color: #9CA3AF;
+    margin-top: 0.25rem;
+}
+
+.toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.toast-notification {
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    padding: 1rem;
+    min-width: 320px;
+    max-width: 400px;
+    animation: slideInRight 0.3s ease;
+    border-left: 4px solid;
+    position: relative;
+}
+
+.toast-notification.danger { border-left-color: #EF4444; }
+.toast-notification.success { border-left-color: #10B981; }
+
+@keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideOutRight {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(100%); opacity: 0; }
+}
+
+.toast-content {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+}
+
+.toast-icon.danger { color: #EF4444; }
+.toast-icon.success { color: #10B981; }
+
+.toast-message {
+    flex: 1;
+}
+
+.toast-title {
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+}
+
+.toast-text {
+    font-size: 0.8rem;
+    color: #6B7280;
+}
+
+.toast-close {
+    background: none;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    color: #9CA3AF;
+    padding: 0;
+    line-height: 1;
+}
+
+@media (max-width: 768px) {
+    .report-page {
+        padding: 1rem;
+    }
+    .report-header {
+        padding: 1.5rem;
+    }
+    .report-body {
+        padding: 1.25rem;
+    }
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+    .priority-selector {
+        flex-wrap: wrap;
+    }
+    .priority-option {
+        flex: 1;
+        min-width: 80px;
+    }
+    .priority-option label {
+        font-size: 0.75rem;
+        padding: 0.6rem;
+    }
+    .form-actions {
+        flex-direction: column;
+    }
+    .btn-primary, .btn-outline {
+        width: 100%;
+        justify-content: center;
+    }
+    .toast-notification {
+        min-width: auto;
+        max-width: calc(100vw - 40px);
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="report-page">
+    <div class="report-container">
+        <div class="report-card" id="report-card">
+            <div class="report-header">
+                <i class="fas fa-flag-checkered"></i>
+                <h1>Report an Issue</h1>
+                <p>Help us improve {{ settings.platform_name }} by reporting any problems or concerns</p>
+            </div>
+            <div class="report-body">
+                <form id="report-form" method="POST" action="{{ url_for('submit_report') }}">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Report Type <span class="required-star">*</span></label>
+                            <select id="report_type" name="report_type" required>
+                                <option value="">Select issue type</option>
+                                <option value="scam">🛡️ Suspicious User / Scam Attempt</option>
+                                <option value="payment">💰 Payment Issue</option>
+                                <option value="technical">🔧 Technical Problem</option>
+                                <option value="user">👤 User Misconduct</option>
+                                <option value="content">📝 Inappropriate Content</option>
+                                <option value="fraud">⚠️ Fraudulent Activity</option>
+                                <option value="safety">🛡️ Safety Concern</option>
+                                <option value="other">📋 Other Issue</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Priority Level</label>
+                            <div class="priority-selector">
+                                <div class="priority-option low">
+                                    <input type="radio" name="priority" value="low" id="priority_low">
+                                    <label for="priority_low">
+                                        <i class="fas fa-arrow-down"></i> Low
+                                    </label>
+                                </div>
+                                <div class="priority-option medium">
+                                    <input type="radio" name="priority" value="medium" id="priority_medium" checked>
+                                    <label for="priority_medium">
+                                        <i class="fas fa-minus"></i> Medium
+                                    </label>
+                                </div>
+                                <div class="priority-option high">
+                                    <input type="radio" name="priority" value="high" id="priority_high">
+                                    <label for="priority_high">
+                                        <i class="fas fa-arrow-up"></i> High
+                                    </label>
+                                </div>
+                                <div class="priority-option urgent">
+                                    <input type="radio" name="priority" value="urgent" id="priority_urgent">
+                                    <label for="priority_urgent">
+                                        <i class="fas fa-exclamation-triangle"></i> Urgent
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Your Name</label>
+                            <input type="text" id="reporter_name" name="reporter_name" placeholder="Enter your name" value="{{ user.name if user and user.name else '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label>Your Email</label>
+                            <input type="email" id="reporter_email" name="reporter_email" placeholder="your@email.com" value="{{ user.email if user and user.email else '' }}">
+                            <small style="font-size: 0.7rem; color: #9CA3AF;">We'll contact you at this email for updates</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Related User / Job ID (if applicable)</label>
+                        <input type="text" id="related_id" name="related_id" placeholder="e.g., User ID: 123, Job ID: 456, Transaction: FUNDI-789">
+                        <small style="font-size: 0.7rem; color: #9CA3AF;">Enter the ID number from the profile URL or transaction</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Issue Title <span class="required-star">*</span></label>
+                        <input type="text" id="issue_title" name="issue_title" placeholder="Brief summary of the issue" required maxlength="200">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Detailed Description <span class="required-star">*</span></label>
+                        <textarea id="description" name="description" rows="6"
+                            placeholder="Please describe the issue in detail. Include any relevant information, or steps to reproduce the problem."
+                            required maxlength="5000"></textarea>
+                        <div class="character-count">
+                            <span id="char-count">0</span> / 5000 characters
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <i class="fas fa-shield-alt"></i>
+                        <div>
+                            <strong>Privacy & Confidentiality</strong><br>
+                            Your report is confidential. Our support team will review it within 24-48 hours.
+                            For urgent matters, please call our support line at <strong>{{ settings.contact_phone if settings else '0712345678' }}</strong>.
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <a href="{{ url_for('index') }}" class="btn-outline">
+                            <i class="fas fa-times"></i> Cancel
+                        </a>
+                        <button type="submit" class="btn-primary" id="submit-btn">
+                            <i class="fas fa-paper-plane"></i> Submit Report
+                        </button>
+                    </div>
+                </form>
+
+                <div class="emergency-alert">
+                    <i class="fas fa-phone-alt"></i>
+                    <div>
+                        <strong>Emergency?</strong> If you're in immediate danger, contact local authorities at <strong>999</strong> or <strong>112</strong> immediately.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="success-message" id="success-message" style="display: none;">
+            <i class="fas fa-check-circle"></i>
+            <h3>Report Submitted Successfully!</h3>
+            <p id="success-message-text">Thank you for helping us improve {{ settings.platform_name }}. Our support team will review your report and get back to you within 24-48 hours.</p>
+            <div style="margin-top: 1rem; padding: 1rem; background: #F3F4F6; border-radius: 12px;">
+                <strong>Tracking ID:</strong> <span id="tracking-id-display" style="font-family: monospace; font-size: 1.1rem; color: #059669;"></span>
+            </div>
+            <div style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="{{ url_for('my_reports') }}" class="btn-primary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-list"></i> View My Reports
+                </a>
+                <a href="{{ url_for('index') }}" class="btn-outline" style="text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-home"></i> Return to Homepage
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="loading-overlay" id="loading-overlay" style="display: none;">
+    <div class="loading-spinner">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Submitting your report...</p>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('report-form');
+    const description = document.getElementById('description');
+    const charCount = document.getElementById('char-count');
+    const loadingOverlay = document.getElementById('loading-overlay');
+    const reportCard = document.getElementById('report-card');
+    const successMessage = document.getElementById('success-message');
+    const submitBtn = document.getElementById('submit-btn');
+
+    // Function to hide loading overlay
+    function hideLoading() {
+        if (loadingOverlay) {
+            loadingOverlay.style.display = 'none';
+        }
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Report';
+        }
+    }
+
+    // Character counter
+    if (description && charCount) {
+        description.addEventListener('input', function() {
+            const count = this.value.length;
+            charCount.textContent = count;
+            if (count > 4500) {
+                charCount.style.color = '#F59E0B';
+            } else if (count > 4800) {
+                charCount.style.color = '#EF4444';
+            } else {
+                charCount.style.color = '#9CA3AF';
+            }
+        });
+        charCount.textContent = description.value.length;
+    }
+
+    // Form submission
+    if (form) {
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Get all form data
+            const reportType = document.getElementById('report_type').value;
+            const issueTitle = document.getElementById('issue_title').value;
+            const issueDescription = document.getElementById('description').value;
+            const reporterEmail = document.getElementById('reporter_email').value;
+            const reporterName = document.getElementById('reporter_name').value;
+            const relatedId = document.getElementById('related_id').value;
+            const priority = document.querySelector('input[name="priority"]:checked')?.value || 'medium';
+
+            // Validation
+            if (!reportType) {
+                showError('Please select a report type');
+                return;
+            }
+
+            if (!issueTitle.trim()) {
+                showError('Please enter an issue title');
+                return;
+            }
+
+            if (issueTitle.trim().length < 5) {
+                showError('Issue title must be at least 5 characters');
+                return;
+            }
+
+            if (!issueDescription.trim()) {
+                showError('Please provide a detailed description');
+                return;
+            }
+
+            if (issueDescription.trim().length < 20) {
+                showError('Please provide a more detailed description (at least 20 characters)');
+                return;
+            }
+
+            if (reporterEmail && !isValidEmail(reporterEmail)) {
+                showError('Please enter a valid email address');
+                return;
+            }
+
+            if (!reporterName && !reporterEmail) {
+                showError('Please provide either your name or email for follow-up');
+                return;
+            }
+
+            // Prepare form data
+            const formData = new URLSearchParams();
+            formData.append('report_type', reportType);
+            formData.append('issue_title', issueTitle);
+            formData.append('description', issueDescription);
+            formData.append('reporter_name', reporterName);
+            formData.append('reporter_email', reporterEmail);
+            formData.append('related_id', relatedId);
+            formData.append('priority', priority);
+
+            // Show loading overlay
+            loadingOverlay.style.display = 'flex';
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+
+                const result = await response.json();
+
+                // Always hide loading overlay when response is received
+                hideLoading();
+
+                if (result.success) {
+                    // Hide the form and show success message
+                    reportCard.style.display = 'none';
+                    successMessage.style.display = 'block';
+
+                    // Display tracking ID if available
+                    if (result.tracking_id) {
+                        const trackingSpan = document.getElementById('tracking-id-display');
+                        if (trackingSpan) {
+                            trackingSpan.textContent = result.tracking_id;
+                        }
+                        const successText = document.getElementById('success-message-text');
+                        if (successText) {
+                            successText.innerHTML = `Thank you for helping us improve. Your report has been submitted successfully.<br><br>Your tracking ID is: <strong style="color: #059669;">${result.tracking_id}</strong><br><br>Our support team will review your report and get back to you within 24-48 hours.`;
+                        }
+                    }
+
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    showSuccess(result.message || 'Report submitted successfully!');
+                } else {
+                    showError(result.message || 'Failed to submit report. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error submitting report:', error);
+                showError(error.message || 'Network error. Please check your connection and try again.');
+                hideLoading();
+            }
+        });
+    }
+
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+
+    function showError(message) {
+        showToast(message, 'danger', 'Error');
+    }
+
+    function showSuccess(message) {
+        showToast(message, 'success', 'Success');
+    }
+
+    function showToast(message, type, title) {
+        let toastContainer = document.getElementById('toast-container');
+        if (!toastContainer) {
+            const container = document.createElement('div');
+            container.id = 'toast-container';
+            container.className = 'toast-container';
+            document.body.appendChild(container);
+            toastContainer = container;
+        }
+
+        const toast = document.createElement('div');
+        toast.className = `toast-notification ${type}`;
+        toast.innerHTML = `
+            <div class="toast-content">
+                <div class="toast-icon ${type}">
+                    <i class="fas ${type === 'danger' ? 'fa-exclamation-circle' : 'fa-check-circle'}"></i>
+                </div>
+                <div class="toast-message">
+                    <div class="toast-title">${escapeHtml(title)}</div>
+                    <div class="toast-text">${escapeHtml(message)}</div>
+                </div>
+                <button class="toast-close">&times;</button>
+            </div>
+        `;
+
+        toastContainer.appendChild(toast);
+
+        const timeout = setTimeout(() => {
+            if (toast.parentNode) {
+                toast.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }
+        }, 5000);
+
+        const closeBtn = toast.querySelector('.toast-close');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                clearTimeout(timeout);
+                toast.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            });
+        }
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+});
+</script>
+{% endblock %}

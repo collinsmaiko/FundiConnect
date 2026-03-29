@@ -1,0 +1,916 @@
+{% extends "base.html" %}
+
+{% block title %}Help Center - {{ settings.platform_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ============================================
+   FILE: help_center.html
+   FundiConnect - Help Center with Professional Search Dropdown
+   ============================================ */
+
+.help-center-page {
+    padding: 3rem 0;
+    background: linear-gradient(135deg, #F9FAFB 0%, #FFFFFF 100%);
+    min-height: calc(100vh - 200px);
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    border-radius: 32px;
+    padding: 3rem 2rem;
+    margin-bottom: 3rem;
+    text-align: center;
+    color: white;
+    position: relative;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: -30%;
+    right: -10%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: float 20s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    33% {
+        transform: translate(-20px, -20px) rotate(120deg);
+    }
+    66% {
+        transform: translate(20px, -10px) rotate(240deg);
+    }
+}
+
+.hero-section h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: white;
+    position: relative;
+    z-index: 1;
+    animation: slideInDown 0.5s ease-out;
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-section p {
+    position: relative;
+    z-index: 1;
+    opacity: 0.9;
+    animation: fadeIn 0.6s ease-out 0.2s both;
+}
+
+/* Search Wrapper */
+.search-wrapper {
+    max-width: 800px;
+    margin: 1.5rem auto 0;
+    position: relative;
+    z-index: 100;
+    animation: slideInUp 0.5s ease-out 0.3s both;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.search-box {
+    position: relative;
+    width: 100%;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    padding-left: 3rem;
+    padding-right: 7rem;
+    border: none;
+    border-radius: 60px;
+    font-size: 1rem;
+    outline: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s;
+    background: white;
+    cursor: default;
+}
+
+.search-box input:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    cursor: default;
+}
+
+.search-box i {
+    position: absolute;
+    left: 1.25rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9CA3AF;
+    font-size: 1.125rem;
+    pointer-events: none;
+}
+
+.search-box button {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    background: linear-gradient(135deg, #059669, #047857);
+    border: none;
+    border-radius: 60px;
+    padding: 0 1.75rem;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 600;
+}
+
+.search-box button:hover {
+    transform: scale(1.02);
+    box-shadow: 0 5px 15px rgba(5, 150, 105, 0.3);
+}
+
+/* Professional Search Dropdown with Grid Layout - No Scrollbar */
+.search-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 24px;
+    margin-top: 0.75rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    border: 1px solid #E5E7EB;
+    display: none;
+    z-index: 1000;
+    max-height: 550px;
+    overflow-y: auto;
+    animation: fadeInDown 0.2s ease;
+}
+
+.search-dropdown.active {
+    display: block;
+}
+
+/* Hide scrollbar but keep functionality */
+.search-dropdown {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.search-dropdown::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dropdown-header {
+    padding: 1rem 1.25rem;
+    background: linear-gradient(135deg, #F9FAFB, #FFFFFF);
+    border-bottom: 1px solid #E5E7EB;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #059669;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: 24px 24px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 1;
+}
+
+.dropdown-header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.close-dropdown-btn {
+    background: transparent;
+    border: none;
+    color: #9CA3AF;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.25rem;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.close-dropdown-btn:hover {
+    background: #F3F4F6;
+    color: #059669;
+    transform: scale(1.1);
+}
+
+/* Grid Layout for Questions */
+.dropdown-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    padding: 0.5rem;
+}
+
+.dropdown-faq-item {
+    border-bottom: 1px solid #F3F4F6;
+    transition: all 0.2s;
+    display: block;
+    width: 100%;
+}
+
+.dropdown-faq-question {
+    padding: 1rem 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    font-weight: 500;
+    color: #1F2937;
+    margin: 0.25rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.dropdown-faq-question:hover {
+    background: #F9FAFB;
+    color: #059669;
+}
+
+.dropdown-faq-question span {
+    flex: 1;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.dropdown-faq-question span i {
+    width: 20px;
+    font-size: 0.875rem;
+}
+
+.dropdown-faq-question i.fa-chevron-down {
+    color: #9CA3AF;
+    font-size: 0.75rem;
+    transition: transform 0.3s;
+}
+
+.dropdown-faq-question.active i.fa-chevron-down {
+    transform: rotate(180deg);
+    color: #059669;
+}
+
+.dropdown-faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    padding: 0 1.25rem;
+    color: #6B7280;
+    line-height: 1.6;
+    font-size: 0.8125rem;
+    background: #F9FAFB;
+    margin: 0 0.5rem 0.5rem 0.5rem;
+    border-radius: 0 0 12px 12px;
+    text-align: left;
+    width: auto;
+    clear: both;
+}
+
+.dropdown-faq-answer.active {
+    max-height: 500px;
+    padding: 0.875rem 1.25rem;
+    margin-bottom: 0.5rem;
+    text-align: left;
+}
+
+.dropdown-faq-answer p {
+    text-align: left;
+    margin: 0 0 0.5rem 0;
+}
+
+.dropdown-faq-answer p:last-child {
+    margin-bottom: 0;
+}
+
+.dropdown-faq-answer ul,
+.dropdown-faq-answer ol {
+    text-align: left;
+    margin: 0.5rem 0 0.5rem 1.5rem;
+    padding-left: 0;
+}
+
+.dropdown-faq-answer li {
+    text-align: left;
+    margin: 0.25rem 0;
+}
+
+.dropdown-faq-answer a {
+    color: #059669;
+    text-decoration: none;
+}
+
+.dropdown-faq-answer a:hover {
+    text-decoration: underline;
+}
+
+/* Categories Grid */
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.category-card {
+    background: white;
+    border-radius: 24px;
+    padding: 1.5rem;
+    text-decoration: none;
+    transition: all 0.3s;
+    border: 1px solid #E5E7EB;
+    display: block;
+    cursor: pointer;
+    animation: fadeInUp 0.5s ease-out;
+    animation-fill-mode: both;
+}
+
+.category-card:nth-child(1) { animation-delay: 0.1s; }
+.category-card:nth-child(2) { animation-delay: 0.2s; }
+.category-card:nth-child(3) { animation-delay: 0.3s; }
+.category-card:nth-child(4) { animation-delay: 0.4s; }
+.category-card:nth-child(5) { animation-delay: 0.5s; }
+.category-card:nth-child(6) { animation-delay: 0.6s; }
+
+.category-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    border-color: #059669;
+}
+
+.category-icon {
+    width: 56px;
+    height: 56px;
+    background: rgba(5, 150, 105, 0.1);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    transition: all 0.3s;
+}
+
+.category-card:hover .category-icon {
+    background: #059669;
+    transform: scale(1.05);
+}
+
+.category-card:hover .category-icon i {
+    color: white;
+}
+
+.category-icon i {
+    font-size: 1.75rem;
+    color: #059669;
+    transition: all 0.3s;
+}
+
+.category-card h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #1F2937;
+}
+
+.category-card p {
+    font-size: 0.875rem;
+    color: #6B7280;
+    line-height: 1.5;
+}
+
+.category-card .stats {
+    margin-top: 0.75rem;
+    font-size: 0.75rem;
+    color: #059669;
+    display: inline-block;
+    background: rgba(5, 150, 105, 0.1);
+    padding: 0.25rem 0.75rem;
+    border-radius: 100px;
+}
+
+/* Contact Section */
+.contact-section {
+    background: linear-gradient(135deg, #F9FAFB, #F3F4F6);
+    border-radius: 28px;
+    padding: 2.5rem;
+    text-align: center;
+    animation: fadeInUp 0.5s ease-out 0.8s both;
+    position: relative;
+    overflow: hidden;
+}
+
+.contact-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #1F2937;
+}
+
+.contact-section p {
+    color: #6B7280;
+    margin-bottom: 1.5rem;
+}
+
+.contact-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.quick-links {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #E5E7EB;
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.quick-links a {
+    color: #6B7280;
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.quick-links a:hover {
+    color: #059669;
+    transform: translateX(3px);
+}
+
+/* Highlight animation for section title */
+@keyframes highlightPulse {
+    0% {
+        background-color: transparent;
+    }
+    50% {
+        background-color: rgba(5, 150, 105, 0.2);
+    }
+    100% {
+        background-color: transparent;
+    }
+}
+
+.dropdown-section-title.highlight {
+    animation: highlightPulse 1s ease-out;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-section h1 {
+        font-size: 1.75rem;
+    }
+
+    .categories-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-buttons {
+        flex-direction: column;
+    }
+
+    .contact-buttons a {
+        width: 100%;
+        text-align: center;
+    }
+
+    .search-dropdown {
+        max-height: 450px;
+    }
+
+    .dropdown-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dropdown-faq-question {
+        padding: 0.875rem 1rem;
+    }
+
+    .dropdown-faq-question span {
+        font-size: 0.8125rem;
+    }
+
+    .dropdown-faq-answer.active {
+        padding: 0.75rem 1rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="help-center-page">
+    <div class="container">
+        <div class="hero-section">
+            <h1>How Can We Help You?</h1>
+            <p>Find answers, guides, and support for all your questions about FundiConnect</p>
+            <div class="search-wrapper">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="faqSearch" placeholder="Search for help..." onfocus="showDropdown()" onblur="hideDropdown()" onkeyup="filterDropdown()">
+                    <button onclick="filterDropdown()">Search</button>
+                </div>
+                <div id="searchDropdown" class="search-dropdown"></div>
+            </div>
+        </div>
+
+        <div class="categories-grid">
+            <div class="category-card" onclick="scrollToCategory('getting-started')">
+                <div class="category-icon"><i class="fas fa-rocket"></i></div>
+                <h3>Getting Started</h3>
+                <p>New to FundiConnect? Learn how to create an account and get started.</p>
+                <div class="stats">5 articles</div>
+            </div>
+            <div class="category-card" onclick="scrollToCategory('account')">
+                <div class="category-icon"><i class="fas fa-user-cog"></i></div>
+                <h3>Account Management</h3>
+                <p>Manage your profile, settings, and subscription preferences.</p>
+                <div class="stats">6 articles</div>
+            </div>
+            <div class="category-card" onclick="scrollToCategory('jobs')">
+                <div class="category-icon"><i class="fas fa-briefcase"></i></div>
+                <h3>Jobs & Applications</h3>
+                <p>Post jobs, apply for work, and manage applications.</p>
+                <div class="stats">7 articles</div>
+            </div>
+            <div class="category-card" onclick="scrollToCategory('payments')">
+                <div class="category-icon"><i class="fas fa-credit-card"></i></div>
+                <h3>Payments & Subscriptions</h3>
+                <p>M-Pesa payments, premium plans, and billing information.</p>
+                <div class="stats">6 articles</div>
+            </div>
+            <div class="category-card" onclick="scrollToCategory('verification')">
+                <div class="category-icon"><i class="fas fa-check-circle"></i></div>
+                <h3>Verification</h3>
+                <p>How to get verified and the benefits of being verified.</p>
+                <div class="stats">4 articles</div>
+            </div>
+            <div class="category-card" onclick="scrollToCategory('safety')">
+                <div class="category-icon"><i class="fas fa-shield-alt"></i></div>
+                <h3>Safety & Security</h3>
+                <p>Stay safe on FundiConnect with our security tips.</p>
+                <div class="stats">4 articles</div>
+            </div>
+        </div>
+
+        <div class="contact-section">
+            <h2>Still Need Help?</h2>
+            <p>Our support team is here to assist you 24/7</p>
+            <div class="contact-buttons">
+                <a href="mailto:{{ settings.contact_email }}" class="btn-primary"><i class="fas fa-envelope"></i> Email Support</a>
+                <a href="tel:{{ settings.contact_phone }}" class="btn-outline"><i class="fas fa-phone-alt"></i> Call Us</a>
+            </div>
+            <div class="quick-links">
+                <a href="{{ url_for('safety_tips') }}"><i class="fas fa-shield-alt"></i> Safety Tips</a>
+                <a href="{{ url_for('how_it_works') }}"><i class="fas fa-play-circle"></i> How It Works</a>
+                <a href="{{ url_for('terms') }}"><i class="fas fa-file-contract"></i> Terms & Conditions</a>
+                <a href="{{ url_for('report_issue') }}"><i class="fas fa-flag"></i> Report Issue</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Comprehensive FAQ data for search dropdown
+const dropdownFAQData = [
+    // Getting Started Section
+    { section: "Getting Started", question: "How do I create an account?", answer: "Creating an account is simple! Click the 'Sign Up' button in the top right corner. Choose whether you're a worker or customer. Enter your full name and phone number (format: 254XXXXXXXXX). Create a strong password (minimum 6 characters). For customers, email is required. For workers, email is optional but recommended. Click 'Create Account' to finish.", icon: "fas fa-user-plus" },
+    { section: "Getting Started", question: "Is it free to join FundiConnect?", answer: "Yes! Creating an account and using basic features is completely free. Free accounts can post up to 3 jobs per month (customers) or apply to up to 5 jobs per month (workers). Premium plans are available starting from just KES 50/day for unlimited applications and additional features like verified badges.", icon: "fas fa-star" },
+    { section: "Getting Started", question: "How do I log in to my account?", answer: "Click the 'Login' button in the top right corner. Enter your registered phone number (format: 254XXXXXXXXX), enter your password, and click 'Login'. You'll be redirected to your dashboard. Tip: Save your login credentials to access your account faster next time!", icon: "fas fa-sign-in-alt" },
+    { section: "Getting Started", question: "What's the difference between a Worker and a Customer?", answer: "Workers offer services and can apply to jobs. They have detailed profiles showcasing their skills, experience, and portfolio. Customers need services and can post jobs. They can review worker profiles, compare ratings, and hire the best fit for their project.", icon: "fas fa-users" },
+    { section: "Getting Started", question: "What phone number format should I use?", answer: "Use the format 254XXXXXXXXX. For example, if your number is 0712345678, enter 254712345678. If your number is +254712345678, enter 254712345678. The system will automatically format it for you.", icon: "fas fa-phone-alt" },
+    { section: "Getting Started", question: "Can I change my account type later?", answer: "Yes! You can switch between worker and customer accounts. Contact our support team, and we'll help you update your account type. Note that your profile information will need to be updated accordingly.", icon: "fas fa-exchange-alt" },
+
+    // Account Management Section
+    { section: "Account", question: "How do I update my profile information?", answer: "Log in to your account, go to your Dashboard, and click the 'Edit Profile' button. Update your name, email, profile picture, and other details. Workers can also update skills, hourly rate, location, and availability. Click 'Save Changes' to apply updates. A complete profile gets 5x more views!", icon: "fas fa-user-edit" },
+    { section: "Account", question: "How do I reset my password?", answer: "If you forgot your password, contact our support team at {{ settings.contact_email }} or call {{ settings.contact_phone }}. We'll verify your identity and help you regain access within 24 hours. Please provide your registered phone number and full name.", icon: "fas fa-key" },
+    { section: "Account", question: "How do I manage email notifications?", answer: "Go to Email Preferences in the footer. Toggle on/off the types of emails you want to receive: Job Alerts (new job matches), Promotions (special offers), Newsletter (platform updates and tips), Platform Updates (important system announcements). Click 'Save Preferences' to apply changes.", icon: "fas fa-bell" },
+    { section: "Account", question: "How do I delete my account?", answer: "Contact our support team at {{ settings.contact_email }} to request account deletion. Please note this action is permanent and cannot be undone. All your data, including job posts, applications, reviews, and profile information will be permanently removed.", icon: "fas fa-trash-alt" },
+    { section: "Account", question: "How do I change my profile picture?", answer: "Go to your Dashboard, click 'Edit Profile', then click on the profile picture area. Upload a new image (JPG or PNG, max 2MB). Click 'Save Changes' to update. A professional photo increases your chances of getting hired!", icon: "fas fa-camera" },
+    { section: "Account", question: "Can I have multiple accounts?", answer: "No, each user is allowed only one account. Having multiple accounts violates our terms of service and may result in suspension. If you need to change your account type, contact support for assistance.", icon: "fas fa-ban" },
+
+    // Jobs & Applications Section
+    { section: "Jobs", question: "How do I post a job?", answer: "Log in as a customer, go to your Dashboard, click 'Post a Job'. Fill in job details: Title (clear and descriptive), Description (detailed scope of work), Location (where work will be done), Budget (minimum and maximum range), Category (select service category), Deadline (optional). Click 'Post Job' to publish. Free accounts can post up to 3 jobs per month.", icon: "fas fa-plus-circle" },
+    { section: "Jobs", question: "How do I apply for a job as a worker?", answer: "Browse jobs on the Jobs page, use filters to find jobs matching your skills. Click on any job to view full details. Click 'Apply' button, enter your bid amount (if applicable), write a personalized message explaining why you're the best fit. Submit your application. You need a premium subscription to apply.", icon: "fas fa-paper-plane" },
+    { section: "Jobs", question: "How do I track my job applications?", answer: "Log in, go to your Dashboard, and look for the 'My Applications' section. You'll see all jobs you've applied for with status: Pending (customer hasn't reviewed yet), Accepted (congratulations! you've been hired), Rejected (customer chose another applicant). You'll also receive email notifications when status changes.", icon: "fas fa-chart-line" },
+    { section: "Jobs", question: "How do I review applications as a customer?", answer: "Go to your Dashboard, click on any job to view details, scroll to the 'Applications' section. Review each applicant's profile, ratings, cover message, and bid amount. Click 'Accept' to hire a worker or 'Reject' to decline. Once accepted, the job status changes to 'In Progress'.", icon: "fas fa-users" },
+    { section: "Jobs", question: "How do I mark a job as completed?", answer: "After the work is done, go to the job details page from your dashboard. Click the 'Mark as Completed' button. Leave a review and rating for the worker. This helps build trust in the community and helps other customers make informed decisions.", icon: "fas fa-check-circle" },
+    { section: "Jobs", question: "What happens if a worker doesn't show up?", answer: "If a worker doesn't show up or fails to complete the work, you can reject their application and post the job again. Contact our support team to report the issue. We take reliability seriously and will investigate.", icon: "fas fa-calendar-times" },
+
+    // Payments & Subscriptions Section
+    { section: "Payments", question: "What premium plans are available?", answer: "Daily: KES 50/day - Perfect for short-term needs. Weekly: KES 200/week - Most popular, includes verified badge. Monthly: KES 500/month - Best value. Annual: KES 5,000/year - Save 17%. All premium plans include unlimited job applications, featured listings, and priority support.", icon: "fas fa-crown" },
+    { section: "Payments", question: "How do I pay for a premium subscription?", answer: "Select your plan on the Pricing page. Send the exact amount to 0713 324 672 via M-Pesa Pochi La Biashara. Enter your M-Pesa receipt number on the payment confirmation page. Upload a screenshot of the payment (recommended for faster verification). Wait for verification (24-48 hours).", icon: "fas fa-mobile-alt" },
+    { section: "Payments", question: "How long does payment verification take?", answer: "Payment verification typically takes 24-48 hours. The process includes receipt number validation with M-Pesa, screenshot review (if uploaded), and manual verification by our team. You'll receive an email notification once your subscription is activated.", icon: "fas fa-clock" },
+    { section: "Payments", question: "Is there a refund policy?", answer: "Yes! We offer a 7-day money-back guarantee for all premium plans. Contact support within 7 days of payment to request a refund. Refunds are processed back to your M-Pesa account within 3-5 business days.", icon: "fas fa-money-bill-wave" },
+    { section: "Payments", question: "What payment methods are accepted?", answer: "We accept M-Pesa payments through Pochi La Biashara. This is the only payment method currently available. All transactions are secure and you receive an SMS confirmation from M-Pesa for every payment.", icon: "fas fa-credit-card" },
+    { section: "Payments", question: "Can I cancel my subscription anytime?", answer: "Yes, you can cancel your premium subscription at any time. Your premium features will remain active until the end of your current billing period. After expiration, you'll revert to the free plan.", icon: "fas fa-ban" },
+
+    // Verification Section
+    { section: "Verification", question: "How do I get verified?", answer: "Purchase a premium subscription (Weekly, Monthly, or Annual). Go to the Verification page in your dashboard. Select your document type (ID Card, Passport, Driver's License, Professional Certificate, or Business Permit). Upload a clear photo or scan of your document. Submit your request. Our team reviews within 24-48 hours.", icon: "fas fa-check-circle" },
+    { section: "Verification", question: "What are the benefits of being verified?", answer: "Verified workers receive: Trust badge on profile (builds instant credibility), Higher ranking in search results, Featured in 'Verified Workers' section on homepage, 3x more job offers, Priority customer support, Increased customer confidence. Verified workers report 50% more job completions!", icon: "fas fa-star" },
+    { section: "Verification", question: "What documents can I use for verification?", answer: "You can use any of these documents: National ID Card (Kenyan), Passport (any country), Driver's License (Kenyan), Professional Certificate (trade certificate, diploma, degree), Business Permit (for businesses). Make sure the document is clear and legible.", icon: "fas fa-id-card" },
+    { section: "Verification", question: "What if my verification request is rejected?", answer: "If rejected, you'll receive an email with the reason. Common issues: blurry photos, expired documents, name mismatch, incomplete documents. Correct the issues and submit a new request. You can resubmit as many times as needed until approved.", icon: "fas fa-times-circle" },
+
+    // Safety & Security Section
+    { section: "Safety", question: "Is my payment information secure?", answer: "Yes! All payments are processed through M-Pesa's secure platform. We do NOT store your payment details or M-Pesa PIN. All transactions are encrypted and secure. You receive an SMS confirmation from M-Pesa for every transaction.", icon: "fas fa-shield-alt" },
+    { section: "Safety", question: "What should I do if I encounter a suspicious user?", answer: "Stop all communication immediately. Report to support at {{ settings.contact_email }} or call {{ settings.contact_phone }}. Provide details: user's name and profile, screenshots of conversations, nature of suspicious activity. Our team investigates within 24 hours and takes appropriate action.", icon: "fas fa-flag" },
+    { section: "Safety", question: "How does FundiConnect protect my privacy?", answer: "Your phone number is only visible after you accept a job. We never share your email with third parties. You control what information appears on your public profile. All communication stays on our platform until you choose to share contact information.", icon: "fas fa-lock" },
+    { section: "Safety", question: "What should I never share with other users?", answer: "Never share: M-Pesa PIN, bank account details, passwords, ID numbers, or any personal financial information. All payments should be made through our secure M-Pesa system. If someone asks for this information, report them immediately.", icon: "fas fa-exclamation-triangle" },
+    { section: "Safety", question: "How do I report inappropriate content?", answer: "If you see inappropriate content on the platform, contact our support team immediately. Provide the URL of the content and a brief description. Our team will review and remove any content that violates our terms of service.", icon: "fas fa-ban" }
+];
+
+function showDropdown() {
+    const dropdown = document.getElementById('searchDropdown');
+    renderDropdownFAQ('');
+    dropdown.classList.add('active');
+}
+
+function closeDropdown() {
+    const dropdown = document.getElementById('searchDropdown');
+    dropdown.classList.remove('active');
+}
+
+function filterDropdown() {
+    const searchTerm = document.getElementById('faqSearch').value.toLowerCase().trim();
+    renderDropdownFAQ(searchTerm);
+}
+
+function renderDropdownFAQ(searchTerm) {
+    const dropdown = document.getElementById('searchDropdown');
+    let filtered = dropdownFAQData;
+
+    if (searchTerm) {
+        filtered = dropdownFAQData.filter(item =>
+            item.question.toLowerCase().includes(searchTerm) ||
+            item.answer.toLowerCase().includes(searchTerm) ||
+            item.section.toLowerCase().includes(searchTerm)
+        );
+    }
+
+    if (filtered.length === 0) {
+        dropdown.innerHTML = `
+            <div class="dropdown-header">
+                <div class="dropdown-header-left">
+                    <i class="fas fa-search"></i> No matching questions found
+                </div>
+                <button class="close-dropdown-btn" onclick="closeDropdown()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div style="padding: 2rem; text-align: center; color: #6B7280;">
+                <i class="fas fa-search" style="font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.5;"></i>
+                <p style="font-size: 0.875rem;">No results for "${searchTerm}"</p>
+                <p style="font-size: 0.75rem;">Try different keywords or browse categories below</p>
+            </div>
+        `;
+        return;
+    }
+
+    // Group by section
+    const grouped = {};
+    filtered.forEach(item => {
+        if (!grouped[item.section]) grouped[item.section] = [];
+        grouped[item.section].push(item);
+    });
+
+    let html = `<div class="dropdown-header">
+        <div class="dropdown-header-left">
+            <i class="fas fa-question-circle"></i> Popular Questions
+        </div>
+        <button class="close-dropdown-btn" onclick="closeDropdown()">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>`;
+
+    // Create grid layout for each section
+    for (const [section, items] of Object.entries(grouped)) {
+        const sectionId = section.toLowerCase().replace(/\s+/g, '-');
+        html += `<div class="dropdown-section" data-section="${sectionId}">
+            <div class="dropdown-section-title" style="padding: 0.75rem 1.25rem; background: #F9FAFB; font-size: 0.75rem; font-weight: 600; color: #059669; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #F3F4F6; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="fas ${getSectionIcon(section)}"></i> ${section}
+            </div>
+            <div class="dropdown-grid">`;
+
+        items.forEach((item) => {
+            html += `
+                <div class="dropdown-faq-item">
+                    <div class="dropdown-faq-question" onclick="toggleDropdownFAQ(this, event)">
+                        <span>
+                            <i class="${item.icon}" style="color: #059669;"></i>
+                            ${item.question}
+                        </span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="dropdown-faq-answer">
+                        ${item.answer}
+                    </div>
+                </div>
+            `;
+        });
+
+        html += `</div></div>`;
+    }
+
+    dropdown.innerHTML = html;
+}
+
+function getSectionIcon(section) {
+    const icons = {
+        "Getting Started": "fa-rocket",
+        "Account": "fa-user-circle",
+        "Jobs": "fa-briefcase",
+        "Payments": "fa-credit-card",
+        "Verification": "fa-check-circle",
+        "Safety": "fa-shield-alt"
+    };
+    return icons[section] || "fa-question-circle";
+}
+
+function toggleDropdownFAQ(element, event) {
+    event.stopPropagation();
+
+    // Get the clicked question's parent .dropdown-faq-item container
+    const parentItem = element.closest('.dropdown-faq-item');
+
+    // Get the answer within this specific parent item only
+    const answer = parentItem.querySelector('.dropdown-faq-answer');
+
+    // Check if this answer is already open
+    const isOpen = answer.classList.contains('active');
+
+    // Close all answers in other dropdown-faq-item containers, but NOT in this one
+    const allItems = document.querySelectorAll('.dropdown-faq-item');
+    allItems.forEach(item => {
+        if (item !== parentItem) {
+            const otherAnswer = item.querySelector('.dropdown-faq-answer');
+            const otherQuestion = item.querySelector('.dropdown-faq-question');
+            if (otherAnswer) otherAnswer.classList.remove('active');
+            if (otherQuestion) otherQuestion.classList.remove('active');
+        }
+    });
+
+    // Toggle the clicked question's answer
+    if (!isOpen) {
+        answer.classList.add('active');
+        element.classList.add('active');
+    } else {
+        answer.classList.remove('active');
+        element.classList.remove('active');
+    }
+}
+
+function scrollToCategory(category) {
+    // Convert category to proper section name
+    let sectionName = '';
+    switch(category) {
+        case 'getting-started':
+            sectionName = 'Getting Started';
+            break;
+        case 'account':
+            sectionName = 'Account';
+            break;
+        case 'jobs':
+            sectionName = 'Jobs';
+            break;
+        case 'payments':
+            sectionName = 'Payments';
+            break;
+        case 'verification':
+            sectionName = 'Verification';
+            break;
+        case 'safety':
+            sectionName = 'Safety';
+            break;
+        default:
+            sectionName = category.replace('-', ' ');
+    }
+
+    // Clear the search input (show all questions)
+    document.getElementById('faqSearch').value = '';
+
+    // Render dropdown with ALL questions (empty search term = show all)
+    renderDropdownFAQ('');
+
+    // Show the dropdown
+    const dropdown = document.getElementById('searchDropdown');
+    dropdown.classList.add('active');
+
+    // Wait for the dropdown to render, then scroll to the section title
+    setTimeout(() => {
+        // Find all dropdown-section-title elements
+        const sectionTitles = document.querySelectorAll('.dropdown-section-title');
+
+        // Find the one that matches our section
+        let targetTitle = null;
+        sectionTitles.forEach(title => {
+            if (title.textContent.trim() === sectionName) {
+                targetTitle = title;
+            }
+        });
+
+        if (targetTitle) {
+            // Remove any existing highlight from all titles
+            const allTitles = document.querySelectorAll('.dropdown-section-title');
+            allTitles.forEach(title => {
+                title.classList.remove('highlight');
+            });
+
+            // Add highlight to the target title
+            targetTitle.classList.add('highlight');
+
+            // Get the dropdown container
+            const dropdownContainer = document.getElementById('searchDropdown');
+
+            // Get positions
+            const containerRect = dropdownContainer.getBoundingClientRect();
+            const titleRect = targetTitle.getBoundingClientRect();
+
+            // Calculate scroll position so the title has 80px padding from the top
+            // This gives space above the category title for better visibility
+            const paddingTop = 80;
+            const scrollOffset = titleRect.top - containerRect.top - paddingTop;
+
+            // Smooth scroll to position
+            dropdownContainer.scrollBy({
+                top: scrollOffset,
+                behavior: 'smooth'
+            });
+
+            // Remove highlight after animation
+            setTimeout(() => {
+                targetTitle.classList.remove('highlight');
+            }, 1000);
+        }
+    }, 100);
+}
+</script>
+{% endblock %}

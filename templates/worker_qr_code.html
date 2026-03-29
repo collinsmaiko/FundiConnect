@@ -1,0 +1,262 @@
+{% extends "base.html" %}
+
+{% block title %}QR Code Profile - {{ settings.platform_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+.qr-page {
+    padding: 2rem 0;
+    background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+    min-height: calc(100vh - 200px);
+}
+
+.qr-card {
+    max-width: 600px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 28px;
+    padding: 2rem;
+    text-align: center;
+    border: 1px solid #E5E7EB;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.qr-header {
+    margin-bottom: 2rem;
+}
+
+.qr-header i {
+    font-size: 3rem;
+    color: #059669;
+    margin-bottom: 1rem;
+}
+
+.qr-header h1 {
+    font-size: 1.5rem;
+    color: #1F2937;
+    margin-bottom: 0.5rem;
+}
+
+.qr-header p {
+    color: #6B7280;
+}
+
+.qr-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 24px;
+    margin: 2rem 0;
+    display: inline-block;
+    border: 1px solid #E5E7EB;
+}
+
+.qr-container img {
+    max-width: 250px;
+    height: auto;
+}
+
+.profile-link {
+    background: #F9FAFB;
+    padding: 1rem;
+    border-radius: 16px;
+    margin: 1rem 0;
+    word-break: break-all;
+    font-family: monospace;
+    font-size: 0.85rem;
+}
+
+.download-btn {
+    background: #059669;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 100px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 1rem 0.5rem;
+}
+
+.download-btn:hover {
+    background: #047857;
+    transform: translateY(-2px);
+}
+
+.share-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.share-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 100px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.share-whatsapp {
+    background: #25D366;
+    color: white;
+}
+
+.share-twitter {
+    background: #1DA1F2;
+    color: white;
+}
+
+.share-facebook {
+    background: #4267B2;
+    color: white;
+}
+
+.upgrade-message {
+    text-align: center;
+    padding: 3rem;
+    background: white;
+    border-radius: 24px;
+    border: 1px solid #E5E7EB;
+}
+
+.upgrade-message i {
+    font-size: 4rem;
+    color: #F59E0B;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+    .qr-card {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+    .qr-container img {
+        max-width: 200px;
+    }
+    .share-buttons {
+        flex-direction: column;
+    }
+    .share-btn {
+        justify-content: center;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="qr-page">
+    <div class="container">
+        {% if user_has_feature('qr_code') %}
+        <div class="qr-card">
+            <div class="qr-header">
+                <i class="fas fa-qrcode"></i>
+                <h1>Your Digital Business Card</h1>
+                <p>Share your QR code with potential customers</p>
+            </div>
+
+            <div class="qr-container">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data={{ profile_url|urlencode }}" alt="QR Code">
+            </div>
+
+            <div class="profile-link">
+                <i class="fas fa-link"></i> {{ profile_url }}
+            </div>
+
+            <div>
+                <button onclick="downloadQR()" class="download-btn">
+                    <i class="fas fa-download"></i> Download QR Code
+                </button>
+                <button onclick="printQR()" class="download-btn" style="background: #6B7280;">
+                    <i class="fas fa-print"></i> Print
+                </button>
+            </div>
+
+            <div class="share-buttons">
+                <a href="https://wa.me/?text=Check%20out%20my%20professional%20profile%3A%20{{ profile_url|urlencode }}" target="_blank" class="share-btn share-whatsapp">
+                    <i class="fab fa-whatsapp"></i> Share on WhatsApp
+                </a>
+                <a href="https://twitter.com/intent/tweet?text=Check%20out%20my%20professional%20profile%21&url={{ profile_url|urlencode }}" target="_blank" class="share-btn share-twitter">
+                    <i class="fab fa-twitter"></i> Share on Twitter
+                </a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{ profile_url|urlencode }}" target="_blank" class="share-btn share-facebook">
+                    <i class="fab fa-facebook"></i> Share on Facebook
+                </a>
+            </div>
+
+            <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #F3F4F6;">
+                <p style="color: #6B7280; font-size: 0.8rem;">
+                    <i class="fas fa-info-circle"></i> Customers can scan this QR code to view your profile and contact you directly.
+                </p>
+            </div>
+        </div>
+
+        <script>
+        function downloadQR() {
+            const img = document.querySelector('.qr-container img');
+            const link = document.createElement('a');
+            link.download = 'worker_qr_code.png';
+            link.href = img.src;
+            link.click();
+        }
+
+        function printQR() {
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>Worker QR Code</title>
+                    <style>
+                        body {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            height: 100vh;
+                            font-family: Arial, sans-serif;
+                        }
+                        .qr-container {
+                            text-align: center;
+                        }
+                        img {
+                            max-width: 300px;
+                        }
+                        .profile-link {
+                            margin-top: 20px;
+                            font-size: 12px;
+                            color: #666;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="qr-container">
+                        <img src="${document.querySelector('.qr-container img').src}" alt="QR Code">
+                        <div class="profile-link">{{ profile_url }}</div>
+                        <p>Scan to view profile</p>
+                    </div>
+                </body>
+                </html>
+            `);
+            printWindow.print();
+            printWindow.close();
+        }
+        </script>
+        {% else %}
+        <div class="upgrade-message">
+            <i class="fas fa-qrcode"></i>
+            <h2>QR Code Profile Unlocked with Premium</h2>
+            <p>Upgrade to Monthly or Annual plan to get your digital business card QR code.</p>
+            <a href="{{ url_for('subscribe') }}" class="btn-primary" style="margin-top: 1rem; display: inline-block;">
+                <i class="fas fa-crown"></i> Upgrade to Monthly/Annual
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,270 @@
+{% extends "base.html" %}
+
+{% block title %}Tips for Success - {{ settings.platform_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ============================================
+   FILE: tips_for_success.html
+   FundiConnect - Tips for Success Page
+   ============================================ */
+
+.tips-page {
+    padding: 2rem 0;
+    background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+    min-height: calc(100vh - 200px);
+}
+
+.hero-section {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    border-radius: 28px;
+    padding: 3rem 2rem;
+    margin-bottom: 3rem;
+    text-align: center;
+    color: white;
+}
+
+.hero-section h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: white;
+}
+
+.tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.tip-card {
+    background: white;
+    border-radius: 24px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid #E5E7EB;
+    transition: all 0.3s;
+}
+
+.tip-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border-color: #059669;
+}
+
+.tip-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(5, 150, 105, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.tip-icon i {
+    font-size: 1.75rem;
+    color: #059669;
+}
+
+.tip-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+    color: #1F2937;
+}
+
+.tip-card p {
+    color: #6B7280;
+    line-height: 1.6;
+    font-size: 0.9rem;
+}
+
+.tip-card ul {
+    margin-top: 1rem;
+    padding-left: 1.25rem;
+    color: #6B7280;
+    font-size: 0.85rem;
+}
+
+.tip-card li {
+    margin: 0.5rem 0;
+}
+
+.section-divider {
+    background: white;
+    border-radius: 24px;
+    padding: 2rem;
+    margin: 2rem 0;
+    border: 1px solid #E5E7EB;
+}
+
+.section-divider h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #1F2937;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.section-divider h2 i {
+    color: #059669;
+}
+
+.checklist-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: #F9FAFB;
+    border-radius: 12px;
+}
+
+.checklist-item i {
+    color: #10B981;
+    font-size: 1rem;
+}
+
+.checklist-item span {
+    color: #374151;
+    font-size: 0.85rem;
+}
+
+@media (max-width: 768px) {
+    .hero-section h1 {
+        font-size: 1.75rem;
+    }
+    .tips-grid {
+        grid-template-columns: 1fr;
+    }
+    .checklist-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="tips-page">
+    <div class="container">
+        <div class="hero-section">
+            <h1>Tips for Success</h1>
+            <p>Expert advice to help you stand out and grow on FundiConnect</p>
+        </div>
+
+        <div class="tips-grid">
+            <div class="tip-card">
+                <div class="tip-icon">
+                    <i class="fas fa-id-card"></i>
+                </div>
+                <h3>Complete Your Profile</h3>
+                <p>A complete profile gets 5x more views than incomplete ones. Add a professional photo, detailed description, and showcase your best work.</p>
+                <ul>
+                    <li>Add a clear profile picture</li>
+                    <li>List all your skills and certifications</li>
+                    <li>Include portfolio images of your best work</li>
+                </ul>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>Get Verified</h3>
+                <p>Verified workers receive 3x more job offers. The trusted badge builds instant credibility with potential customers.</p>
+                <ul>
+                    <li>Submit valid identification documents</li>
+                    <li>Share professional certificates</li>
+                    <li>Complete the verification process</li>
+                </ul>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3>Respond Quickly</h3>
+                <p>Customers prefer workers who respond within minutes. Set up notifications and reply to messages promptly.</p>
+                <ul>
+                    <li>Enable push notifications</li>
+                    <li>Set realistic response time expectations</li>
+                    <li>Follow up within 24 hours</li>
+                </ul>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <h3>Collect Great Reviews</h3>
+                <p>Positive reviews build your reputation. Deliver excellent service and ask satisfied customers to leave feedback.</p>
+                <ul>
+                    <li>Go above and beyond expectations</li>
+                    <li>Communicate clearly throughout the job</li>
+                    <li>Politely ask for reviews after completion</li>
+                </ul>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Price Competitively</h3>
+                <p>Research market rates and price your services competitively. Consider offering package deals for repeat customers.</p>
+                <ul>
+                    <li>Check what others charge for similar services</li>
+                    <li>Offer first-time customer discounts</li>
+                    <li>Bundle services for better value</li>
+                </ul>
+            </div>
+
+            <div class="tip-card">
+                <div class="tip-icon">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <h3>Upgrade to Premium</h3>
+                <p>Premium subscribers get featured in search results and priority placement. The investment pays off with more job opportunities.</p>
+                <ul>
+                    <li>Unlimited job applications</li>
+                    <li>Featured listing in search results</li>
+                    <li>Verified badge eligibility</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section-divider">
+            <h2><i class="fas fa-check-double"></i> Do's and Don'ts for Workers</h2>
+            <div class="checklist-grid">
+                <div class="checklist-item"><i class="fas fa-check-circle"></i><span>✓ Be professional in all communications</span></div>
+                <div class="checklist-item"><i class="fas fa-times-circle" style="color: #EF4444;"></i><span>✗ Never ask for payment before work is done</span></div>
+                <div class="checklist-item"><i class="fas fa-check-circle"></i><span>✓ Show up on time or communicate delays</span></div>
+                <div class="checklist-item"><i class="fas fa-times-circle" style="color: #EF4444;"></i><span>✗ Don't overpromise what you can deliver</span></div>
+                <div class="checklist-item"><i class="fas fa-check-circle"></i><span>✓ Keep customers updated on progress</span></div>
+                <div class="checklist-item"><i class="fas fa-times-circle" style="color: #EF4444;"></i><span>✗ Don't ignore negative feedback - learn from it</span></div>
+                <div class="checklist-item"><i class="fas fa-check-circle"></i><span>✓ Ask clarifying questions before starting</span></div>
+                <div class="checklist-item"><i class="fas fa-times-circle" style="color: #EF4444;"></i><span>✗ Don't share personal contact info before hiring</span></div>
+            </div>
+        </div>
+
+        <div class="section-divider">
+            <h2><i class="fas fa-users"></i> Tips for Customers</h2>
+            <div class="checklist-grid">
+                <div class="checklist-item"><i class="fas fa-check-circle"></i><span>✓ Be clear about your requirements</span></div>
+                <div class="checklist-item"><i class="fas fa-check-circle"></i><span>✓ Check worker reviews and ratings</span></div>
+                <div class="checklist-item"><i class="fas fa-check-circle"></i><span>✓ Set realistic timelines and budgets</span></div>
+                <div class="checklist-item"><i class="fas fa-check-circle"></i><span>✓ Communicate expectations upfront</span></div>
+                <div class="checklist-item"><i class="fas fa-check-circle"></i><span>✓ Leave honest reviews to help others</span></div>
+                <div class="checklist-item"><i class="fas fa-check-circle"></i><span>✓ Use M-Pesa for secure payments</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

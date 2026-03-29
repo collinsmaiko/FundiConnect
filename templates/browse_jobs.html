@@ -1,0 +1,939 @@
+{% extends "base.html" %}
+
+{% block title %}Browse Jobs - {{ settings.platform_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ============================================
+   FILE: browse_jobs.html
+   FundiConnect - Tier-Based Jobs Listing Page
+   Version: 5.0.0 - Premium Tier Styling
+   ============================================ */
+
+.jobs-page {
+    padding: 2rem 0;
+    background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+    min-height: calc(100vh - 200px);
+}
+
+/* ========== TIER-BASED STYLES ========== */
+/* These styles are applied dynamically based on the logged-in user's subscription */
+
+/* Free & Daily Tier - Professional $100K Dashboard */
+.jobs-container.free-tier .jobs-hero,
+.jobs-container.daily-tier .jobs-hero {
+    background: linear-gradient(135deg, #1F2937 0%, #111827 100%);
+}
+
+.jobs-container.free-tier .results-count-modern strong,
+.jobs-container.daily-tier .results-count-modern strong {
+    color: #3B82F6;
+}
+
+.jobs-container.free-tier .filter-group-modern input:focus,
+.jobs-container.free-tier .filter-group-modern select:focus,
+.jobs-container.daily-tier .filter-group-modern input:focus,
+.jobs-container.daily-tier .filter-group-modern select:focus {
+    border-color: #3B82F6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.jobs-container.free-tier .btn-primary,
+.jobs-container.daily-tier .btn-primary {
+    background: linear-gradient(135deg, #3B82F6, #2563EB);
+}
+
+/* Weekly Tier - Millionaire Style (Gold) */
+.jobs-container.weekly-tier .jobs-hero {
+    background: linear-gradient(135deg, #cc7511 0%, #b46f16 100%);
+    animation: goldGlow 2s infinite;
+}
+
+.jobs-container.weekly-tier .results-count-modern strong {
+    color: #F59E0B;
+}
+
+.jobs-container.weekly-tier .filter-group-modern input:focus,
+.jobs-container.weekly-tier .filter-group-modern select:focus {
+    border-color: #F59E0B;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+}
+
+.jobs-container.weekly-tier .btn-primary {
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+}
+
+.jobs-container.weekly-tier .premium-job-badge {
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+}
+
+/* Monthly Tier - Billionaire Style (Purple) */
+.jobs-container.monthly-tier .jobs-hero {
+    background: linear-gradient(135deg, #262893 0%, #7c43b9 100%);
+    animation: purpleGlow 2s infinite;
+}
+
+.jobs-container.monthly-tier .results-count-modern strong {
+    color: #8B5CF6;
+}
+
+.jobs-container.monthly-tier .filter-group-modern input:focus,
+.jobs-container.monthly-tier .filter-group-modern select:focus {
+    border-color: #8B5CF6;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.jobs-container.monthly-tier .btn-primary {
+    background: linear-gradient(135deg, #8B5CF6, #6366F1);
+}
+
+.jobs-container.monthly-tier .premium-job-badge {
+    background: linear-gradient(135deg, #8B5CF6, #6366F1);
+}
+
+/* Annual Tier - Trillionaire Style (Diamond + Gold) */
+.jobs-container.annual-tier .jobs-hero {
+    background: linear-gradient(135deg, #0F172A 0%, #1E293B 30%, #905b00 70%, #4d1dbf 100%);
+    animation: diamondGlow 2s infinite;
+}
+
+.jobs-container.annual-tier .results-count-modern strong {
+    background: linear-gradient(135deg, #F59E0B, #8B5CF6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.jobs-container.annual-tier .filter-group-modern input:focus,
+.jobs-container.annual-tier .filter-group-modern select:focus {
+    border-color: #F59E0B;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2), 0 0 0 6px rgba(139, 92, 246, 0.1);
+}
+
+.jobs-container.annual-tier .btn-primary {
+    background: linear-gradient(135deg, #F59E0B, #8B5CF6);
+    box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
+}
+
+.jobs-container.annual-tier .btn-primary:hover {
+    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+}
+
+.jobs-container.annual-tier .premium-job-badge {
+    background: linear-gradient(135deg, #F59E0B, #8B5CF6);
+}
+
+/* Tier Animations */
+@keyframes goldGlow {
+    0%, 100% { box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3); }
+    50% { box-shadow: 0 10px 40px rgba(245, 158, 11, 0.6); }
+}
+
+@keyframes purpleGlow {
+    0%, 100% { box-shadow: 0 10px 40px rgba(139, 92, 246, 0.4); }
+    50% { box-shadow: 0 10px 50px rgba(139, 92, 246, 0.7); }
+}
+
+@keyframes diamondGlow {
+    0%, 100% {
+        box-shadow: 0 15px 45px rgba(245, 158, 11, 0.5);
+        filter: brightness(1);
+    }
+    50% {
+        box-shadow: 0 20px 60px rgba(139, 92, 246, 0.6);
+        filter: brightness(1.05);
+    }
+}
+
+.jobs-hero {
+    border-radius: 28px;
+    padding: 3rem 2rem;
+    margin-bottom: 2rem;
+    color: white;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s ease;
+}
+
+.jobs-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.jobs-hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: white;
+    background: none;
+}
+
+.jobs-hero p {
+    opacity: 0.9;
+    font-size: 1.1rem;
+}
+
+/* Filters Section */
+.filters-section-modern {
+    background: white;
+    border-radius: 24px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid #E5E7EB;
+}
+
+.filters-form-modern {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    align-items: flex-end;
+}
+
+.filter-group-modern {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-group-modern label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #6B7280;
+    margin-bottom: 0.5rem;
+}
+
+.filter-group-modern input,
+.filter-group-modern select {
+    padding: 0.75rem 1rem;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 14px;
+    font-size: 0.9rem;
+    width: 100%;
+    transition: all 0.3s;
+    background: #F9FAFB;
+}
+
+.filter-group-modern input:focus,
+.filter-group-modern select:focus {
+    outline: none;
+    background: white;
+}
+
+.filter-group-modern.checkbox {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.filter-group-modern.checkbox label {
+    margin-bottom: 0;
+    text-transform: none;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.filter-group-modern.checkbox input {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: #059669;
+}
+
+.filter-actions-modern {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.results-header-modern {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.results-count-modern {
+    color: #6B7280;
+    font-size: 0.9rem;
+}
+
+.results-count-modern strong {
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+
+.sort-select-modern {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.sort-select-modern label {
+    font-size: 0.8rem;
+    color: #6B7280;
+    font-weight: 500;
+}
+
+.sort-select-modern select {
+    padding: 0.5rem 1rem;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    background: white;
+    cursor: pointer;
+}
+
+/* Jobs Grid */
+.jobs-grid-modern {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.job-card-modern {
+    background: white;
+    border-radius: 24px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    border: 1px solid #E5E7EB;
+    position: relative;
+    overflow: hidden;
+}
+
+.job-card-modern:hover {
+    transform: translateX(5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    border-color: #059669;
+}
+
+/* Premium Job Badge */
+.premium-job-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+    padding: 0.25rem 0.75rem;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: white;
+    box-shadow: 0 2px 4px rgba(245, 158, 11, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.premium-job-badge i {
+    font-size: 0.7rem;
+    color: white;
+}
+
+.job-header-modern {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.job-title-modern {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0;
+    color: #1F2937;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.job-budget-modern {
+    font-weight: 700;
+    color: #059669;
+    font-size: 1rem;
+    background: rgba(5, 150, 105, 0.1);
+    padding: 0.25rem 0.75rem;
+    border-radius: 100px;
+}
+
+.job-meta-modern {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 0.75rem 0;
+    font-size: 0.75rem;
+    color: #6B7280;
+}
+
+.job-meta-modern span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.job-description-modern {
+    color: #6B7280;
+    margin: 0.75rem 0;
+    line-height: 1.5;
+    font-size: 0.85rem;
+}
+
+.job-footer-modern {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #F3F4F6;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.job-status-modern {
+    display: inline-block;
+    padding: 0.25rem 0.9rem;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.status-open {
+    background: rgba(5, 150, 105, 0.1);
+    color: #059669;
+}
+
+.status-in_progress {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3B82F6;
+}
+
+.status-completed {
+    background: rgba(107, 114, 128, 0.1);
+    color: #6B7280;
+}
+
+.status-expired {
+    background: rgba(239, 68, 68, 0.1);
+    color: #EF4444;
+}
+
+.btn-view-modern {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 100px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.3s;
+    color: white;
+    background: linear-gradient(135deg, #059669, #047857);
+}
+
+.btn-view-modern:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(5, 150, 105, 0.3);
+    color: white;
+}
+
+.btn-upgrade-modern {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 100px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.3s;
+    color: white;
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+    border: none;
+    cursor: pointer;
+}
+
+.btn-upgrade-modern:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
+}
+
+/* Empty State */
+.empty-state-modern {
+    text-align: center;
+    padding: 3rem;
+    background: white;
+    border-radius: 24px;
+    border: 1px solid #E5E7EB;
+}
+
+.empty-state-modern i {
+    font-size: 3.5rem;
+    color: #9CA3AF;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.empty-state-modern h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: #374151;
+}
+
+.empty-state-modern p {
+    color: #6B7280;
+    margin-bottom: 1.5rem;
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 28px;
+    max-width: 450px;
+    width: 90%;
+    max-height: 85vh;
+    overflow-y: auto;
+    animation: scaleIn 0.3s ease;
+}
+
+.modal-header {
+    padding: 1.25rem;
+    border-bottom: 1px solid #F3F4F6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+    color: #9CA3AF;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.modal-close:hover {
+    background: #F3F4F6;
+    color: #EF4444;
+}
+
+.modal-body {
+    padding: 1.25rem;
+}
+
+.modal-footer {
+    padding: 1.25rem;
+    border-top: 1px solid #F3F4F6;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.upgrade-alert {
+    background: rgba(245, 158, 11, 0.1);
+    border-left: 4px solid #F59E0B;
+    padding: 1rem;
+    border-radius: 14px;
+    margin-top: 1rem;
+}
+
+.upgrade-alert i {
+    color: #F59E0B;
+}
+
+.tier-option {
+    padding: 0.75rem;
+    border-radius: 12px;
+    margin-bottom: 0.75rem;
+    transition: all 0.3s;
+}
+
+.tier-option:hover {
+    transform: translateX(5px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .jobs-page {
+        padding: 1rem;
+    }
+
+    .jobs-hero {
+        padding: 2rem 1rem;
+    }
+
+    .jobs-hero h1 {
+        font-size: 1.75rem;
+    }
+
+    .filters-form-modern {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-actions-modern {
+        flex-direction: column;
+    }
+
+    .filter-actions-modern button,
+    .filter-actions-modern a {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .results-header-modern {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .sort-select-modern {
+        width: 100%;
+    }
+
+    .sort-select-modern select {
+        flex: 1;
+    }
+
+    .job-header-modern {
+        flex-direction: column;
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+{% set subscription = get_user_active_subscription() %}
+{% set tier_class = '' %}
+{% if subscription and subscription.plan_type == 'weekly' %}
+    {% set tier_class = 'weekly-tier' %}
+{% elif subscription and subscription.plan_type == 'monthly' %}
+    {% set tier_class = 'monthly-tier' %}
+{% elif subscription and subscription.plan_type == 'annual' %}
+    {% set tier_class = 'annual-tier' %}
+{% elif subscription and subscription.plan_type == 'daily' %}
+    {% set tier_class = 'daily-tier' %}
+{% else %}
+    {% set tier_class = 'free-tier' %}
+{% endif %}
+
+<div class="jobs-container {{ tier_class }}">
+    <div class="jobs-page">
+        <div class="container">
+            <div class="jobs-hero">
+                <h1>Browse Job Opportunities</h1>
+                <p>Find the perfect job that matches your skills and experience</p>
+                {% if subscription %}
+                <div style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.9;">
+                    <i class="fas fa-crown"></i>
+                    {% if subscription.plan_type == 'weekly' %}Million Dollar Member Access
+                    {% elif subscription.plan_type == 'monthly' %}Billion Dollar Member Access
+                    {% elif subscription.plan_type == 'annual' %}Trillion Dollar Member Access
+                    {% elif subscription.plan_type == 'daily' %}Premium Member Access
+                    {% else %}Free Member Access
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Modern Filters Section -->
+            <div class="filters-section-modern">
+                <form method="GET" action="{{ url_for('browse_jobs') }}" class="filters-form-modern">
+                    <div class="filter-group-modern">
+                        <label><i class="fas fa-search"></i> Skill / Keyword</label>
+                        <input type="text" name="skill" placeholder="e.g., plumbing, electrical" value="{{ request.args.get('skill', '') }}">
+                    </div>
+                    <div class="filter-group-modern">
+                        <label><i class="fas fa-map-marker-alt"></i> Location</label>
+                        <input type="text" name="location" placeholder="e.g., Nairobi" value="{{ request.args.get('location', '') }}">
+                    </div>
+                    <div class="filter-group-modern">
+                        <label><i class="fas fa-tags"></i> Category</label>
+                        <select name="category">
+                            <option value="">All Categories</option>
+                            {% for key, cat in categories.items() %}
+                            <option value="{{ key }}" {% if request.args.get('category') == key %}selected{% endif %}>
+                                {{ cat.icon }} {{ cat.name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {% if can_use_advanced_filters %}
+                    <div class="filter-group-modern">
+                        <label><i class="fas fa-money-bill"></i> Min Budget</label>
+                        <input type="number" name="min_budget" placeholder="Min" value="{{ request.args.get('min_budget', '') }}">
+                    </div>
+                    <div class="filter-group-modern">
+                        <label><i class="fas fa-money-bill"></i> Max Budget</label>
+                        <input type="number" name="max_budget" placeholder="Max" value="{{ request.args.get('max_budget', '') }}">
+                    </div>
+                    <div class="filter-group-modern">
+                        <label><i class="fas fa-calendar"></i> Posted Within</label>
+                        <select name="posted_within">
+                            <option value="">Any time</option>
+                            <option value="1" {% if request.args.get('posted_within') == '1' %}selected{% endif %}>Last 24 hours</option>
+                            <option value="7" {% if request.args.get('posted_within') == '7' %}selected{% endif %}>Last 7 days</option>
+                            <option value="30" {% if request.args.get('posted_within') == '30' %}selected{% endif %}>Last 30 days</option>
+                        </select>
+                    </div>
+                    {% endif %}
+                    <div class="filter-actions-modern">
+                        <button type="submit" class="btn-primary"><i class="fas fa-search"></i> Search</button>
+                        {% if request.args %}
+                        <a href="{{ url_for('browse_jobs') }}" class="btn-outline"><i class="fas fa-times"></i> Clear</a>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+
+            <div class="results-header-modern">
+                <div class="results-count-modern">
+                    <strong>{{ jobs|length }}</strong> job{% if jobs|length != 1 %}s{% endif %} found
+                    {% if expired_count > 0 %}
+                    <span style="color: #9CA3AF;">({{ expired_count }} expired)</span>
+                    {% endif %}
+                </div>
+                <div class="sort-select-modern">
+                    <label><i class="fas fa-sort-amount-down"></i> Sort by:</label>
+                    <select id="sort-select" onchange="sortJobs()">
+                        <option value="newest">Newest First</option>
+                        <option value="budget_high">Highest Budget</option>
+                        <option value="budget_low">Lowest Budget</option>
+                        <option value="deadline">Deadline Soonest</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="jobs-grid-modern" id="jobs-grid">
+                {% for job in jobs %}
+                <div class="job-card-modern"
+                     data-date="{{ job.created_at.timestamp() }}"
+                     data-budget="{{ job.budget_max or 0 }}"
+                     data-deadline="{{ job.deadline.timestamp() if job.deadline else 9999999999 }}">
+                    <div class="job-header-modern">
+                        <div class="job-title-modern">
+                            {{ job.title }}
+                            {% if subscription and subscription.plan_type != 'free' %}
+                            <span class="premium-job-badge">
+                                <i class="fas fa-crown"></i>
+                                {% if subscription.plan_type == 'daily' %}Premium Access
+                                {% elif subscription.plan_type == 'weekly' %}Million Dollar Access
+                                {% elif subscription.plan_type == 'monthly' %}Billion Dollar Access
+                                {% elif subscription.plan_type == 'annual' %}Trillion Dollar Access
+                                {% endif %}
+                            </span>
+                            {% endif %}
+                        </div>
+                        <div class="job-budget-modern">KES {{ "%.0f"|format(job.budget_min or 0) }} - {{ "%.0f"|format(job.budget_max or 0) }}</div>
+                    </div>
+                    <div class="job-meta-modern">
+                        <span><i class="fas fa-map-marker-alt"></i> {{ job.location or 'Location not specified' }}</span>
+                        <span><i class="fas fa-tag"></i>
+                            {% if job.category and job.category in categories %}
+                                {{ categories[job.category].name }}
+                            {% elif job.category == 'general' %}
+                                General
+                            {% else %}
+                                General
+                            {% endif %}
+                        </span>
+                        <span><i class="fas fa-calendar"></i> Posted: {{ job.created_at.strftime('%b %d, %Y') }}</span>
+                        {% if job.deadline %}
+                        <span><i class="fas fa-clock"></i> Deadline: {{ job.deadline.strftime('%b %d, %Y') }}</span>
+                        {% endif %}
+                    </div>
+                    <p class="job-description-modern">{{ job.description[:180] }}{% if job.description|length > 180 %}...{% endif %}</p>
+                    <div class="job-footer-modern">
+                        <span class="job-status-modern status-{{ job.status }}">{{ job.status|replace('_', ' ')|title }}</span>
+                        {% if session.user_id and session.user_type == 'worker' %}
+                            {% if subscription and subscription.plan_type != 'free' %}
+                                <a href="{{ url_for('job_detail', job_id=job.id) }}" class="btn-view-modern">
+                                    View Details <i class="fas fa-arrow-right"></i>
+                                </a>
+                            {% else %}
+                                <button onclick="showSubscribePopup({{ job.id }})" class="btn-upgrade-modern">
+                                    <i class="fas fa-crown"></i> Upgrade to Apply
+                                </button>
+                            {% endif %}
+                        {% else %}
+                            <a href="{{ url_for('job_detail', job_id=job.id) }}" class="btn-view-modern">
+                                View Details <i class="fas fa-arrow-right"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% else %}
+                <div class="empty-state-modern">
+                    <i class="fas fa-briefcase"></i>
+                    <h3>No Jobs Found</h3>
+                    <p>Try adjusting your search filters or check back later for new opportunities</p>
+                    <a href="{{ url_for('browse_jobs') }}" class="btn-primary">Clear Filters</a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Subscribe Popup Modal -->
+<div id="subscribe-popup" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3><i class="fas fa-crown" style="color: #F59E0B;"></i> Upgrade Your Account</h3>
+            <button class="modal-close" onclick="closeSubscribePopup()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div style="text-align: center;">
+                <i class="fas fa-chart-line" style="font-size: 3rem; color: #F59E0B; margin-bottom: 1rem;"></i>
+                <h4 style="margin-bottom: 1rem;">Choose Your Success Tier</h4>
+                <p style="margin-bottom: 1rem; color: #6B7280;">Upgrade to unlock more opportunities and premium features:</p>
+
+                <div class="tier-option" style="background: #FEF3C7; border-left: 3px solid #F59E0B;">
+                    <strong>💎 Daily Tier - Premium Member</strong>
+                    <small style="display: block; color: #6B7280;">Basic premium access, apply to jobs</small>
+                </div>
+                <div class="tier-option" style="background: #DBEAFE; border-left: 3px solid #3B82F6;">
+                    <strong>💎 Weekly Tier - Million Dollar Member</strong>
+                    <small style="display: block; color: #6B7280;">Advanced analytics + priority applications</small>
+                </div>
+                <div class="tier-option" style="background: #FCE7F3; border-left: 3px solid #EC489A;">
+                    <strong>💎 Monthly Tier - Billion Dollar Member</strong>
+                    <small style="display: block; color: #6B7280;">Featured profile + all weekly features</small>
+                </div>
+                <div class="tier-option" style="background: #E0E7FF; border-left: 3px solid #8B5CF6;">
+                    <strong>👑 Annual Tier - Trillion Dollar Member</strong>
+                    <small style="display: block; color: #6B7280;">VIP status + 24/7 support + best value</small>
+                </div>
+
+                <div class="upgrade-alert">
+                    <i class="fas fa-gem"></i>
+                    <strong style="color: #F59E0B;">Special Offer:</strong> Upgrade now and get 30% off your first month!
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button onclick="closeSubscribePopup()" class="btn-outline">Maybe Later</button>
+            <a href="{{ url_for('pricing') }}" class="btn-primary" id="upgrade-btn">View Plans →</a>
+        </div>
+    </div>
+</div>
+
+<script>
+function showSubscribePopup(jobId) {
+    const modal = document.getElementById('subscribe-popup');
+    modal.classList.add('active');
+    sessionStorage.setItem('pendingJobId', jobId);
+    document.body.style.overflow = 'hidden';
+}
+
+function closeSubscribePopup() {
+    const modal = document.getElementById('subscribe-popup');
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function sortJobs() {
+    const sortBy = document.getElementById('sort-select').value;
+    const container = document.getElementById('jobs-grid');
+    const cards = Array.from(container.children);
+
+    const validCards = cards.filter(card => card.classList && card.classList.contains('job-card-modern'));
+
+    validCards.sort((a, b) => {
+        let aVal, bVal;
+        switch(sortBy) {
+            case 'newest':
+                aVal = parseFloat(a.dataset.date);
+                bVal = parseFloat(b.dataset.date);
+                return bVal - aVal;
+            case 'budget_high':
+                aVal = parseFloat(a.dataset.budget);
+                bVal = parseFloat(b.dataset.budget);
+                return bVal - aVal;
+            case 'budget_low':
+                aVal = parseFloat(a.dataset.budget);
+                bVal = parseFloat(b.dataset.budget);
+                return aVal - bVal;
+            case 'deadline':
+                aVal = parseFloat(a.dataset.deadline);
+                bVal = parseFloat(b.dataset.deadline);
+                return aVal - bVal;
+            default:
+                return 0;
+        }
+    });
+
+    container.innerHTML = '';
+    validCards.forEach(card => container.appendChild(card));
+
+    if (validCards.length === 0) {
+        container.innerHTML = `
+            <div class="empty-state-modern">
+                <i class="fas fa-briefcase"></i>
+                <h3>No Jobs Found</h3>
+                <p>Try adjusting your search filters or check back later</p>
+                <a href="{{ url_for('browse_jobs') }}" class="btn-primary">Clear Filters</a>
+            </div>
+        `;
+    }
+}
+
+document.getElementById('subscribe-popup').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeSubscribePopup();
+    }
+});
+</script>
+{% endblock %}

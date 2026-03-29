@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+
+{% block title %}Terms & Conditions - {{ settings.platform_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ============================================
+   FILE: terms.html
+   FundiConnect - Terms & Conditions Page
+   ============================================ */
+
+.terms-page {
+    padding: 2rem 0;
+    background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+    min-height: calc(100vh - 200px);
+}
+
+.terms-card {
+    background: white;
+    border-radius: 28px;
+    padding: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    border: 1px solid #E5E7EB;
+}
+
+.terms-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #059669;
+}
+
+.terms-header h1 {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+    color: #1F2937;
+}
+
+.terms-header p {
+    color: #6B7280;
+    font-size: 0.85rem;
+}
+
+.terms-content {
+    color: #374151;
+    line-height: 1.6;
+}
+
+.terms-content h2 {
+    font-size: 1.25rem;
+    margin: 1.5rem 0 1rem;
+    color: #059669;
+}
+
+.terms-content h3 {
+    font-size: 1rem;
+    margin: 1rem 0 0.5rem;
+    color: #1F2937;
+}
+
+.terms-content p {
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.terms-content ul, .terms-content ol {
+    margin: 0.5rem 0 1rem 1.5rem;
+}
+
+.terms-content li {
+    margin: 0.25rem 0;
+    font-size: 0.9rem;
+}
+
+.last-updated {
+    background: #F3F4F6;
+    padding: 0.75rem;
+    border-radius: 12px;
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.75rem;
+    color: #6B7280;
+}
+
+@media (max-width: 768px) {
+    .terms-page {
+        padding: 1rem;
+    }
+    .terms-card {
+        padding: 1.25rem;
+    }
+    .terms-header h1 {
+        font-size: 1.5rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="terms-page">
+    <div class="container">
+        <div class="terms-card">
+            <div class="terms-header">
+                <h1>Terms & Conditions</h1>
+                <p>Last Updated: January 1, 2026</p>
+            </div>
+
+            <div class="terms-content">
+                <h2>1. Acceptance of Terms</h2>
+                <p>By accessing or using FundiConnect ("the Platform"), you agree to be bound by these Terms and Conditions. If you do not agree to these terms, please do not use the Platform.</p>
+
+                <h2>2. Definitions</h2>
+                <p><strong>"Worker"</strong> refers to a user who offers services through the Platform.<br>
+                <strong>"Customer"</strong> refers to a user who seeks services through the Platform.<br>
+                <strong>"Job"</strong> refers to a service request posted by a Customer.<br>
+                <strong>"Platform"</strong> refers to FundiConnect website and mobile applications.</p>
+
+                <h2>3. User Accounts</h2>
+                <p>3.1 You must provide accurate and complete information when creating an account.<br>
+                3.2 You are responsible for maintaining the confidentiality of your account credentials.<br>
+                3.3 You are solely responsible for all activities that occur under your account.<br>
+                3.4 We reserve the right to suspend or terminate accounts that violate these terms.</p>
+
+                <h2>4. User Conduct</h2>
+                <p>4.1 Users must not post false, misleading, or fraudulent information.<br>
+                4.2 Users must not engage in harassment, abuse, or threats toward other users.<br>
+                4.3 Users must not post inappropriate, offensive, or illegal content.<br>
+                4.4 Users must comply with all applicable laws and regulations.<br>
+                4.5 Workers must provide accurate information about their skills and qualifications.</p>
+
+                <h2>5. Job Postings and Applications</h2>
+                <p>5.1 Customers may post jobs describing the services they need.<br>
+                5.2 Workers may apply to jobs that match their skills.<br>
+                5.3 FundiConnect does not guarantee that any worker will be hired or that any job will be filled.<br>
+                5.4 All job agreements are between the Customer and Worker directly.</p>
+
+                <h2>6. Payments and Subscriptions</h2>
+                <p>6.1 Premium subscriptions are available for purchase.<br>
+                6.2 All payments are processed through M-Pesa.<br>
+                6.3 Subscription fees are non-refundable except as provided in our refund policy.<br>
+                6.4 We reserve the right to change subscription prices with notice.<br>
+                6.5 Free plan features are limited as described on the Pricing page.</p>
+
+                <h2>7. Verification and Ratings</h2>
+                <p>7.1 Verification is available to premium subscribers and requires document submission.<br>
+                7.2 Verification is not a guarantee of a worker's skills or reliability.<br>
+                7.3 Reviews and ratings are based on user experiences and are subjective.<br>
+                7.4 We reserve the right to remove fraudulent or inappropriate reviews.</p>
+
+                <h2>8. Platform Limitations</h2>
+                <p>8.1 FundiConnect is a platform connecting workers and customers; we do not provide services directly.<br>
+                8.2 We are not responsible for the quality, safety, or legality of services provided.<br>
+                8.3 We do not guarantee that any user will find work or hire workers.<br>
+                8.4 We are not liable for disputes between users.</p>
+
+                <h2>9. Account Suspension and Termination</h2>
+                <p>9.1 We may suspend or terminate accounts that violate these terms.<br>
+                9.2 Grounds for suspension include: fraudulent activity, harassment, spamming, or illegal conduct.<br>
+                9.3 Suspended accounts will have a reason provided.<br>
+                9.4 Users may appeal suspensions by contacting support.</p>
+
+                <h2>10. Intellectual Property</h2>
+                <p>10.1 All content on the Platform is owned by FundiConnect.<br>
+                10.2 Users retain ownership of content they post.<br>
+                10.3 Users grant us a license to display and distribute their content on the Platform.</p>
+
+                <h2>11. Limitation of Liability</h2>
+                <p>To the maximum extent permitted by law, FundiConnect shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the Platform.</p>
+
+                <h2>12. Indemnification</h2>
+                <p>You agree to indemnify and hold FundiConnect harmless from any claims, damages, or expenses arising from your use of the Platform or violation of these terms.</p>
+
+                <h2>13. Modifications to Terms</h2>
+                <p>We reserve the right to modify these terms at any time. Continued use of the Platform constitutes acceptance of modified terms.</p>
+
+                <h2>14. Governing Law</h2>
+                <p>These terms shall be governed by the laws of the Republic of Kenya.</p>
+
+                <h2>15. Contact Information</h2>
+                <p>For questions about these terms, contact us at:<br>
+                Email: {{ settings.contact_email }}<br>
+                Phone: {{ settings.contact_phone }}</p>
+            </div>
+
+            <div class="last-updated">
+                <i class="fas fa-gavel"></i> These terms are effective as of January 1, 2026
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,1109 @@
+{% extends "base.html" %}
+
+{% block title %}Worker Dashboard - {{ settings.platform_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ============================================
+   FILE: dashboard.html
+   FundiConnect - Tier-Based Premium Dashboard
+   Version: 5.0.0 - Luxury Tier Styling
+   ============================================ */
+
+.dashboard-container {
+    max-width: 1280px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+/* ========== TIER-BASED STYLES ========== */
+/* Free & Daily Tier - Professional $100K Dashboard */
+.dashboard-container.free-tier .dashboard-header,
+.dashboard-container.daily-tier .dashboard-header {
+    background: linear-gradient(135deg, #1F2937 0%, #111827 100%);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.dashboard-container.free-tier .profile-card,
+.dashboard-container.daily-tier .profile-card {
+    background: linear-gradient(135deg, #1F2937 0%, #111827 100%);
+}
+
+.dashboard-container.free-tier .subscription-banner,
+.dashboard-container.daily-tier .subscription-banner {
+    border-left: 4px solid #3B82F6;
+    background: linear-gradient(135deg, #F9FAFB, #FFFFFF);
+}
+
+.dashboard-container.free-tier .upgrade-btn,
+.dashboard-container.daily-tier .upgrade-btn {
+    background: linear-gradient(135deg, #3B82F6, #2563EB);
+}
+
+/* Weekly Tier - Millionaire Style (Gold) */
+.dashboard-container.weekly-tier .dashboard-header {
+    background: linear-gradient(135deg, #cc7511 0%, #b46f16 100%);
+    box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3);
+    animation: goldGlow 2s infinite;
+}
+.dashboard-container.weekly-tier .profile-card {
+    background: linear-gradient(135deg, #cc7511 0%, #b46f16 100%);
+}
+
+.dashboard-container.weekly-tier .subscription-banner {
+    border-left: 4px solid #F59E0B;
+    background: linear-gradient(135deg, #FFFBEB, #FEF3C7);
+}
+
+.dashboard-container.weekly-tier .upgrade-btn {
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+}
+
+.dashboard-container.weekly-tier .verified-badge {
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+}
+
+/* Monthly Tier - Billionaire Style (Purple/Platinum) */
+.dashboard-container.monthly-tier .dashboard-header {
+    background: linear-gradient(135deg, #262893 0%, #7c43b9 100%);
+    box-shadow: 0 10px 40px rgba(139, 92, 246, 0.4);
+    animation: purpleGlow 2s infinite;
+}
+
+.dashboard-container.monthly-tier .profile-card {
+    background: linear-gradient(135deg, #262893 0%, #7c43b9 100%);
+}
+
+.dashboard-container.monthly-tier .subscription-banner {
+    border-left: 4px solid #8B5CF6;
+    background: linear-gradient(135deg, #F5F3FF, #EDE9FE);
+}
+
+.dashboard-container.monthly-tier .upgrade-btn {
+    background: linear-gradient(135deg, #8B5CF6, #6366F1);
+}
+
+.dashboard-container.monthly-tier .verified-badge {
+    background: linear-gradient(135deg, #8B5CF6, #6366F1);
+}
+
+/* Annual Tier - Trillionaire Style (Diamond + Gold) */
+.dashboard-container.annual-tier .dashboard-header {
+    background: linear-gradient(135deg, #0F172A 0%, #1E293B 30%, #905b00 70%, #4d1dbf 100%);
+    box-shadow: 0 15px 45px rgba(245, 158, 11, 0.5);
+    animation: diamondGlow 2s infinite;
+}
+
+.dashboard-container.annual-tier .profile-card {
+    background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.dashboard-container.annual-tier .subscription-banner {
+    border-left: 4px solid #F59E0B;
+    background: linear-gradient(135deg, #0F172A, #1E293B);
+    color: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.dashboard-container.annual-tier .subscription-info h3,
+.dashboard-container.annual-tier .subscription-info .plan-name,
+.dashboard-container.annual-tier .subscription-info .expiry {
+    color: white;
+}
+
+.dashboard-container.annual-tier .subscription-info .plan-name {
+    background: linear-gradient(135deg, #F59E0B, #8B5CF6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.dashboard-container.annual-tier .upgrade-btn {
+    background: linear-gradient(135deg, #F59E0B, #8B5CF6);
+    box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
+}
+
+/* Tier Animations */
+@keyframes goldGlow {
+    0%, 100% { box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3); }
+    50% { box-shadow: 0 10px 40px rgba(245, 158, 11, 0.6); }
+}
+
+@keyframes purpleGlow {
+    0%, 100% { box-shadow: 0 10px 40px rgba(139, 92, 246, 0.4); }
+    50% { box-shadow: 0 10px 50px rgba(139, 92, 246, 0.7); }
+}
+
+@keyframes diamondGlow {
+    0%, 100% {
+        box-shadow: 0 15px 45px rgba(245, 158, 11, 0.5);
+        filter: brightness(1);
+    }
+    50% {
+        box-shadow: 0 20px 60px rgba(139, 92, 246, 0.6);
+        filter: brightness(1.05);
+    }
+}
+
+/* Dashboard Header */
+.dashboard-header {
+    border-radius: 28px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s ease;
+}
+
+.dashboard-header::before {
+    content: '';
+    position: absolute;
+    top: -30%;
+    right: -10%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.dashboard-header h1 {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+    color: white;
+    background: none;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.dashboard-header p {
+    opacity: 0.9;
+    font-size: 0.9rem;
+}
+
+/* Tier Icons */
+.tier-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 1rem;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+}
+
+/* Expiry Warning Banner */
+.expiry-warning {
+    background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+    border-radius: 20px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    border-left: 4px solid #F59E0B;
+    animation: pulseWarning 2s infinite;
+}
+
+@keyframes pulseWarning {
+    0%, 100% { border-left-color: #F59E0B; }
+    50% { border-left-color: #EF4444; }
+}
+
+.expiry-warning .btn-renew {
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+    color: white;
+    padding: 0.5rem 1.2rem;
+    border-radius: 100px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.3s;
+}
+
+.expiry-warning .btn-renew:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+/* Subscription Banner */
+.subscription-banner {
+    border-radius: 24px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s;
+}
+
+.subscription-banner:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px -8px rgba(0, 0, 0, 0.15);
+}
+
+.subscription-info h3 {
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+    opacity: 0.8;
+}
+
+.subscription-info .plan-name {
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.subscription-info .expiry {
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+    opacity: 0.7;
+}
+
+.subscription-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 100px;
+    font-weight: 600;
+}
+
+.subscription-badge.premium {
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+    color: white;
+}
+
+.subscription-badge.free {
+    background: #F3F4F6;
+    color: #6B7280;
+}
+
+.subscription-badge.expiring {
+    background: linear-gradient(135deg, #EF4444, #DC2626);
+    color: white;
+}
+
+.upgrade-btn {
+    padding: 0.6rem 1.2rem;
+    border-radius: 100px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: white;
+}
+
+.upgrade-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Verified Badge */
+.verified-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+    padding: 0.35rem 1rem;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: white;
+    animation: glow 2s ease-in-out infinite;
+}
+
+@keyframes glow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
+    50% { box-shadow: 0 0 0 8px rgba(245, 158, 11, 0); }
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 2rem;
+}
+
+.dashboard-sidebar {
+    background: white;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 100px;
+    border: 1px solid #E5E7EB;
+}
+
+.profile-card {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    padding: 2rem;
+    text-align: center;
+    color: white;
+    position: relative;
+    transition: all 0.3s;
+}
+
+.profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    overflow: hidden;
+    border: 3px solid white;
+    background: white;
+    transition: transform 0.3s;
+}
+
+.profile-avatar:hover {
+    transform: scale(1.05);
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-card h3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
+}
+
+/* Feature Cards */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    padding: 1.5rem;
+    background: white;
+    border-bottom: 1px solid #F3F4F6;
+}
+
+.feature-card {
+    background: #F9FAFB;
+    border-radius: 16px;
+    padding: 1rem;
+    text-align: center;
+    transition: all 0.3s;
+    border: 1px solid #E5E7EB;
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-card:hover {
+    transform: translateY(-3px);
+    border-color: #059669;
+}
+
+.feature-card.locked {
+    opacity: 0.6;
+    filter: grayscale(0.2);
+}
+
+.feature-card.premium-active {
+    background: linear-gradient(135deg, #F0FDF4, #ECFDF5);
+    border-color: #059669;
+}
+
+.feature-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(5, 150, 105, 0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.75rem;
+}
+
+.feature-icon i {
+    font-size: 1.5rem;
+    color: #059669;
+}
+
+.feature-title {
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+    color: #1F2937;
+}
+
+.feature-desc {
+    font-size: 0.7rem;
+    color: #6B7280;
+}
+
+.upgrade-tag {
+    display: inline-block;
+    font-size: 0.6rem;
+    background: #FEF3C7;
+    color: #F59E0B;
+    padding: 0.2rem 0.5rem;
+    border-radius: 100px;
+    margin-top: 0.5rem;
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    padding: 1.5rem;
+    background: white;
+    border-bottom: 1px solid #F3F4F6;
+}
+
+.stat-card {
+    text-align: center;
+    padding: 0.75rem;
+    background: #F9FAFB;
+    border-radius: 14px;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    background: linear-gradient(135deg, #F0FDF4, #ECFDF5);
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #059669;
+}
+
+/* Sidebar Actions */
+.sidebar-actions {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.sidebar-actions a {
+    text-align: center;
+    padding: 0.7rem;
+    border-radius: 100px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+/* Main Content */
+.dashboard-main {
+    background: white;
+    border-radius: 28px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid #E5E7EB;
+}
+
+.section {
+    margin-bottom: 2rem;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.section-header h2 {
+    font-size: 1.25rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #1F2937;
+}
+
+/* Application Cards */
+.application-card {
+    border: 1px solid #F3F4F6;
+    border-radius: 16px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s;
+    background: white;
+}
+
+.application-card:hover {
+    transform: translateX(5px);
+    border-color: #059669;
+}
+
+.status {
+    padding: 0.25rem 0.9rem;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.status.pending { background: rgba(245, 158, 11, 0.1); color: #F59E0B; }
+.status.accepted { background: rgba(5, 150, 105, 0.1); color: #059669; }
+.status.rejected { background: rgba(239, 68, 68, 0.1); color: #EF4444; }
+
+.remaining-badge {
+    background: #F3F4F6;
+    padding: 0.25rem 0.75rem;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    color: #6B7280;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 2.5rem;
+    background: #F9FAFB;
+    border-radius: 18px;
+}
+
+/* Review Card */
+.review-card {
+    background: #F9FAFB;
+    border-radius: 14px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s;
+}
+
+.review-card:hover {
+    transform: translateX(5px);
+    background: #F3F4F6;
+}
+
+.stars {
+    color: #F59E0B;
+    font-size: 0.75rem;
+}
+
+/* Application Stats Cards */
+.app-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.app-stat-card {
+    background: #F9FAFB;
+    border-radius: 14px;
+    padding: 1rem;
+    text-align: center;
+    transition: all 0.3s;
+    border: 1px solid #E5E7EB;
+}
+
+.app-stat-card:hover {
+    transform: translateY(-2px);
+    border-color: #059669;
+}
+
+.app-stat-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.app-stat-value.pending { color: #F59E0B; }
+.app-stat-value.accepted { color: #059669; }
+.app-stat-value.rejected { color: #EF4444; }
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    .dashboard-sidebar {
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-container {
+        margin: 1rem auto;
+    }
+    .dashboard-header {
+        padding: 1.25rem;
+    }
+    .dashboard-main {
+        padding: 1rem;
+    }
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .app-stats-grid {
+        grid-template-columns: 1fr;
+    }
+    .profile-avatar {
+        width: 80px;
+        height: 80px;
+    }
+    .subscription-banner {
+        flex-direction: column;
+        text-align: center;
+    }
+    .expiry-warning {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+{% set tier_class = '' %}
+{% if subscription and subscription.plan_type == 'weekly' %}
+    {% set tier_class = 'weekly-tier' %}
+{% elif subscription and subscription.plan_type == 'monthly' %}
+    {% set tier_class = 'monthly-tier' %}
+{% elif subscription and subscription.plan_type == 'annual' %}
+    {% set tier_class = 'annual-tier' %}
+{% elif subscription and subscription.plan_type == 'daily' %}
+    {% set tier_class = 'daily-tier' %}
+{% else %}
+    {% set tier_class = 'free-tier' %}
+{% endif %}
+
+<div class="dashboard-container {{ tier_class }}">
+    <div class="dashboard-header">
+        <div>
+            <h1>
+                <i class="fas fa-tools"></i> Welcome, {{ user.name }}
+                {% if worker.is_verified and user_has_premium %}
+                <span class="verified-badge">
+                    <i class="fas fa-check-circle"></i> Verified Professional
+                </span>
+                {% endif %}
+                {% if subscription and subscription.plan_type == 'weekly' %}
+                <span class="tier-icon"><i class="fas fa-gem"></i> Millionaire Elite</span>
+                {% elif subscription and subscription.plan_type == 'monthly' %}
+                <span class="tier-icon"><i class="fas fa-crown"></i> Billionaire Prestige</span>
+                {% elif subscription and subscription.plan_type == 'annual' %}
+                <span class="tier-icon"><i class="fas fa-star-of-life"></i> Trillionaire Imperial</span>
+                {% elif subscription and subscription.plan_type == 'daily' %}
+                <span class="tier-icon"><i class="fas fa-bolt"></i> Daily Premium</span>
+                {% else %}
+                <span class="tier-icon"><i class="fas fa-chart-line"></i> Professional</span>
+                {% endif %}
+                {% if has_admin_access %}
+                <span style="display: inline-block; background: #8B5CF6; padding: 0.25rem 0.75rem; border-radius: 100px; font-size: 0.7rem;">
+                    <i class="fas fa-shield-alt"></i> Admin Access
+                </span>
+                {% endif %}
+            </h1>
+            <p>Manage your profile, track applications, and grow your business</p>
+        </div>
+        <a href="{{ url_for('edit_profile') }}" class="btn-secondary" style="background: rgba(255,255,255,0.2); color: white; padding: 0.6rem 1.2rem; border-radius: 100px; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+            <i class="fas fa-edit"></i> Edit Profile
+        </a>
+    </div>
+
+    <!-- Expiry Warning Banner -->
+    {% if expiry_warning %}
+    <div class="expiry-warning">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <i class="fas fa-exclamation-triangle"></i>
+            <div>
+                <strong>⚠️ Subscription Expiring Soon!</strong>
+                <p style="margin: 0; font-size: 0.8rem;">Your {{ subscription.plan_type|title }} premium plan expires in <strong>{{ subscription.days_remaining() }} days</strong>. Renew now to continue enjoying premium benefits.</p>
+            </div>
+        </div>
+        <a href="{{ url_for('subscribe') }}" class="btn-renew">
+            <i class="fas fa-arrow-up"></i> Renew Now
+        </a>
+    </div>
+    {% endif %}
+
+    <!-- Subscription Banner -->
+    <div class="subscription-banner">
+        <div class="subscription-info">
+            <h3>Current Plan</h3>
+            <div class="plan-name">
+                {% if subscription and subscription.plan_type == 'weekly' %}
+                    👑 Weekly Premium - Millionaire Tier
+                {% elif subscription and subscription.plan_type == 'monthly' %}
+                    💎 Monthly Premium - Billionaire Tier
+                {% elif subscription and subscription.plan_type == 'annual' %}
+                    🌟 Annual Premium - Trillionaire Tier
+                {% elif subscription and subscription.plan_type == 'daily' %}
+                    ⚡ Daily Premium
+                {% else %}
+                    🎯 Professional Plan
+                {% endif %}
+            </div>
+            {% if subscription and subscription.plan_type != 'free' %}
+            <div class="expiry">
+                <i class="fas fa-clock"></i> Expires: {{ subscription.expires_at.strftime('%B %d, %Y') }}
+                {% if subscription.days_remaining() <= 7 %}
+                <span style="color: #F59E0B; margin-left: 0.5rem;">
+                    ({{ subscription.days_remaining() }} days left)
+                </span>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+        <div>
+            {% if subscription and subscription.plan_type != 'free' %}
+                {% if subscription.days_remaining() <= 3 %}
+                <span class="subscription-badge expiring">
+                    <i class="fas fa-hourglass-half"></i> Expiring Soon
+                </span>
+                {% else %}
+                <span class="subscription-badge premium">
+                    <i class="fas fa-crown"></i> Active Premium
+                </span>
+                {% endif %}
+            {% else %}
+                <a href="{{ url_for('subscribe') }}" class="upgrade-btn">
+                    <i class="fas fa-arrow-up"></i> Upgrade to Premium
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="dashboard-grid">
+        <div class="dashboard-sidebar">
+            <div class="profile-card">
+                <div class="profile-avatar">
+                    <img src="{{ url_for('static', filename='uploads/' + (user.profile_picture if user.profile_picture else 'default-avatar.png')) }}" alt="{{ user.name }}">
+                </div>
+                <h3>
+                    {{ worker.business_name or user.name }}
+                    {% if worker.is_verified and user_has_premium %}
+                    <span class="verified-badge" style="font-size: 0.7rem; padding: 0.2rem 0.6rem;">
+                        <i class="fas fa-check-circle"></i> Verified
+                    </span>
+                    {% endif %}
+                </h3>
+                <p><i class="fas fa-phone"></i> {{ user.phone }}</p>
+                {% if user.email %}
+                <p><i class="fas fa-envelope"></i> {{ user.email }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Feature Access Cards -->
+            <div class="features-grid">
+                <div class="feature-card {% if not user_has_premium %}locked{% else %}premium-active{% endif %}">
+                    <div class="feature-icon">
+                        <i class="fas fa-paper-plane"></i>
+                    </div>
+                    <div class="feature-title">Unlimited Applications</div>
+                    <div class="feature-desc">
+                        {% if user_has_premium %}
+                            <span style="color: #059669;">✓ Active - Apply freely</span>
+                        {% else %}
+                            {{ remaining_applications() }} / 5 applications left this month
+                        {% endif %}
+                    </div>
+                    {% if not user_has_premium %}
+                    <div class="upgrade-tag">Upgrade to unlock</div>
+                    {% endif %}
+                </div>
+
+                <div class="feature-card {% if not user_has_feature('featured_listing') %}locked{% else %}premium-active{% endif %}">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="feature-title">Featured Listing</div>
+                    <div class="feature-desc">
+                        {% if user_has_feature('featured_listing') %}
+                            <span style="color: #059669;">✓ Profile boosted</span>
+                        {% else %}
+                            Get top search placement
+                        {% endif %}
+                    </div>
+                    {% if not user_has_feature('featured_listing') %}
+                    <div class="upgrade-tag">Upgrade to unlock</div>
+                    {% endif %}
+                </div>
+
+                <div class="feature-card {% if not user_has_feature('analytics') %}locked{% else %}premium-active{% endif %}">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div class="feature-title">Advanced Analytics</div>
+                    <div class="feature-desc">
+                        {% if user_has_feature('analytics') %}
+                            <a href="{{ url_for('worker_analytics') }}" class="btn-link" style="color: #059669;">View Dashboard →</a>
+                        {% else %}
+                            Track your performance
+                        {% endif %}
+                    </div>
+                    {% if not user_has_feature('analytics') %}
+                    <div class="upgrade-tag">Weekly+ plan required</div>
+                    {% endif %}
+                </div>
+
+                <div class="feature-card {% if not user_has_feature('qr_code') %}locked{% else %}premium-active{% endif %}">
+                    <div class="feature-icon">
+                        <i class="fas fa-qrcode"></i>
+                    </div>
+                    <div class="feature-title">QR Code Profile</div>
+                    <div class="feature-desc">
+                        {% if user_has_feature('qr_code') %}
+                            <a href="{{ url_for('worker_qr_code') }}" class="btn-link" style="color: #059669;">Generate QR →</a>
+                        {% else %}
+                            Digital business card
+                        {% endif %}
+                    </div>
+                    {% if not user_has_feature('qr_code') %}
+                    <div class="upgrade-tag">Monthly+ plan required</div>
+                    {% endif %}
+                </div>
+
+                <div class="feature-card {% if not user_has_feature('job_alerts') %}locked{% else %}premium-active{% endif %}">
+                    <div class="feature-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <div class="feature-title">Job Alerts</div>
+                    <div class="feature-desc">
+                        {% if user_has_feature('job_alerts') %}
+                            <a href="{{ url_for('worker_job_alerts') }}" class="btn-link" style="color: #059669;">Manage Alerts →</a>
+                        {% else %}
+                            Get notified for new jobs
+                        {% endif %}
+                    </div>
+                    {% if not user_has_feature('job_alerts') %}
+                    <div class="upgrade-tag">Premium required</div>
+                    {% endif %}
+                </div>
+
+                <div class="feature-card {% if not user_has_feature('verified_badge') %}locked{% else %}premium-active{% endif %}">
+                    <div class="feature-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="feature-title">Verification Badge</div>
+                    <div class="feature-desc">
+                        {% if worker.is_verified %}
+                            <span style="color: #059669;">✓ Verified Professional</span>
+                        {% elif user_has_feature('verified_badge') %}
+                            <a href="{{ url_for('verify') }}" class="btn-link" style="color: #059669;">Apply Now →</a>
+                        {% else %}
+                            Build customer trust
+                        {% endif %}
+                    </div>
+                    {% if not user_has_feature('verified_badge') %}
+                    <div class="upgrade-tag">Weekly+ plan required</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card" onclick="window.location.href='#reviews'">
+                    <div class="stat-value">{{ worker.rating_count }}</div>
+                    <div class="stat-label">Reviews</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{{ worker.years_experience or 0 }}</div>
+                    <div class="stat-label">Years Exp</div>
+                </div>
+                <div class="stat-card" onclick="window.location.href='#applications'">
+                    <div class="stat-value">{{ applications|length }}</div>
+                    <div class="stat-label">Applications</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">KES {{ "%.0f"|format(worker.hourly_rate or 0) }}</div>
+                    <div class="stat-label">Hourly Rate</div>
+                </div>
+            </div>
+
+            <div class="sidebar-actions">
+                <a href="{{ url_for('edit_profile') }}" class="btn-outline"><i class="fas fa-edit"></i> Edit Profile</a>
+                <a href="{{ url_for('browse_jobs') }}" class="btn-outline"><i class="fas fa-briefcase"></i> Browse Jobs</a>
+                {% if user_has_feature('verified_badge') and not worker.is_verified %}
+                <a href="{{ url_for('verify') }}" class="btn-primary"><i class="fas fa-check-circle"></i> Get Verified</a>
+                {% endif %}
+                {% if user_has_feature('analytics') %}
+                <a href="{{ url_for('worker_analytics') }}" class="btn-outline"><i class="fas fa-chart-line"></i> Analytics</a>
+                {% endif %}
+                {% if user_has_feature('qr_code') %}
+                <a href="{{ url_for('worker_qr_code') }}" class="btn-outline"><i class="fas fa-qrcode"></i> QR Code</a>
+                {% endif %}
+                {% if user_has_feature('job_alerts') %}
+                <a href="{{ url_for('worker_job_alerts') }}" class="btn-outline"><i class="fas fa-bell"></i> Job Alerts</a>
+                {% endif %}
+                {% if has_admin_access %}
+                <a href="{{ url_for('admin_dashboard') }}" style="background: linear-gradient(135deg, #8B5CF6, #6D28D9); color: white;">
+                    <i class="fas fa-shield-alt"></i> Admin Dashboard
+                </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="dashboard-main">
+            <!-- Application Stats Cards -->
+            <div class="app-stats-grid">
+                <div class="app-stat-card">
+                    <div class="app-stat-value pending">{{ pending_apps|default(0) }}</div>
+                    <div class="app-stat-label">Pending Applications</div>
+                </div>
+                <div class="app-stat-card">
+                    <div class="app-stat-value accepted">{{ accepted_apps|default(0) }}</div>
+                    <div class="app-stat-label">Accepted</div>
+                </div>
+                <div class="app-stat-card">
+                    <div class="app-stat-value rejected">{{ rejected_apps|default(0) }}</div>
+                    <div class="app-stat-label">Rejected</div>
+                </div>
+            </div>
+
+            <!-- My Applications Section -->
+            <div class="section" id="applications">
+                <div class="section-header">
+                    <h2><i class="fas fa-file-alt"></i> My Applications</h2>
+                    <div>
+                        {% if user_has_premium %}
+                            <span class="remaining-badge"><i class="fas fa-infinity"></i> Unlimited applications</span>
+                        {% else %}
+                            {% set remaining = remaining_applications() %}
+                            <span class="remaining-badge {% if remaining <= 2 %}warning{% endif %}">
+                                <i class="fas fa-chart-simple"></i> {{ remaining }} applications remaining this month
+                            </span>
+                        {% endif %}
+                        <a href="{{ url_for('browse_jobs') }}" class="btn-primary-small" style="margin-left: 1rem;">Browse Jobs</a>
+                    </div>
+                </div>
+                {% if applications %}
+                    {% for app in applications[:5] %}
+                    <div class="application-card">
+                        <div class="application-header">
+                            <h3>{{ app.job.title }}</h3>
+                            <span class="status {{ app.status }}">{{ app.status|title }}</span>
+                        </div>
+                        <div style="margin: 0.5rem 0; color: #6B7280; font-size: 0.8rem;">
+                            <i class="fas fa-map-marker-alt"></i> {{ app.job.location or 'Location not specified' }}
+                        </div>
+                        {% if app.bid_amount %}
+                        <div style="font-weight: 600; color: #059669; margin: 0.25rem 0;">
+                            <i class="fas fa-money-bill-wave"></i> Your Bid: KES {{ "%.0f"|format(app.bid_amount) }}
+                        </div>
+                        {% endif %}
+                        <div class="application-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #F3F4F6;">
+                            <small><i class="fas fa-clock"></i> Applied: {{ app.created_at.strftime('%b %d, %Y') }}</small>
+                            <a href="{{ url_for('job_detail', job_id=app.job.id) }}" class="btn-outline-small">View Job →</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% if applications|length > 5 %}
+                    <div style="text-align: center; margin-top: 1rem;">
+                        <a href="#" class="btn-outline">View All {{ applications|length }} Applications →</a>
+                    </div>
+                    {% endif %}
+                {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-briefcase"></i>
+                        <h3>No Applications Yet</h3>
+                        <p>Start applying to jobs and grow your portfolio</p>
+                        <a href="{{ url_for('browse_jobs') }}" class="btn-primary">Browse Available Jobs</a>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Recent Reviews Section -->
+            <div class="section" id="reviews">
+                <div class="section-header">
+                    <h2><i class="fas fa-star"></i> Recent Reviews</h2>
+                </div>
+                {% if reviews %}
+                    {% for review in reviews[:5] %}
+                    <div class="review-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <strong>{{ review.customer.name }}</strong>
+                                <div class="stars">
+                                    {% for i in range(5) %}
+                                        {% if i < review.rating %}
+                                            <i class="fas fa-star"></i>
+                                        {% else %}
+                                            <i class="far fa-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <small style="color: #9CA3AF;">{{ review.created_at.strftime('%b %d, %Y') }}</small>
+                        </div>
+                        <p style="color: #6B7280; font-size: 0.85rem; line-height: 1.5;">"{{ review.comment[:150] }}{% if review.comment|length > 150 %}...{% endif %}"</p>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-star"></i>
+                        <h3>No Reviews Yet</h3>
+                        <p>Complete jobs to receive feedback from customers</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Quick Tips Section -->
+            <div class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-lightbulb"></i> Quick Tips for Success</h2>
+                </div>
+                <div style="background: #FEF3C7; border-radius: 16px; padding: 1rem;">
+                    <ul style="margin: 0; padding-left: 1.25rem; color: #92400E;">
+                        <li><i class="fas fa-check-circle" style="color: #F59E0B;"></i> Complete your profile with detailed skills and portfolio</li>
+                        <li><i class="fas fa-check-circle" style="color: #F59E0B;"></i> Respond to messages quickly - customers prefer workers who reply within minutes</li>
+                        <li><i class="fas fa-check-circle" style="color: #F59E0B;"></i> Get verified to build trust and get 3x more job offers</li>
+                        <li><i class="fas fa-check-circle" style="color: #F59E0B;"></i> Set competitive rates based on your experience level</li>
+                        <li><i class="fas fa-check-circle" style="color: #F59E0B;"></i> Ask satisfied customers to leave reviews - it helps your ranking!</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Smooth scroll to sections
+document.querySelectorAll('.stat-card').forEach(card => {
+    card.addEventListener('click', function() {
+        const targetId = this.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
+        if (targetId) {
+            const target = document.querySelector(targetId);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

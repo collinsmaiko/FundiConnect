@@ -1,0 +1,779 @@
+{% extends "base.html" %}
+
+{% block title %}My Reports - {{ settings.platform_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ============================================
+    REPORTS PAGE - ENTERPRISE EDITION
+    Professional Design | Enhanced Analytics | Premium UI
+    Version: 2.0 | Financial-Grade Styling
+   ============================================ */
+
+:root {
+    --primary: #0F172A;
+    --primary-dark: #0A0F1A;
+    --primary-light: #1E293B;
+    --accent: #3B82F6;
+    --accent-dark: #2563EB;
+    --accent-light: #60A5FA;
+    --success: #10B981;
+    --warning: #F59E0B;
+    --danger: #EF4444;
+    --info: #8B5CF6;
+    --gray-50: #F9FAFB;
+    --gray-100: #F3F4F6;
+    --gray-200: #E5E7EB;
+    --gray-300: #D1D5DB;
+    --gray-400: #9CA3AF;
+    --gray-500: #6B7280;
+    --gray-600: #4B5563;
+    --gray-700: #374151;
+    --gray-800: #1F2937;
+    --gray-900: #111827;
+    --white: #FFFFFF;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+    --transition-fast: all 0.2s ease;
+    --transition-base: all 0.3s ease;
+    --transition-slow: all 0.5s ease;
+}
+
+::selection {
+    color: #10B981;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.reports-container {
+    max-width: 1280px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+}
+
+/* ==================== HEADER SECTION ==================== */
+.reports-header {
+    background: linear-gradient(135deg, var(--gray-900) 0%, var(--gray-800) 100%);
+    border-radius: 28px;
+    padding: 2rem 2.5rem;
+    margin-bottom: 2rem;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+}
+
+.reports-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.reports-header::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -5%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(16,185,129,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.reports-header h1 {
+    font-size: 1.75rem;
+    margin-bottom: 0.75rem;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    position: relative;
+    z-index: 2;
+}
+
+.reports-header h1 i {
+    color: var(--accent-light);
+    font-size: 1.8rem;
+}
+
+.reports-header p {
+    opacity: 0.85;
+    font-size: 0.95rem;
+    max-width: 600px;
+    position: relative;
+    z-index: 2;
+}
+
+/* ==================== STATS CARDS ==================== */
+.reports-stats {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.stat-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 1rem 1.5rem;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gray-200);
+    transition: var(--transition-base);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-width: 120px;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--accent-light);
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+}
+
+.stat-icon.total { background: rgba(59,130,246,0.12); color: var(--accent); }
+.stat-icon.pending { background: rgba(245,158,11,0.12); color: var(--warning); }
+.stat-icon.progress { background: rgba(59,130,246,0.12); color: var(--accent); }
+.stat-icon.resolved { background: rgba(16,185,129,0.12); color: var(--success); }
+
+.stat-content {
+    flex: 1;
+}
+
+.stat-value {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--gray-900);
+    line-height: 1.2;
+    margin-bottom: 0.25rem;
+}
+
+.stat-label {
+    font-size: 0.7rem;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+/* ==================== REPORTS LIST ==================== */
+.reports-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.report-card {
+    background: var(--white);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gray-200);
+    transition: var(--transition-base);
+}
+
+.report-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--accent-light);
+}
+
+.report-header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--gray-100);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    background: linear-gradient(135deg, var(--gray-50), var(--white));
+}
+
+.report-title-section {
+    flex: 1;
+}
+
+.report-title {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--gray-800);
+    margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.report-tracking {
+    font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    background: rgba(59,130,246,0.1);
+    padding: 0.25rem 0.75rem;
+    border-radius: 100px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+.report-status {
+    flex-shrink: 0;
+}
+
+/* Status Badges - Enhanced */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    backdrop-filter: blur(4px);
+}
+
+.status-pending {
+    background: linear-gradient(135deg, rgba(245,158,11,0.12), rgba(245,158,11,0.05));
+    color: var(--warning);
+    border: 1px solid rgba(245,158,11,0.2);
+}
+
+.status-in_progress {
+    background: linear-gradient(135deg, rgba(59,130,246,0.12), rgba(59,130,246,0.05));
+    color: var(--accent);
+    border: 1px solid rgba(59,130,246,0.2);
+}
+
+.status-resolved {
+    background: linear-gradient(135deg, rgba(16,185,129,0.12), rgba(16,185,129,0.05));
+    color: var(--success);
+    border: 1px solid rgba(16,185,129,0.2);
+}
+
+.status-dismissed {
+    background: linear-gradient(135deg, rgba(107,114,128,0.12), rgba(107,114,128,0.05));
+    color: var(--gray-500);
+    border: 1px solid rgba(107,114,128,0.2);
+}
+
+/* Report Body */
+.report-body {
+    padding: 1.5rem;
+}
+
+/* Type and Priority Badges Container */
+.badge-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.report-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 1rem;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    backdrop-filter: blur(4px);
+}
+
+.report-type-scam { background: rgba(239,68,68,0.12); color: var(--danger); border: 1px solid rgba(239,68,68,0.2); }
+.report-type-payment { background: rgba(245,158,11,0.12); color: var(--warning); border: 1px solid rgba(245,158,11,0.2); }
+.report-type-technical { background: rgba(59,130,246,0.12); color: var(--accent); border: 1px solid rgba(59,130,246,0.2); }
+.report-type-user { background: rgba(139,92,246,0.12); color: var(--info); border: 1px solid rgba(139,92,246,0.2); }
+.report-type-content { background: rgba(16,185,129,0.12); color: var(--success); border: 1px solid rgba(16,185,129,0.2); }
+.report-type-fraud { background: rgba(239,68,68,0.12); color: var(--danger); border: 1px solid rgba(239,68,68,0.2); }
+.report-type-safety { background: rgba(245,158,11,0.12); color: var(--warning); border: 1px solid rgba(245,158,11,0.2); }
+.report-type-other { background: rgba(107,114,128,0.12); color: var(--gray-500); border: 1px solid rgba(107,114,128,0.2); }
+
+.priority-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 1rem;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    backdrop-filter: blur(4px);
+}
+
+.priority-low { background: rgba(16,185,129,0.12); color: var(--success); border: 1px solid rgba(16,185,129,0.2); }
+.priority-medium { background: rgba(245,158,11,0.12); color: var(--warning); border: 1px solid rgba(245,158,11,0.2); }
+.priority-high { background: rgba(239,68,68,0.12); color: var(--danger); border: 1px solid rgba(239,68,68,0.2); }
+.priority-urgent { background: rgba(124,58,237,0.12); color: #7C3AED; border: 1px solid rgba(124,58,237,0.2); }
+
+/* Description */
+.report-description {
+    color: var(--gray-600);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+/* Resolution Notes */
+.resolution-notes {
+    background: linear-gradient(135deg, var(--gray-50), var(--white));
+    padding: 1rem 1.25rem;
+    border-radius: 16px;
+    margin-top: 1rem;
+    border-left: 3px solid var(--success);
+    border: 1px solid var(--gray-200);
+}
+
+.resolution-notes strong {
+    font-size: 0.75rem;
+    color: var(--success);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.resolution-notes p {
+    font-size: 0.85rem;
+    color: var(--gray-600);
+    margin-top: 0.5rem;
+    line-height: 1.5;
+}
+
+/* Report Meta */
+.report-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--gray-100);
+    font-size: 0.7rem;
+    color: var(--gray-400);
+}
+
+.report-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.report-meta i {
+    font-size: 0.8rem;
+}
+
+/* ==================== EMPTY STATE ==================== */
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: var(--white);
+    border-radius: 28px;
+    border: 1px solid var(--gray-200);
+    box-shadow: var(--shadow-sm);
+}
+
+.empty-state i {
+    font-size: 4rem;
+    background: linear-gradient(135deg, var(--gray-400), var(--gray-500));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 1.5rem;
+    opacity: 0.6;
+}
+
+.empty-state h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: var(--gray-700);
+    font-weight: 700;
+}
+
+.empty-state p {
+    color: var(--gray-500);
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+/* Action Buttons */
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 100px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: var(--transition-base);
+    border: none;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    background: linear-gradient(135deg, var(--accent-dark), var(--accent));
+}
+
+/* Track Form */
+.track-section {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--gray-200);
+}
+
+.track-label {
+    font-size: 0.85rem;
+    color: var(--gray-500);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.track-input {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+    max-width: 450px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.track-input input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--gray-200);
+    border-radius: 14px;
+    font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+    font-size: 0.85rem;
+    transition: var(--transition-fast);
+    background: var(--gray-50);
+}
+
+.track-input input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+    background: var(--white);
+}
+
+.track-input button {
+    background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.track-input button:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Timeline Progress Indicator */
+.timeline-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: var(--gray-50);
+    border-radius: 12px;
+}
+
+.timeline-step {
+    flex: 1;
+    text-align: center;
+    font-size: 0.65rem;
+    color: var(--gray-400);
+    position: relative;
+}
+
+.timeline-step.active {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.timeline-step.completed {
+    color: var(--success);
+}
+
+.timeline-step i {
+    display: block;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+/* ==================== RESPONSIVE DESIGN ==================== */
+@media (max-width: 768px) {
+    .reports-container {
+        padding: 0 1rem;
+    }
+
+    .reports-header {
+        padding: 1.5rem;
+    }
+
+    .reports-header h1 {
+        font-size: 1.25rem;
+    }
+
+    .report-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .stat-card {
+        min-width: calc(50% - 0.5rem);
+        flex: 1;
+    }
+
+    .reports-stats {
+        gap: 0.75rem;
+    }
+
+    .badge-container {
+        gap: 0.5rem;
+    }
+
+    .report-meta {
+        gap: 1rem;
+    }
+
+    .track-input {
+        flex-direction: column;
+    }
+
+    .track-input button {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .stat-card {
+        min-width: 100%;
+    }
+
+    .report-title {
+        font-size: 0.9rem;
+    }
+
+    .report-body {
+        padding: 1rem;
+    }
+
+    .badge-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* Animation Classes */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.report-card {
+    animation: slideInUp 0.4s ease forwards;
+}
+
+.report-card:nth-child(1) { animation-delay: 0s; }
+.report-card:nth-child(2) { animation-delay: 0.05s; }
+.report-card:nth-child(3) { animation-delay: 0.1s; }
+.report-card:nth-child(4) { animation-delay: 0.15s; }
+.report-card:nth-child(5) { animation-delay: 0.2s; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="reports-container">
+    <div class="reports-header">
+        <h1>
+            <i class="fas fa-flag-checkered"></i>
+            My Reported Issues
+        </h1>
+        <p>Track and manage all issues you've reported to {{ settings.platform_name }}. Our team reviews each report and provides timely updates.</p>
+    </div>
+
+    {% if reports %}
+    <div class="reports-stats">
+        <div class="stat-card">
+            <div class="stat-icon total"><i class="fas fa-chart-line"></i></div>
+            <div class="stat-content">
+                <div class="stat-value">{{ reports|length }}</div>
+                <div class="stat-label">Total Reports</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon pending"><i class="fas fa-clock"></i></div>
+            <div class="stat-content">
+                <div class="stat-value">{{ reports|selectattr('status', 'equalto', 'pending')|list|length }}</div>
+                <div class="stat-label">Pending Review</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon progress"><i class="fas fa-spinner"></i></div>
+            <div class="stat-content">
+                <div class="stat-value">{{ reports|selectattr('status', 'equalto', 'in_progress')|list|length }}</div>
+                <div class="stat-label">In Progress</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon resolved"><i class="fas fa-check-circle"></i></div>
+            <div class="stat-content">
+                <div class="stat-value">{{ reports|selectattr('status', 'equalto', 'resolved')|list|length }}</div>
+                <div class="stat-label">Resolved</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="reports-list">
+        {% for report in reports %}
+        <div class="report-card">
+            <div class="report-header">
+                <div class="report-title-section">
+                    <div class="report-title">
+                        <strong>{{ report.issue_title }}</strong>
+                        <span class="report-tracking"><i class="fas fa-fingerprint"></i> {{ report.tracking_id }}</span>
+                    </div>
+                </div>
+                <div class="report-status">
+                    <span class="status-badge status-{{ report.status }}">
+                        {% if report.status == 'pending' %}
+                            <i class="fas fa-clock"></i> Pending Review
+                        {% elif report.status == 'in_progress' %}
+                            <i class="fas fa-spinner fa-spin"></i> In Progress
+                        {% elif report.status == 'resolved' %}
+                            <i class="fas fa-check-circle"></i> Resolved
+                        {% else %}
+                            <i class="fas fa-times-circle"></i> Dismissed
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+            <div class="report-body">
+                <div class="badge-container">
+                    <span class="report-type-badge report-type-{{ report.report_type }}">
+                        {% if report.report_type == 'scam' %}<i class="fas fa-shield-alt"></i> Scam Attempt
+                        {% elif report.report_type == 'payment' %}<i class="fas fa-money-bill-wave"></i> Payment Issue
+                        {% elif report.report_type == 'technical' %}<i class="fas fa-tools"></i> Technical Problem
+                        {% elif report.report_type == 'user' %}<i class="fas fa-user-slash"></i> User Misconduct
+                        {% elif report.report_type == 'content' %}<i class="fas fa-ban"></i> Inappropriate Content
+                        {% elif report.report_type == 'fraud' %}<i class="fas fa-exclamation-triangle"></i> Fraudulent Activity
+                        {% elif report.report_type == 'safety' %}<i class="fas fa-shield-virus"></i> Safety Concern
+                        {% else %}<i class="fas fa-question-circle"></i> Other Issue{% endif %}
+                    </span>
+                    <span class="priority-badge priority-{{ report.priority }}">
+                        <i class="fas {% if report.priority == 'low' %}fa-arrow-down{% elif report.priority == 'medium' %}fa-minus{% elif report.priority == 'high' %}fa-arrow-up{% else %}fa-exclamation-triangle{% endif %}"></i>
+                        {{ report.priority|title }} Priority
+                    </span>
+                </div>
+
+                <div class="report-description">
+                    {{ report.description[:250] }}{% if report.description|length > 250 %}...{% endif %}
+                </div>
+
+                {% if report.resolution_notes and report.status in ['resolved', 'dismissed'] %}
+                <div class="resolution-notes">
+                    <strong><i class="fas fa-clipboard-list"></i> Resolution Notes</strong>
+                    <p>{{ report.resolution_notes[:200] }}{% if report.resolution_notes|length > 200 %}...{% endif %}</p>
+                </div>
+                {% endif %}
+
+                <div class="report-meta">
+                    <span><i class="fas fa-calendar-alt"></i> Submitted: {{ report.created_at.strftime('%b %d, %Y at %I:%M %p') }}</span>
+                    {% if report.resolved_at %}
+                    <span><i class="fas fa-check-circle"></i> Resolved: {{ report.resolved_at.strftime('%b %d, %Y') }}</span>
+                    {% endif %}
+                    {% if report.related_id %}
+                    <span><i class="fas fa-link"></i> Related ID: {{ report.related_id }}</span>
+                    {% endif %}
+                </div>
+
+                <!-- Timeline Progress Indicator for active reports -->
+                {% if report.status in ['pending', 'in_progress'] %}
+                <div class="timeline-indicator">
+                    <div class="timeline-step {% if report.status == 'pending' %}active{% elif report.status in ['in_progress', 'resolved'] %}completed{% endif %}">
+                        <i class="fas fa-flag"></i>
+                        <span>Reported</span>
+                    </div>
+                    <div class="timeline-step {% if report.status == 'in_progress' %}active{% elif report.status == 'resolved' %}completed{% endif %}">
+                        <i class="fas fa-search"></i>
+                        <span>Reviewing</span>
+                    </div>
+                    <div class="timeline-step {% if report.status == 'resolved' %}completed{% endif %}">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Resolved</span>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% else %}
+    <div class="empty-state">
+        <i class="fas fa-flag-checkered"></i>
+        <h3>No Reports Yet</h3>
+        <p>You haven't submitted any reports yet. If you encounter any issues, we're here to help!</p>
+        <a href="{{ url_for('report_issue') }}" class="btn-primary">
+            <i class="fas fa-flag"></i> Report an Issue
+        </a>
+
+        <div class="track-section">
+            <div class="track-label">
+                <i class="fas fa-search"></i> Have a tracking ID?
+            </div>
+            <form action="{{ url_for('track_report') }}" method="GET" class="track-input">
+                <input type="text" name="tracking" placeholder="Enter tracking ID (e.g., REP-XXXXXX-YYYYMM)" style="font-family: monospace;">
+                <button type="submit"><i class="fas fa-search"></i> Track Report</button>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

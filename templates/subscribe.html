@@ -1,0 +1,864 @@
+{% extends "base.html" %}
+
+{% block title %}Subscription Plans - {{ settings.platform_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ============================================
+   FILE: subscribe.html
+   FundiConnect - Unified Subscription Page
+   Shows different plans based on user type
+   ============================================ */
+
+.subscribe-page {
+    padding: 3rem 0;
+    background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+    min-height: calc(100vh - 200px);
+}
+
+.subscribe-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.subscribe-header h1 {
+    font-size: 2rem;
+    color: #1F2937;
+    margin-bottom: 0.5rem;
+    background: none;
+}
+
+.subscribe-header p {
+    color: #6B7280;
+    font-size: 1rem;
+}
+
+/* Role Banner */
+.role-banner {
+    background: linear-gradient(135deg, #1F2937 0%, #111827 100%);
+    border-radius: 20px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    color: white;
+}
+
+.role-banner .role-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.role-banner .role-info i {
+    font-size: 2rem;
+    background: rgba(255,255,255,0.2);
+    padding: 0.75rem;
+    border-radius: 50%;
+}
+
+.role-banner .role-info h3 {
+    margin: 0;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.role-banner .role-info p {
+    margin: 0;
+    opacity: 0.8;
+    font-size: 0.8rem;
+}
+
+.current-plan {
+    background: white;
+    border-radius: 24px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    border: 1px solid #E5E7EB;
+}
+
+.plan-badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 100px;
+    font-weight: 600;
+    margin-top: 0.5rem;
+}
+
+.plan-badge.free {
+    background: #F3F4F6;
+    color: #6B7280;
+}
+
+.plan-badge.premium {
+    background: linear-gradient(135deg, #059669, #047857);
+    color: white;
+}
+
+/* Plans Grid */
+.plans-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.plan-card {
+    background: white;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s;
+    cursor: pointer;
+    position: relative;
+    border: 1px solid #E5E7EB;
+    display: flex;
+    flex-direction: column;
+}
+
+.plan-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border-color: #059669;
+}
+
+.plan-card.selected {
+    border: 2px solid #059669;
+    transform: scale(1.02);
+}
+
+.plan-card.featured {
+    border: 2px solid #F59E0B;
+    transform: scale(1.02);
+    box-shadow: 0 10px 30px rgba(245, 158, 11, 0.15);
+}
+
+.plan-card.featured:hover {
+    transform: scale(1.02) translateY(-5px);
+}
+
+.popular-tag {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+    color: white;
+    padding: 0.35rem 1rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    border-radius: 0 24px 0 16px;
+    z-index: 10;
+}
+
+.best-value-tag {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: linear-gradient(135deg, #10B981, #059669);
+    color: white;
+    padding: 0.35rem 1rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    border-radius: 24px 0 16px 0;
+    z-index: 10;
+}
+
+.plan-header {
+    background: linear-gradient(135deg, #059669, #047857);
+    color: white;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.plan-card.featured .plan-header {
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+}
+
+.plan-header h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: white;
+}
+
+.plan-price {
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+.plan-price small {
+    font-size: 0.8rem;
+    font-weight: normal;
+}
+
+.plan-price .price-note {
+    font-size: 0.7rem;
+    opacity: 0.8;
+    display: block;
+    margin-top: 0.25rem;
+}
+
+.plan-body {
+    padding: 1.5rem;
+    flex: 1;
+}
+
+.plan-features {
+    list-style: none;
+    margin-bottom: 1.5rem;
+}
+
+.plan-features li {
+    padding: 0.6rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.85rem;
+    color: #6B7280;
+    border-bottom: 1px solid #F3F4F6;
+}
+
+.plan-features li:last-child {
+    border-bottom: none;
+}
+
+.plan-features li i {
+    width: 20px;
+}
+
+.plan-features li i.fa-check {
+    color: #10B981;
+}
+
+.plan-features li i.fa-times {
+    color: #EF4444;
+}
+
+.plan-features li i.fa-star {
+    color: #F59E0B;
+}
+
+.plan-features li.feature-highlight {
+    background: rgba(245, 158, 11, 0.1);
+    margin: 0 -0.5rem;
+    padding: 0.6rem 0.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    color: #F59E0B;
+}
+
+.plan-features li.feature-highlight i {
+    color: #F59E0B;
+}
+
+.radio-select {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid #E5E7EB;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.plan-card.selected .radio-select {
+    border-color: #059669;
+}
+
+.plan-card.selected .radio-select::after {
+    content: '';
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #059669;
+}
+
+.plan-card.featured.selected .radio-select {
+    border-color: #F59E0B;
+}
+
+.plan-card.featured.selected .radio-select::after {
+    background: #F59E0B;
+}
+
+.plan-footer {
+    padding: 0 1.5rem 1.5rem;
+}
+
+.btn-select-plan {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 100px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    background: #F3F4F6;
+    color: #374151;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.plan-card.selected .btn-select-plan {
+    background: linear-gradient(135deg, #059669, #047857);
+    color: white;
+}
+
+.plan-card.featured.selected .btn-select-plan {
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+}
+
+.btn-select-plan:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.payment-info {
+    background: white;
+    border-radius: 24px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid #E5E7EB;
+}
+
+.payment-info h3 {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    color: #1F2937;
+}
+
+.mpesa-details {
+    background: #F9FAFB;
+    padding: 1rem;
+    border-radius: 16px;
+    margin-top: 1rem;
+    border: 1px solid #E5E7EB;
+}
+
+.mpesa-details strong {
+    color: #059669;
+}
+
+.btn-subscribe-plan {
+    width: 100%;
+    padding: 0.875rem;
+    margin-top: 1rem;
+    border-radius: 100px;
+    font-size: 1rem;
+}
+
+/* Comparison Tables */
+.comparison-table {
+    margin-top: 3rem;
+    background: white;
+    border-radius: 24px;
+    padding: 1.5rem;
+    overflow-x: auto;
+    border: 1px solid #E5E7EB;
+}
+
+.comparison-table h3 {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    color: #1F2937;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.comparison-table h3 i {
+    color: #059669;
+}
+
+.comparison-table table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+.comparison-table th,
+.comparison-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #F3F4F6;
+}
+
+.comparison-table th {
+    background: #F9FAFB;
+    font-weight: 600;
+    color: #059669;
+    font-size: 0.85rem;
+}
+
+.comparison-table td:first-child {
+    font-weight: 600;
+    color: #374151;
+}
+
+.comparison-table .check {
+    color: #10B981;
+    text-align: center;
+}
+
+.comparison-table .times {
+    color: #EF4444;
+    text-align: center;
+}
+
+.comparison-table .star {
+    color: #F59E0B;
+    text-align: center;
+}
+
+.info-note {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: #FEF3C7;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    color: #92400E;
+}
+
+.info-note i {
+    margin-right: 0.5rem;
+}
+
+@media (max-width: 1024px) {
+    .plans-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .subscribe-page {
+        padding: 2rem 1rem;
+    }
+    .plans-grid {
+        grid-template-columns: 1fr;
+    }
+    .plan-card.selected {
+        transform: scale(1);
+    }
+    .plan-card.featured {
+        transform: scale(1);
+    }
+    .role-banner {
+        flex-direction: column;
+        text-align: center;
+    }
+    .role-banner .role-info {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="subscribe-page">
+    <div class="container">
+        <div class="subscribe-header">
+            <h1>{{ settings.platform_name }} Subscription Plans</h1>
+            <p>Choose the plan that works best for you. Different features and pricing for workers and customers.</p>
+        </div>
+
+        <!-- Role Banner - Shows based on user type -->
+        <div class="role-banner">
+            <div class="role-info">
+                {% if session.user_type == 'worker' %}
+                    <i class="fas fa-tools"></i>
+                    <div>
+                        <h3>You are viewing as a <strong style="color: #F59E0B;">Worker</strong></h3>
+                        <p>These plans are designed for skilled workers who want to find more jobs and grow their business</p>
+                    </div>
+                {% else %}
+                    <i class="fas fa-user-tie"></i>
+                    <div>
+                        <h3>You are viewing as a <strong style="color: #F59E0B;">Customer</strong></h3>
+                        <p>These plans are designed for customers who want to hire skilled workers</p>
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                <a href="{{ url_for('dashboard') }}" class="btn-outline" style="background: rgba(255,255,255,0.2); color: white; padding: 0.5rem 1rem; border-radius: 100px; text-decoration: none;">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </a>
+            </div>
+        </div>
+
+        {% if current_subscription and current_subscription.plan_type != 'free' %}
+        <div class="current-plan">
+            <h3>Your Current Subscription</h3>
+            <div class="plan-badge premium">
+                <i class="fas fa-crown"></i> {{ current_subscription.plan_type|title }} Plan - Active
+            </div>
+            <p style="margin-top: 0.5rem;">Expires: {{ current_subscription.expires_at.strftime('%B %d, %Y') }}</p>
+            <p>Days Remaining: {{ current_subscription.days_remaining() }} days</p>
+            <p style="margin-top: 0.5rem; font-size: 0.85rem; color: #059669;">
+                <i class="fas fa-check-circle"></i> Your premium features are active!
+            </p>
+            <div style="margin-top: 1rem;">
+                <a href="{{ url_for('dashboard') }}" class="btn-primary" style="background: #059669; color: white; padding: 0.5rem 1.5rem; border-radius: 100px; text-decoration: none;">
+                    Go to Dashboard
+                </a>
+            </div>
+        </div>
+        {% endif %}
+
+        <form method="POST" action="{{ url_for('subscribe') }}" id="subscribe-form">
+            <input type="hidden" name="plan" id="selected-plan" required>
+
+            <!-- WORKER PLANS SECTION -->
+            <div id="worker-plans" class="plans-grid" {% if session.user_type != 'worker' %}style="display: none;"{% endif %}>
+                <!-- Daily Plan - Worker -->
+                <div class="plan-card" data-plan="daily" data-price="50">
+                    <div class="radio-select"></div>
+                    <div class="plan-header">
+                        <h3>Daily</h3>
+                        <div class="plan-price">
+                            KES 50
+                            <small>/day</small>
+                        </div>
+                    </div>
+                    <div class="plan-body">
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> Unlimited job applications</li>
+                            <li><i class="fas fa-check"></i> Featured in search results</li>
+                            <li><i class="fas fa-check"></i> Job alerts via SMS</li>
+                            <li><i class="fas fa-check"></i> Priority support</li>
+                            <li><i class="fas fa-times"></i> <span class="text-muted">Verified badge</span></li>
+                            <li><i class="fas fa-times"></i> <span class="text-muted">Advanced analytics</span></li>
+                            <li><i class="fas fa-times"></i> <span class="text-muted">QR code profile</span></li>
+                        </ul>
+                    </div>
+                    <div class="plan-footer">
+                        <button type="button" class="btn-select-plan">Select Daily</button>
+                    </div>
+                </div>
+
+                <!-- Weekly Plan - Worker (Most Popular) -->
+                <div class="plan-card featured" data-plan="weekly" data-price="200">
+                    <div class="popular-tag">🔥 Most Popular</div>
+                    <div class="radio-select"></div>
+                    <div class="plan-header">
+                        <h3>Weekly</h3>
+                        <div class="plan-price">
+                            KES 200
+                            <small>/week</small>
+                            <div class="price-note">Save 43% vs Daily</div>
+                        </div>
+                    </div>
+                    <div class="plan-body">
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> All Daily features</li>
+                            <li class="feature-highlight"><i class="fas fa-star"></i> <strong>ELIGIBLE FOR VERIFICATION</strong></li>
+                            <li><i class="fas fa-check"></i> Verified badge (after approval)</li>
+                            <li><i class="fas fa-check"></i> Top of search results</li>
+                            <li><i class="fas fa-check"></i> Advanced analytics dashboard</li>
+                            <li><i class="fas fa-times"></i> <span class="text-muted">QR code profile</span></li>
+                        </ul>
+                    </div>
+                    <div class="plan-footer">
+                        <button type="button" class="btn-select-plan">Select Weekly</button>
+                    </div>
+                </div>
+
+                <!-- Monthly Plan - Worker -->
+                <div class="plan-card" data-plan="monthly" data-price="500">
+                    <div class="best-value-tag">⭐ Best Value</div>
+                    <div class="radio-select"></div>
+                    <div class="plan-header">
+                        <h3>Monthly</h3>
+                        <div class="plan-price">
+                            KES 500
+                            <small>/month</small>
+                            <div class="price-note">Save 38% vs Weekly</div>
+                        </div>
+                    </div>
+                    <div class="plan-body">
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> All Weekly features</li>
+                            <li class="feature-highlight"><i class="fas fa-star"></i> <strong>ELIGIBLE FOR VERIFICATION</strong></li>
+                            <li><i class="fas fa-check"></i> Verified badge (after approval)</li>
+                            <li><i class="fas fa-check"></i> QR code profile (digital business card)</li>
+                            <li><i class="fas fa-check"></i> Premium profile styling</li>
+                            <li><i class="fas fa-check"></i> Advanced portfolio features</li>
+                        </ul>
+                    </div>
+                    <div class="plan-footer">
+                        <button type="button" class="btn-select-plan">Select Monthly</button>
+                    </div>
+                </div>
+
+                <!-- Annual Plan - Worker -->
+                <div class="plan-card" data-plan="annual" data-price="5000">
+                    <div class="radio-select"></div>
+                    <div class="plan-header">
+                        <h3>Annual</h3>
+                        <div class="plan-price">
+                            KES 5,000
+                            <small>/year</small>
+                            <div class="price-note">Save 17% vs Monthly</div>
+                        </div>
+                    </div>
+                    <div class="plan-body">
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> All Monthly features</li>
+                            <li class="feature-highlight"><i class="fas fa-star"></i> <strong>ELIGIBLE FOR VERIFICATION</strong></li>
+                            <li><i class="fas fa-check"></i> Verified badge (after approval)</li>
+                            <li><i class="fas fa-check"></i> Priority 24/7 dedicated support</li>
+                            <li><i class="fas fa-check"></i> Featured on homepage for 30 days</li>
+                            <li><i class="fas fa-check"></i> Custom profile URL</li>
+                            <li><i class="fas fa-check"></i> Free featured listing (value KES 2,000)</li>
+                        </ul>
+                    </div>
+                    <div class="plan-footer">
+                        <button type="button" class="btn-select-plan">Select Annual</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CUSTOMER PLANS SECTION -->
+            <div id="customer-plans" class="plans-grid" {% if session.user_type != 'customer' %}style="display: none;"{% endif %}>
+                <!-- Daily Plan - Customer -->
+                <div class="plan-card" data-plan="daily" data-price="30">
+                    <div class="radio-select"></div>
+                    <div class="plan-header">
+                        <h3>Daily</h3>
+                        <div class="plan-price">
+                            KES 30
+                            <small>/day</small>
+                        </div>
+                    </div>
+                    <div class="plan-body">
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> 5 job posts per day</li>
+                            <li><i class="fas fa-check"></i> Basic search filters</li>
+                            <li><i class="fas fa-check"></i> View worker profiles</li>
+                            <li><i class="fas fa-check"></i> Email support</li>
+                            <li><i class="fas fa-times"></i> <span class="text-muted">Priority listing</span></li>
+                            <li><i class="fas fa-times"></i> <span class="text-muted">Verified workers only</span></li>
+                        </ul>
+                    </div>
+                    <div class="plan-footer">
+                        <button type="button" class="btn-select-plan">Select Daily</button>
+                    </div>
+                </div>
+
+                <!-- Weekly Plan - Customer (Most Popular) -->
+                <div class="plan-card featured" data-plan="weekly" data-price="100">
+                    <div class="popular-tag">🔥 Most Popular</div>
+                    <div class="radio-select"></div>
+                    <div class="plan-header">
+                        <h3>Weekly</h3>
+                        <div class="plan-price">
+                            KES 100
+                            <small>/week</small>
+                            <div class="price-note">Save 52% vs Daily</div>
+                        </div>
+                    </div>
+                    <div class="plan-body">
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> Unlimited job posts</li>
+                            <li><i class="fas fa-check"></i> Priority listing in search</li>
+                            <li><i class="fas fa-check"></i> Access to verified workers only</li>
+                            <li><i class="fas fa-check"></i> View worker verification details</li>
+                            <li><i class="fas fa-check"></i> Advanced search filters</li>
+                            <li><i class="fas fa-check"></i> Priority support</li>
+                        </ul>
+                    </div>
+                    <div class="plan-footer">
+                        <button type="button" class="btn-select-plan">Select Weekly</button>
+                    </div>
+                </div>
+
+                <!-- Monthly Plan - Customer -->
+                <div class="plan-card" data-plan="monthly" data-price="300">
+                    <div class="best-value-tag">⭐ Best Value</div>
+                    <div class="radio-select"></div>
+                    <div class="plan-header">
+                        <h3>Monthly</h3>
+                        <div class="plan-price">
+                            KES 300
+                            <small>/month</small>
+                            <div class="price-note">Save 25% vs Weekly</div>
+                        </div>
+                    </div>
+                    <div class="plan-body">
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> All Weekly features</li>
+                            <li><i class="fas fa-check"></i> Featured job listing on homepage</li>
+                            <li><i class="fas fa-check"></i> Advanced hiring analytics</li>
+                            <li><i class="fas fa-check"></i> Bulk job posting (up to 50/month)</li>
+                            <li><i class="fas fa-check"></i> Premium customer support</li>
+                            <li><i class="fas fa-check"></i> Job posting templates</li>
+                        </ul>
+                    </div>
+                    <div class="plan-footer">
+                        <button type="button" class="btn-select-plan">Select Monthly</button>
+                    </div>
+                </div>
+
+                <!-- Annual Plan - Customer -->
+                <div class="plan-card" data-plan="annual" data-price="3000">
+                    <div class="radio-select"></div>
+                    <div class="plan-header">
+                        <h3>Annual</h3>
+                        <div class="plan-price">
+                            KES 3,000
+                            <small>/year</small>
+                            <div class="price-note">Save 17% vs Monthly</div>
+                        </div>
+                    </div>
+                    <div class="plan-body">
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> All Monthly features</li>
+                            <li><i class="fas fa-check"></i> Dedicated account manager</li>
+                            <li><i class="fas fa-check"></i> API access for business integration</li>
+                            <li><i class="fas fa-check"></i> Custom hiring dashboard</li>
+                            <li><i class="fas fa-check"></i> Priority 24/7 support</li>
+                            <li><i class="fas fa-check"></i> Unlimited job posts</li>
+                            <li><i class="fas fa-check"></i> Company profile page</li>
+                        </ul>
+                    </div>
+                    <div class="plan-footer">
+                        <button type="button" class="btn-select-plan">Select Annual</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="payment-info">
+                <h3><i class="fas fa-phone-alt"></i> Payment Information</h3>
+                <p>After selecting a plan, you'll receive payment instructions to complete your subscription via M-Pesa.</p>
+                <div class="mpesa-details">
+                    <strong>M-Pesa Paybill Number:</strong> {{ settings.mpesa_paybill or '123456' }}<br>
+                    <strong>Account Number:</strong> Your Phone Number<br>
+                    <strong>Amount:</strong> Based on selected plan<br>
+                    <strong>Reference:</strong> Transaction ID will be provided
+                </div>
+                <button type="submit" class="btn-primary btn-subscribe-plan" id="subscribe-btn" disabled>
+                    <i class="fas fa-lock"></i> Select a Plan to Continue
+                </button>
+            </div>
+        </form>
+
+        <!-- Feature Comparison Table - Shows based on user type -->
+        {% if session.user_type == 'worker' %}
+        <div class="comparison-table">
+            <h3><i class="fas fa-tools"></i> Worker Plans Comparison</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Daily<br><small>KES 50/day</small></th>
+                        <th>Weekly<br><small>KES 200/week</small></th>
+                        <th>Monthly<br><small>KES 500/month</small></th>
+                        <th>Annual<br><small>KES 5,000/year</small></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Unlimited Job Applications</td><td class="check"><i class="fas fa-check"></i></td><td class="check"><i class="fas fa-check"></i></td><td class="check"><i class="fas fa-check"></i></td><td class="check"><i class="fas fa-check"></i></td></tr>
+                    <tr><td>Featured in Search Results</td><td class="check"><i class="fas fa-check"></i></td><td class="check"><i class="fas fa-check"></i></td><td class="check"><i class="fas fa-check"></i></td><td class="check"><i class="fas fa-check"></i></td></tr>
+                    <tr><td>Job Alerts via SMS</td><td class="check"><i class="fas fa-check"></i></td><td class="check"><i class="fas fa-check"></i></td><td class="check"><i class="fas fa-check"></i></td><td class="check"><i class="fas fa-check"></i></td></tr>
+                    <tr style="background: rgba(245, 158, 11, 0.05);"><td><strong>ELIGIBLE FOR VERIFICATION</strong></td><td class="times"><i class="fas fa-times"></i></td><td class="check"><i class="fas fa-check"></i></td><td class="check"><i class="fas fa-check"></i></td><td class="check"><i class="fas fa-check"></i></td></tr>
+                    <tr><td>Verified Badge (after approval)</td><td class="times"><i class="fas fa-times"></i></td><td class="check"><i class="fas fa-check"></i></td><td class="check"><i class="fas fa-check"></i></td><td class="check"><i class="fas fa-check"></i></td></tr>
+                    <tr><td>Advanced Analytics Dashboard</td><td class="times"><i class="fas fa-times"></i></td><td class="check"><i class="fas fa-check"></i></td><td class="check"><i class="fas fa-check"></i></td><td class="check"><i class="fas fa-check"></i></td></tr>
+                    <tr><td>QR Code Profile</td><td class="times"><i class="fas fa-times"></i></td><td class="times"><i class="fas fa-times"></i></td><td class="check"><i class="fas fa-check"></i></td><td class="check"><i class="fas fa-check"></i></td></tr>
+                    <tr><td>Premium Profile Styling</td><td class="times"><i class="fas fa-times"></i></td><td class="times"><i class="fas fa-times"></i></td><td class="check"><i class="fas fa-check"></i></td><td class="check"><i class="fas fa-check"></i></td></tr>
+                    <tr><td>Priority 24/7 Support</td><td class="times"><i class="fas fa-times"></i></td><td class="times"><i class="fas fa-times"></i></td><td class="times"><i class="fas fa-times"></i></td><td class="check"><i class="fas fa-check"></i></td></tr>
+                    <tr><td>Featured on Homepage</td><td class="times"><i class="fas fa-times"></i></td><td class="times"><i class="fas fa-times"></i></td><td class="times"><i class="fas fa-times"></i></td><td class="check"><i class="fas fa-check"></i></td></tr>
+                    <tr><td>Custom Profile URL</td><td class="times"><i class="fas fa-times"></i></td><td class="times"><i class="fas fa-times"></i></td><td class="times"><i class="fas fa-times"></i></td><td class="check"><i class="fas fa-check"></i></td></tr>
+                </tbody>
+            </table>
+            <div class="info-note">
+                <i class="fas fa-info-circle"></i> <strong>Note:</strong> Daily plan does NOT include verification eligibility. Weekly, Monthly, and Annual plans are eligible to apply for verification after payment. Verification is subject to document review and approval by our team.
+            </div>
+        </div>
+        {% else %}
+        <div class="comparison-table">
+            <h3><i class="fas fa-user-tie"></i> Customer Plans Comparison</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Daily<br><small>KES 30/day</small></th>
+                        <th>Weekly<br><small>KES 100/week</small></th>
+                        <th>Monthly<br><small>KES 300/month</small></th>
+                        <th>Annual<br><small>KES 3,000/year</small></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Job Posts</td><td>5/day</td><td class="check">Unlimited</td><td class="check">Unlimited</td><td class="check">Unlimited</td></tr>
+                    <tr><td>Priority Listing in Search</td><td class="times"><i class="fas fa-times"></i></td><td class="check"><i class="fas fa-check"></i></td><td class="check"><i class="fas fa-check"></i></td><td class="check"><i class="fas fa-check"></i></td></tr>
+                    <tr><td>Access to Verified Workers Only</td><td class="times"><i class="fas fa-times"></i></td><td class="check"><i class="fas fa-check"></i></td><td class="check"><i class="fas fa-check"></i></td><td class="check"><i class="fas fa-check"></i></td></tr>
+                    <tr><td>View Worker Verification Details</td><td class="times"><i class="fas fa-times"></i></td><td class="check"><i class="fas fa-check"></i></td><td class="check"><i class="fas fa-check"></i></td><td class="check"><i class="fas fa-check"></i></td></tr>
+                    <tr><td>Advanced Search Filters</td><td class="times"><i class="fas fa-times"></i></td><td class="check"><i class="fas fa-check"></i></td><td class="check"><i class="fas fa-check"></i></td><td class="check"><i class="fas fa-check"></i></td></tr>
+                    <tr><td>Priority Support</td><td class="times"><i class="fas fa-times"></i></td><td class="check"><i class="fas fa-check"></i></td><td class="check"><i class="fas fa-check"></i></td><td class="check"><i class="fas fa-check"></i></td></tr>
+                    <tr><td>Featured Job Listing on Homepage</td><td class="times"><i class="fas fa-times"></i></td><td class="times"><i class="fas fa-times"></i></td><td class="check"><i class="fas fa-check"></i></td><td class="check"><i class="fas fa-check"></i></td></tr>
+                    <tr><td>Advanced Hiring Analytics</td><td class="times"><i class="fas fa-times"></i></td><td class="times"><i class="fas fa-times"></i></td><td class="check"><i class="fas fa-check"></i></td><td class="check"><i class="fas fa-check"></i></td></tr>
+                    <tr><td>Bulk Job Posting</td><td class="times"><i class="fas fa-times"></i></td><td class="times"><i class="fas fa-times"></i></td><td class="check"><i class="fas fa-check"></i></td><td class="check"><i class="fas fa-check"></i></td></tr>
+                    <tr>}<td>Dedicated Account Manager</td><td class="times"><i class="fas fa-times"></i></td><td class="times"><i class="fas fa-times"></i></td><td class="times"><i class="fas fa-times"></i></td><td class="check"><i class="fas fa-check"></i></td> </tr>
+                    <tr>}<td>API Access</td><td class="times"><i class="fas fa-times"></i></td><td class="times"><i class="fas fa-times"></i></td><td class="times"><i class="fas fa-times"></i></td><td class="check"><i class="fas fa-check"></i></td> </tr>
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+// Plan selection
+document.querySelectorAll('.plan-card').forEach(card => {
+    const selectBtn = card.querySelector('.btn-select-plan');
+
+    selectBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        // Get the visible plans grid
+        const currentPlans = document.querySelector('.plans-grid:not([style*="display: none"])');
+        if (currentPlans) {
+            currentPlans.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+        }
+        card.classList.add('selected');
+        const plan = card.dataset.plan;
+        const price = card.dataset.price;
+        document.getElementById('selected-plan').value = plan;
+        const btn = document.getElementById('subscribe-btn');
+        btn.disabled = false;
+        const planName = card.querySelector('.plan-header h3').innerText;
+        btn.innerHTML = '<i class="fas fa-arrow-right"></i> Subscribe to ' + planName + ' Plan - KES ' + price;
+    });
+
+    card.addEventListener('click', function(e) {
+        if (e.target !== selectBtn && !selectBtn.contains(e.target)) {
+            selectBtn.click();
+        }
+    });
+});
+
+// Form validation before submit
+document.getElementById('subscribe-form').addEventListener('submit', function(e) {
+    const selectedPlan = document.getElementById('selected-plan').value;
+    if (!selectedPlan) {
+        e.preventDefault();
+        alert('Please select a subscription plan first.');
+        return false;
+    }
+
+    // Show loading state
+    const btn = document.getElementById('subscribe-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+    return true;
+});
+</script>
+{% endblock %}

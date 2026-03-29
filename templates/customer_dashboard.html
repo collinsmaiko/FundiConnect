@@ -1,0 +1,885 @@
+{% extends "base.html" %}
+
+{% block title %}Customer Dashboard - {{ settings.platform_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ============================================
+   FILE: customer_dashboard.html
+   FundiConnect - Customer Dashboard with Premium Styling
+   ============================================ */
+
+.dashboard-container {
+    max-width: 1280px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+/* ========== TIER-BASED STYLES ========== */
+.dashboard-container.free-tier .dashboard-header,
+.dashboard-container.daily-tier .dashboard-header {
+    background: linear-gradient(135deg, #1F2937 0%, #111827 100%);
+}
+
+.dashboard-container.weekly-tier .dashboard-header {
+    background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+    animation: goldGlow 2s infinite;
+}
+
+.dashboard-container.monthly-tier .dashboard-header {
+    background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #A855F7 100%);
+    animation: purpleGlow 2s infinite;
+}
+
+.dashboard-container.annual-tier .dashboard-header {
+    background: linear-gradient(135deg, #0F172A 0%, #1E293B 30%, #F59E0B 70%, #8B5CF6 100%);
+    animation: diamondGlow 2s infinite;
+}
+
+/* Customer Verification Badge */
+.customer-verified-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, #059669, #047857);
+    color: white;
+    padding: 0.3rem 1rem;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(5, 150, 105, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.customer-verified-badge-large {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: linear-gradient(135deg, #059669, #047857);
+    color: white;
+    padding: 0.4rem 1.2rem;
+    border-radius: 100px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.customer-premium-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, #10B981, #059669);
+    color: white;
+    padding: 0.3rem 1rem;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.customer-elite-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, #10B981, #059669, #047857);
+    background-size: 200% 200%;
+    color: white;
+    padding: 0.3rem 1rem;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(5, 150, 105, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    animation: eliteGlow 3s ease infinite;
+}
+
+/* Animations */
+@keyframes goldGlow {
+    0%, 100% { box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3); }
+    50% { box-shadow: 0 10px 40px rgba(245, 158, 11, 0.6); }
+}
+
+@keyframes purpleGlow {
+    0%, 100% { box-shadow: 0 10px 40px rgba(139, 92, 246, 0.4); }
+    50% { box-shadow: 0 10px 50px rgba(139, 92, 246, 0.7); }
+}
+
+@keyframes diamondGlow {
+    0%, 100% {
+        box-shadow: 0 15px 45px rgba(245, 158, 11, 0.5);
+        filter: brightness(1);
+    }
+    50% {
+        box-shadow: 0 20px 60px rgba(139, 92, 246, 0.6);
+        filter: brightness(1.05);
+    }
+}
+
+@keyframes eliteGlow {
+    0% {
+        background-position: 0% 50%;
+        box-shadow: 0 2px 8px rgba(5, 150, 105, 0.3);
+    }
+    50% {
+        background-position: 100% 50%;
+        box-shadow: 0 4px 20px rgba(5, 150, 105, 0.6);
+    }
+    100% {
+        background-position: 0% 50%;
+        box-shadow: 0 2px 8px rgba(5, 150, 105, 0.3);
+    }
+}
+
+/* Dashboard Header */
+.dashboard-header {
+    border-radius: 28px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s ease;
+}
+
+.dashboard-header::before {
+    content: '';
+    position: absolute;
+    top: -30%;
+    right: -10%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.dashboard-header h1 {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+    color: white;
+    background: none;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.dashboard-header p {
+    opacity: 0.9;
+    font-size: 0.9rem;
+}
+
+.tier-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 1rem;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+}
+
+/* Subscription Banner */
+.subscription-banner {
+    border-radius: 24px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s;
+    background: white;
+    border: 1px solid #E5E7EB;
+}
+
+.subscription-banner:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px -8px rgba(0, 0, 0, 0.15);
+}
+
+.subscription-info h3 {
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+    opacity: 0.8;
+}
+
+.subscription-info .plan-name {
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.subscription-info .expiry {
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+    opacity: 0.7;
+}
+
+.subscription-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 100px;
+    font-weight: 600;
+}
+
+.subscription-badge.premium {
+    background: linear-gradient(135deg, #059669, #047857);
+    color: white;
+}
+
+.subscription-badge.free {
+    background: #F3F4F6;
+    color: #6B7280;
+}
+
+.upgrade-btn {
+    padding: 0.6rem 1.2rem;
+    border-radius: 100px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: white;
+    background: linear-gradient(135deg, #059669, #047857);
+}
+
+.upgrade-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(5, 150, 105, 0.3);
+}
+
+/* Premium Lock Overlay */
+.premium-lock {
+    position: relative;
+    text-align: center;
+    padding: 1rem;
+    background: #F9FAFB;
+    border-radius: 16px;
+    border: 1px dashed #F59E0B;
+}
+
+.premium-lock a {
+    display: inline-block;
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 2rem;
+}
+
+.dashboard-sidebar {
+    background: white;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 100px;
+    border: 1px solid #E5E7EB;
+}
+
+.profile-card {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    padding: 2rem;
+    text-align: center;
+    color: white;
+    position: relative;
+    transition: all 0.3s;
+}
+
+.profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    overflow: hidden;
+    border: 3px solid white;
+    background: white;
+    transition: transform 0.3s;
+}
+
+.profile-avatar:hover {
+    transform: scale(1.05);
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-card h3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    padding: 1.5rem;
+    background: white;
+    border-bottom: 1px solid #F3F4F6;
+}
+
+.stat-card {
+    text-align: center;
+    padding: 0.75rem;
+    background: #F9FAFB;
+    border-radius: 14px;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    background: linear-gradient(135deg, #F0FDF4, #ECFDF5);
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #059669;
+}
+
+/* Sidebar Actions */
+.sidebar-actions {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.sidebar-actions a {
+    text-align: center;
+    padding: 0.7rem;
+    border-radius: 100px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #059669, #047857);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(5, 150, 105, 0.3);
+}
+
+.btn-outline {
+    background: #F3F4F6;
+    color: #374151;
+    border: 1px solid #E5E7EB;
+}
+
+.btn-outline:hover {
+    background: #E5E7EB;
+    border-color: #059669;
+    color: #059669;
+    transform: translateY(-2px);
+}
+
+/* Main Content */
+.dashboard-main {
+    background: white;
+    border-radius: 28px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid #E5E7EB;
+}
+
+.section {
+    margin-bottom: 2rem;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.section-header h2 {
+    font-size: 1.25rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #1F2937;
+}
+
+/* Job Cards */
+.job-card {
+    border: 1px solid #F3F4F6;
+    border-radius: 16px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s;
+    background: white;
+}
+
+.job-card:hover {
+    transform: translateX(5px);
+    border-color: #059669;
+}
+
+.status {
+    padding: 0.25rem 0.9rem;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.status.open { background: rgba(5, 150, 105, 0.1); color: #059669; }
+.status.in_progress { background: rgba(59, 130, 246, 0.1); color: #3B82F6; }
+.status.completed { background: rgba(107, 114, 128, 0.1); color: #6B7280; }
+
+.job-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #F3F4F6;
+}
+
+.btn-outline-small {
+    padding: 0.3rem 0.8rem;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    text-decoration: none;
+    background: #F3F4F6;
+    color: #374151;
+    transition: all 0.3s;
+}
+
+.btn-outline-small:hover {
+    background: #059669;
+    color: white;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 2.5rem;
+    background: #F9FAFB;
+    border-radius: 18px;
+}
+
+.empty-state i {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.empty-state h3 {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    color: #374151;
+}
+
+.empty-state p {
+    font-size: 0.85rem;
+    color: #6B7280;
+}
+
+/* Expiry Warning */
+.expiry-warning {
+    background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+    border-left: 4px solid #F59E0B;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.expiry-warning i {
+    color: #D97706;
+    font-size: 1rem;
+}
+
+.expiry-warning a {
+    color: #D97706;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.expiry-warning a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    .dashboard-sidebar {
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-container {
+        margin: 1rem auto;
+    }
+    .dashboard-header {
+        padding: 1.25rem;
+    }
+    .dashboard-main {
+        padding: 1rem;
+    }
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .profile-avatar {
+        width: 80px;
+        height: 80px;
+    }
+    .subscription-banner {
+        flex-direction: column;
+        text-align: center;
+    }
+    .dashboard-header h1 {
+        font-size: 1.3rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+{% set subscription = user.get_active_subscription() %}
+{% set is_premium = subscription and subscription.plan_type != 'free' and subscription.is_active and not subscription.is_expired() %}
+{% set tier_class = '' %}
+{% if subscription and subscription.plan_type == 'weekly' %}
+    {% set tier_class = 'weekly-tier' %}
+{% elif subscription and subscription.plan_type == 'monthly' %}
+    {% set tier_class = 'monthly-tier' %}
+{% elif subscription and subscription.plan_type == 'annual' %}
+    {% set tier_class = 'annual-tier' %}
+{% elif subscription and subscription.plan_type == 'daily' %}
+    {% set tier_class = 'daily-tier' %}
+{% else %}
+    {% set tier_class = 'free-tier' %}
+{% endif %}
+
+<div class="dashboard-container {{ tier_class }}">
+    <div class="dashboard-header">
+        <div>
+            <h1>
+                <i class="fas fa-user-tie"></i> Welcome, {{ user.name }}
+                {% if is_premium %}
+                    {% if subscription.plan_type == 'annual' %}
+                    <span class="customer-elite-badge">
+                        <i class="fas fa-gem"></i> Elite Customer
+                    </span>
+                    {% elif subscription.plan_type == 'monthly' %}
+                    <span class="customer-premium-badge">
+                        <i class="fas fa-crown"></i> Premium Customer
+                    </span>
+                    {% else %}
+                    <span class="customer-verified-badge">
+                        <i class="fas fa-check-circle"></i> Premium
+                    </span>
+                    {% endif %}
+                {% endif %}
+                {% if subscription and subscription.plan_type == 'weekly' %}
+                <span class="tier-icon"><i class="fas fa-gem"></i> Gold Member</span>
+                {% elif subscription and subscription.plan_type == 'monthly' %}
+                <span class="tier-icon"><i class="fas fa-crown"></i> Platinum Member</span>
+                {% elif subscription and subscription.plan_type == 'annual' %}
+                <span class="tier-icon"><i class="fas fa-star-of-life"></i> Diamond Member</span>
+                {% elif subscription and subscription.plan_type == 'daily' %}
+                <span class="tier-icon"><i class="fas fa-bolt"></i> Premium Member</span>
+                {% else %}
+                <span class="tier-icon"><i class="fas fa-user"></i> Basic Member</span>
+                {% endif %}
+            </h1>
+            <p>Manage your jobs, track applications, and find the best skilled workers</p>
+        </div>
+        <a href="{{ url_for('edit_profile') }}" class="btn-outline" style="background: rgba(255,255,255,0.2); color: white; border: none;">
+            <i class="fas fa-edit"></i> Edit Profile
+        </a>
+    </div>
+
+    <!-- Subscription Banner -->
+    <div class="subscription-banner">
+        <div class="subscription-info">
+            <h3>Current Plan</h3>
+            <div class="plan-name">
+                {% if subscription and subscription.plan_type == 'weekly' %}
+                    👑 Gold Plan
+                {% elif subscription and subscription.plan_type == 'monthly' %}
+                    💎 Platinum Plan
+                {% elif subscription and subscription.plan_type == 'annual' %}
+                    🌟 Diamond Plan
+                {% elif subscription and subscription.plan_type == 'daily' %}
+                    ⚡ Daily Plan
+                {% else %}
+                    🎯 Basic Plan
+                {% endif %}
+            </div>
+            {% if subscription and subscription.plan_type != 'free' %}
+                <div class="expiry">
+                    <i class="fas fa-clock"></i> Expires: {{ subscription.expires_at.strftime('%B %d, %Y') }}
+                </div>
+                {% if subscription.days_remaining() <= 3 %}
+                <div class="expiry-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Your subscription expires in {{ subscription.days_remaining() }} days!
+                    <a href="{{ url_for('subscribe') }}">Renew now</a>
+                </div>
+                {% endif %}
+            {% endif %}
+        </div>
+        <div>
+            {% if is_premium %}
+                <span class="subscription-badge premium">
+                    <i class="fas fa-crown"></i> Active Premium
+                </span>
+            {% else %}
+                <a href="{{ url_for('subscribe') }}" class="upgrade-btn">
+                    <i class="fas fa-arrow-up"></i> Upgrade to Premium
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="dashboard-grid">
+        <div class="dashboard-sidebar">
+            <div class="profile-card">
+                <div class="profile-avatar">
+                    <img src="{{ url_for('static', filename='uploads/' + (user.profile_picture if user.profile_picture else 'default-avatar.png')) }}" alt="{{ user.name }}">
+                </div>
+                <h3>
+                    {{ user.name }}
+                    {% if is_premium %}
+                        {% if subscription.plan_type == 'annual' %}
+                        <span class="customer-elite-badge" style="font-size: 0.7rem; padding: 0.2rem 0.6rem;">
+                            <i class="fas fa-gem"></i> Elite
+                        </span>
+                        {% elif subscription.plan_type == 'monthly' %}
+                        <span class="customer-premium-badge" style="font-size: 0.7rem; padding: 0.2rem 0.6rem;">
+                            <i class="fas fa-crown"></i> Premium
+                        </span>
+                        {% else %}
+                        <span class="customer-verified-badge" style="font-size: 0.7rem; padding: 0.2rem 0.6rem;">
+                            <i class="fas fa-check-circle"></i> Verified
+                        </span>
+                        {% endif %}
+                    {% endif %}
+                </h3>
+                <p><i class="fas fa-phone"></i> {{ user.phone }}</p>
+                {% if user.email %}
+                <p><i class="fas fa-envelope"></i> {{ user.email }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card" onclick="document.getElementById('jobs-section').scrollIntoView({behavior:'smooth'})">
+                    <div class="stat-value">{{ jobs|length|default(0) }}</div>
+                    <div class="stat-label">Jobs Posted</div>
+                </div>
+                <div class="stat-card" onclick="document.getElementById('applications-section').scrollIntoView({behavior:'smooth'})">
+                    <div class="stat-value">{{ applications_received|default(0) }}</div>
+                    <div class="stat-label">Applications</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{{ workers_hired|default(0) }}</div>
+                    <div class="stat-label">Workers Hired</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">KES {{ total_spent|default(0)|int }}</div>
+                    <div class="stat-label">Total Spent</div>
+                </div>
+            </div>
+
+            <div class="sidebar-actions">
+                {% if is_premium %}
+                    <a href="{{ url_for('post_job') }}" class="btn-primary"><i class="fas fa-plus-circle"></i> Post a Job</a>
+                {% else %}
+                    <div class="premium-lock">
+                        <a href="{{ url_for('subscribe') }}" class="btn-primary" style="background: linear-gradient(135deg, #F59E0B, #D97706);">
+                            <i class="fas fa-crown"></i> Upgrade to Post Jobs
+                        </a>
+                        <p style="font-size: 0.7rem; margin-top: 0.5rem; color: #6B7280;">
+                            Free plan: {{ FREE_PLAN_LIMITS.customers.max_job_posts|default(3) }} jobs/month
+                        </p>
+                    </div>
+                {% endif %}
+                <a href="{{ url_for('workers') }}" class="btn-outline"><i class="fas fa-search"></i> Find Workers</a>
+                <a href="{{ url_for('edit_profile') }}" class="btn-outline"><i class="fas fa-edit"></i> Edit Profile</a>
+                {% if is_premium %}
+                <a href="{{ url_for('subscribe') }}" class="btn-outline"><i class="fas fa-sync-alt"></i> Manage Subscription</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="dashboard-main">
+            <!-- My Jobs Section -->
+            <div class="section" id="jobs-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-briefcase"></i> My Posted Jobs</h2>
+                    {% if is_premium %}
+                    <a href="{{ url_for('post_job') }}" class="btn-primary" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Post New Job</a>
+                    {% endif %}
+                </div>
+                {% if jobs and jobs|length > 0 %}
+                    {% for job in jobs[:5] %}
+                    <div class="job-card">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+                            <h3 style="margin: 0;">{{ job.title }}</h3>
+                            <span class="status {{ job.status }}">{{ job.status|replace('_', ' ')|title }}</span>
+                        </div>
+                        <div style="margin: 0.5rem 0; color: #6B7280; font-size: 0.8rem;">
+                            <i class="fas fa-map-marker-alt"></i> {{ job.location or 'Location not specified' }}
+                        </div>
+                        <div style="font-weight: 600; color: #059669; margin: 0.25rem 0;">
+                            Budget: KES {{ "%.0f"|format(job.budget_min or 0) }} - {{ "%.0f"|format(job.budget_max or 0) }}
+                        </div>
+                        <div class="job-footer">
+                            <small><i class="fas fa-users"></i> {{ job.applications|length|default(0) }} applications</small>
+                            <a href="{{ url_for('job_detail', job_id=job.id) }}" class="btn-outline-small">View Details →</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% if jobs|length > 5 %}
+                    <div style="text-align: center; margin-top: 1rem;">
+                        <a href="{{ url_for('my_jobs') }}" class="btn-outline-small">View All {{ jobs|length }} Jobs →</a>
+                    </div>
+                    {% endif %}
+                {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-briefcase"></i>
+                        <h3>No Jobs Posted Yet</h3>
+                        <p>Post your first job to find skilled workers</p>
+                        {% if is_premium %}
+                        <a href="{{ url_for('post_job') }}" class="btn-primary" style="margin-top: 1rem;">Post a Job</a>
+                        {% else %}
+                        <a href="{{ url_for('subscribe') }}" class="upgrade-btn" style="margin-top: 1rem; display: inline-block;">Upgrade to Post Jobs</a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Recent Applications Section -->
+            <div class="section" id="applications-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-users"></i> Recent Applications</h2>
+                </div>
+                {% if applications_received and applications_received|length > 0 %}
+                    {% for app in applications_received[:3] %}
+                    <div class="job-card">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+                            <div>
+                                <h3 style="margin: 0;">{{ app.job.title }}</h3>
+                                <div style="margin-top: 0.25rem;">
+                                    <span class="status {{ app.status }}">{{ app.status|title }}</span>
+                                </div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-weight: 600; color: #059669;">
+                                    Bid: KES {{ "%.0f"|format(app.bid_amount or 0) }}
+                                </div>
+                                <small style="color: #6B7280;">{{ app.created_at.strftime('%b %d, %Y') }}</small>
+                            </div>
+                        </div>
+                        <div style="margin: 0.5rem 0; display: flex; align-items: center; gap: 0.5rem;">
+                            <div class="user-avatar" style="width: 28px; height: 28px; font-size: 0.7rem;">{{ app.worker.name[0]|upper }}</div>
+                            <span><strong>{{ app.worker.name }}</strong> applied for this job</span>
+                        </div>
+                        {% if app.message %}
+                        <div style="background: #F9FAFB; padding: 0.6rem; border-radius: 12px; font-size: 0.8rem; margin-top: 0.5rem;">
+                            <i class="fas fa-comment"></i> {{ app.message[:100] }}{% if app.message|length > 100 %}...{% endif %}
+                        </div>
+                        {% endif %}
+                        <div class="job-footer">
+                            <a href="{{ url_for('job_detail', job_id=app.job.id) }}" class="btn-outline-small">View Application →</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% if applications_received|length > 3 %}
+                    <div style="text-align: center; margin-top: 1rem;">
+                        <a href="{{ url_for('my_jobs') }}" class="btn-outline-small">View All {{ applications_received|length }} Applications →</a>
+                    </div>
+                    {% endif %}
+                {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-users"></i>
+                        <h3>No Applications Yet</h3>
+                        <p>When workers apply to your jobs, they will appear here</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Live days left updater for subscription banner
+function updateSubscriptionDays() {
+    const expiryElement = document.querySelector('.expiry');
+    if (!expiryElement) return;
+
+    const expiryText = expiryElement.innerHTML;
+    const match = expiryText.match(/(\d+)\s*days/);
+    if (!match) return;
+
+    const expiryDateStr = expiryText.match(/Expires: (.+?)</)?.[1];
+    if (!expiryDateStr) return;
+
+    const expiryDate = new Date(expiryDateStr);
+    const now = new Date();
+    const diffTime = expiryDate - now;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays <= 0) {
+        location.reload(); // Reload to update subscription status
+    } else if (diffDays <= 3) {
+        const warningDiv = document.querySelector('.expiry-warning');
+        if (warningDiv) {
+            warningDiv.style.display = 'flex';
+        }
+    }
+}
+
+// Update every hour
+setInterval(updateSubscriptionDays, 3600000);
+</script>
+{% endblock %}

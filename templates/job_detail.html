@@ -1,0 +1,1165 @@
+{% extends "base.html" %}
+
+{% block title %}{{ job.title if job else 'Job Details' }} - {{ settings.platform_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ============================================
+   FILE: job_detail.html
+   FundiConnect - Modern Job Detail Page
+   Version: 3.0 - Enhanced Visual Design
+   ============================================ */
+
+/* Page Background */
+.job-detail-page {
+    padding: 2rem 0;
+    background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+    min-height: calc(100vh - 200px);
+}
+
+/* Main Job Card - Premium Design */
+.job-detail-card {
+    background: white;
+    border-radius: 32px;
+    padding: 2rem;
+    box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    animation: fadeInUp 0.5s ease;
+    border: 1px solid rgba(5, 150, 105, 0.15);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.job-detail-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 25px 40px -12px rgba(0, 0, 0, 0.15);
+}
+
+/* Job Header */
+.job-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 3px solid #059669;
+    position: relative;
+}
+
+.job-header h1 {
+    font-size: 1.75rem;
+    margin-bottom: 0.75rem;
+    color: #1F2937;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    font-weight: 700;
+}
+
+/* Status Badges */
+.job-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 1.25rem;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+}
+
+.job-status.open {
+    background: linear-gradient(135deg, rgba(5, 150, 105, 0.12), rgba(5, 150, 105, 0.08));
+    color: #059669;
+    border: 1px solid rgba(5, 150, 105, 0.3);
+}
+
+.job-status.in_progress {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(59, 130, 246, 0.08));
+    color: #3B82F6;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.job-status.completed {
+    background: linear-gradient(135deg, rgba(107, 114, 128, 0.12), rgba(107, 114, 128, 0.08));
+    color: #6B7280;
+    border: 1px solid rgba(107, 114, 128, 0.3);
+}
+
+.job-status.expired {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.12), rgba(239, 68, 68, 0.08));
+    color: #EF4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* Owner Badge */
+.job-owner-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, #8B5CF6, #6D28D9);
+    color: white;
+    padding: 0.35rem 1rem;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+}
+
+/* Poster Info */
+.job-header p {
+    color: #6B7280;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.job-header p i {
+    color: #059669;
+}
+
+/* Job Meta - Enhanced Grid */
+.job-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #F9FAFB, #F3F4F6);
+    border-radius: 24px;
+}
+
+.job-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    background: white;
+    border-radius: 18px;
+    transition: all 0.3s;
+}
+
+.job-meta-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.job-meta-item i {
+    width: 40px;
+    height: 40px;
+    background: rgba(5, 150, 105, 0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #059669;
+    font-size: 1.1rem;
+}
+
+.job-meta-item span {
+    flex: 1;
+    font-weight: 500;
+    color: #4B5563;
+}
+
+.budget-range {
+    font-weight: 800;
+    color: #059669;
+    font-size: 1.1rem;
+    background: rgba(5, 150, 105, 0.08);
+    padding: 0.25rem 0.75rem;
+    border-radius: 100px;
+    display: inline-block;
+}
+
+/* Job Description */
+.job-description {
+    margin: 1.5rem 0;
+    line-height: 1.7;
+    color: #4B5563;
+    background: #F9FAFB;
+    padding: 1.5rem;
+    border-radius: 24px;
+}
+
+.job-description h3 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: #1F2937;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+}
+
+.job-description h3 i {
+    color: #059669;
+    font-size: 1.2rem;
+}
+
+.job-description p {
+    white-space: pre-wrap;
+}
+
+/* Required Skills */
+.job-skills {
+    margin: 1.5rem 0;
+}
+
+.job-skills h3 {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    color: #1F2937;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+}
+
+.job-skills h3 i {
+    color: #059669;
+}
+
+.skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+}
+
+.skill-tag {
+    background: linear-gradient(135deg, rgba(5, 150, 105, 0.1), rgba(5, 150, 105, 0.05));
+    padding: 0.6rem 1.25rem;
+    border-radius: 100px;
+    font-size: 0.85rem;
+    color: #059669;
+    font-weight: 600;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid rgba(5, 150, 105, 0.2);
+}
+
+.skill-tag:hover {
+    background: #059669;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+}
+
+/* Apply Section - Enhanced */
+.apply-section {
+    background: white;
+    border-radius: 28px;
+    padding: 1.75rem;
+    box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    animation: fadeInUp 0.5s ease 0.1s both;
+    border: 1px solid rgba(5, 150, 105, 0.15);
+    transition: transform 0.3s;
+}
+
+.apply-section:hover {
+    transform: translateY(-2px);
+}
+
+.apply-section h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #1F2937;
+    font-weight: 700;
+}
+
+.apply-section h3 i {
+    color: #059669;
+    font-size: 1.3rem;
+}
+
+/* Form Styling */
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+    color: #374151;
+    font-size: 0.85rem;
+}
+
+.form-group label i {
+    color: #059669;
+    margin-right: 0.5rem;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 2px solid #E5E7EB;
+    border-radius: 16px;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+    background: #F9FAFB;
+    font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #059669;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.1);
+}
+
+.form-group input:hover,
+.form-group textarea:hover {
+    border-color: #9CA3AF;
+}
+
+.form-text {
+    font-size: 0.7rem;
+    color: #6B7280;
+    margin-top: 0.5rem;
+    display: block;
+}
+
+/* Apply Button */
+.btn-apply {
+    width: 100%;
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 100px;
+    font-size: 1rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #059669, #047857);
+    border: none;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.btn-apply:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(5, 150, 105, 0.3);
+}
+
+/* Applications Section */
+.applications-section {
+    background: white;
+    border-radius: 28px;
+    padding: 1.75rem;
+    margin-top: 2rem;
+    box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.1);
+    animation: fadeInUp 0.5s ease 0.2s both;
+    border: 1px solid rgba(5, 150, 105, 0.15);
+}
+
+.applications-section h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #1F2937;
+    font-weight: 700;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #F3F4F6;
+}
+
+.applications-section h3 i {
+    color: #059669;
+}
+
+/* Application Cards */
+.application-card {
+    border: 1px solid #F3F4F6;
+    border-radius: 24px;
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+    transition: all 0.3s;
+    background: white;
+}
+
+.application-card:hover {
+    transform: translateX(6px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    border-color: #059669;
+}
+
+/* Application Header */
+.application-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.application-worker {
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1rem;
+    color: #1F2937;
+}
+
+.application-worker i {
+    font-size: 1.3rem;
+    color: #059669;
+}
+
+/* Application Status */
+.application-status {
+    padding: 0.35rem 1.25rem;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.application-status.pending {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.12), rgba(245, 158, 11, 0.08));
+    color: #F59E0B;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.application-status.accepted {
+    background: linear-gradient(135deg, rgba(5, 150, 105, 0.12), rgba(5, 150, 105, 0.08));
+    color: #059669;
+    border: 1px solid rgba(5, 150, 105, 0.3);
+}
+
+.application-status.rejected {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.12), rgba(239, 68, 68, 0.08));
+    color: #EF4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* Bid Amount */
+.bid-amount {
+    font-weight: 800;
+    color: #059669;
+    font-size: 1rem;
+    margin: 0.75rem 0;
+    background: rgba(5, 150, 105, 0.08);
+    padding: 0.5rem 1rem;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Application Message */
+.application-message {
+    color: #4B5563;
+    margin: 0.75rem 0;
+    line-height: 1.6;
+    font-size: 0.85rem;
+    background: #F9FAFB;
+    padding: 1rem;
+    border-radius: 16px;
+    font-style: italic;
+}
+
+/* Application Footer */
+.application-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #F3F4F6;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.application-info {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.application-info small {
+    font-size: 0.7rem;
+    color: #6B7280;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.application-info small i {
+    color: #059669;
+}
+
+/* View Profile Button */
+.btn-view-profile {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05));
+    color: #3B82F6;
+    padding: 0.5rem 1.25rem;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.btn-view-profile:hover {
+    background: #3B82F6;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+}
+
+/* Application Actions */
+.application-actions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.application-actions form {
+    display: inline;
+}
+
+/* Success and Danger Buttons */
+.btn-success {
+    background: linear-gradient(135deg, rgba(5, 150, 105, 0.1), rgba(5, 150, 105, 0.05));
+    color: #059669;
+    border: 1px solid rgba(5, 150, 105, 0.3);
+    padding: 0.5rem 1.25rem;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-success:hover {
+    background: #059669;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(5, 150, 105, 0.3);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.05));
+    color: #EF4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    padding: 0.5rem 1.25rem;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-danger:hover {
+    background: #EF4444;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+}
+
+/* Upgrade Alert */
+.upgrade-alert {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.05));
+    border-left: 4px solid #F59E0B;
+    padding: 1rem 1.25rem;
+    border-radius: 16px;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.upgrade-alert i {
+    color: #F59E0B;
+    font-size: 1.2rem;
+}
+
+.upgrade-alert strong {
+    color: #D97706;
+}
+
+.upgrade-alert p {
+    margin: 0;
+    flex: 1;
+}
+
+.btn-upgrade {
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+    color: white;
+    border: none;
+    padding: 0.5rem 1.25rem;
+    border-radius: 100px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-upgrade:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+}
+
+/* Error Message */
+.error-message {
+    text-align: center;
+    padding: 3rem;
+    background: white;
+    border-radius: 32px;
+    margin: 2rem auto;
+    max-width: 500px;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.1);
+}
+
+.error-message i {
+    font-size: 3rem;
+    color: #EF4444;
+    margin-bottom: 1rem;
+}
+
+.error-message h3 {
+    color: #1F2937;
+    margin-bottom: 0.5rem;
+}
+
+.error-message p {
+    color: #6B7280;
+}
+
+/* Worker Rating */
+.worker-rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.7rem;
+    color: #F59E0B;
+    margin-left: 0.5rem;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 2rem;
+}
+
+.empty-state i {
+    font-size: 2.5rem;
+    color: #9CA3AF;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.empty-state p {
+    color: #6B7280;
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 32px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 85vh;
+    overflow-y: auto;
+    animation: scaleIn 0.3s ease;
+    box-shadow: 0 30px 50px -20px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid #F3F4F6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+    color: #9CA3AF;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.modal-close:hover {
+    background: #F3F4F6;
+    color: #EF4444;
+    transform: rotate(90deg);
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-body ul {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+}
+
+.modal-body li {
+    padding: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #4B5563;
+}
+
+.modal-body li i {
+    color: #10B981;
+}
+
+.modal-footer {
+    padding: 1.25rem 1.5rem;
+    border-top: 1px solid #F3F4F6;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.btn-outline {
+    background: white;
+    color: #6B7280;
+    border: 2px solid #E5E7EB;
+    padding: 0.6rem 1.5rem;
+    border-radius: 100px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-outline:hover {
+    border-color: #059669;
+    color: #059669;
+    transform: translateY(-2px);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #059669, #047857);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 100px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(5, 150, 105, 0.3);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .job-detail-page {
+        padding: 1rem;
+    }
+
+    .job-detail-card {
+        padding: 1.25rem;
+    }
+
+    .job-header h1 {
+        font-size: 1.4rem;
+    }
+
+    .job-meta {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+        gap: 0.75rem;
+    }
+
+    .job-meta-item {
+        padding: 0.6rem;
+    }
+
+    .application-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .application-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .application-actions {
+        width: 100%;
+    }
+
+    .application-actions form {
+        flex: 1;
+    }
+
+    .btn-success, .btn-danger, .btn-view-profile {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .upgrade-alert {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .upgrade-alert i {
+        font-size: 1.5rem;
+    }
+}
+
+/* Scrollbar Styling */
+.modal-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: #F3F4F6;
+    border-radius: 10px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: #059669;
+    border-radius: 10px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+    background: #047857;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Everything below remains EXACTLY the same - no changes to HTML structure, logic, or JavaScript -->
+<div class="job-detail-page">
+    <div class="container">
+        {% if job %}
+        <div class="job-detail-card">
+            <div class="job-header">
+                <h1>
+                    {{ job.title }}
+                    <span class="job-status {{ job.status }}">{{ job.status|replace('_', ' ')|title if job.status else 'Open' }}</span>
+                    {% if current_user and current_user.id == job.customer_id %}
+                    <span class="job-owner-badge"><i class="fas fa-user-check"></i> Your Job</span>
+                    {% endif %}
+                </h1>
+                <p style="color: #6B7280; font-size: 0.85rem;">
+                    <i class="fas fa-user"></i> Posted by <strong>{{ job.customer.name if job.customer else 'Anonymous' }}</strong>
+                    on {{ job.created_at.strftime('%B %d, %Y') if job.created_at else 'Recently' }}
+                </p>
+            </div>
+
+            <div class="job-meta">
+                <div class="job-meta-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>{{ job.location or 'Location not specified' }}</span>
+                </div>
+                <div class="job-meta-item">
+                    <i class="fas fa-tag"></i>
+                    <span>
+                        {% if job.category and job.category in categories %}
+                            {{ categories[job.category].name }}
+                        {% elif job.category == 'general' %}
+                            General
+                        {% else %}
+                            General
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="job-meta-item">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <span class="budget-range">
+                        Budget: KES
+                        {% if job.budget_min or job.budget_max %}
+                            {{ "%.0f"|format(job.budget_min or 0) }} - {{ "%.0f"|format(job.budget_max or 0) }}
+                        {% else %}
+                            Not specified
+                        {% endif %}
+                    </span>
+                </div>
+                {% if job.deadline %}
+                <div class="job-meta-item">
+                    <i class="fas fa-clock"></i>
+                    <span>Deadline: {{ job.deadline.strftime('%B %d, %Y') }}</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="job-description">
+                <h3><i class="fas fa-align-left"></i> Job Description</h3>
+                <p>{{ job.description or 'No description provided.' }}</p>
+            </div>
+
+            {% if job.skills_required %}
+            <div class="job-skills">
+                <h3><i class="fas fa-code-branch"></i> Required Skills</h3>
+                <div class="skills-list">
+                    {% for skill in job.skills_required.split(',') %}
+                    <span class="skill-tag">{{ skill.strip() }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if current_user and current_user.id == job.customer_id and job.status == 'in_progress' %}
+            <div style="margin-top: 1.5rem;">
+                <form method="POST" action="{{ url_for('complete_job', job_id=job.id) }}">
+                    <button type="submit" class="btn-success" style="padding: 0.75rem 1.5rem;">
+                        <i class="fas fa-check-circle"></i> Mark Job as Completed
+                    </button>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+
+        {% if session.user_id and session.user_type == 'worker' and job.can_apply() %}
+        <div class="apply-section">
+            <h3><i class="fas fa-paper-plane"></i> Apply for this Job</h3>
+            {% if user_has_premium() %}
+                <form method="POST" action="{{ url_for('apply_job', job_id=job.id) }}">
+                    <div class="form-group">
+                        <label><i class="fas fa-money-bill-wave"></i> Your Bid Amount (KES)</label>
+                        <input type="number" name="bid_amount" placeholder="Enter your bid" step="100">
+                        <small class="form-text">Optional: Enter your proposed price for this job</small>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-comment"></i> Cover Message</label>
+                        <textarea name="message" rows="4" placeholder="Tell the employer why you're the best fit for this job..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary btn-apply">
+                        <i class="fas fa-paper-plane"></i> Submit Application
+                    </button>
+                </form>
+            {% else %}
+                <div class="upgrade-alert">
+                    <i class="fas fa-crown"></i>
+                    <strong>Premium Required</strong>
+                    <p style="margin-top: 0.5rem; margin-bottom: 0;">You need an active subscription to apply for jobs. Upgrade to unlock unlimited applications, verified badge, and more!</p>
+                </div>
+                <button onclick="showSubscribePopup({{ job.id }})" class="btn-primary btn-apply btn-upgrade">
+                    <i class="fas fa-crown"></i> Upgrade to Apply
+                </button>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% if session.user_id and (session.user_type == 'customer' and job.customer_id == session.user_id) or (session.is_admin) %}
+        <div class="applications-section">
+            <h3><i class="fas fa-users"></i> Applications ({{ applications|length if applications else 0 }})</h3>
+            {% if applications %}
+                {% for app in applications %}
+                <div class="application-card">
+                    <div class="application-header">
+                        <div class="application-worker">
+                            <i class="fas fa-user-circle"></i>
+                            <strong>{{ app.worker.name if app.worker else 'Unknown' }}</strong>
+                            {% if app.worker and app.worker.is_verified %}
+                            <span class="application-status accepted" style="background: rgba(5, 150, 105, 0.1); font-size: 0.65rem;">
+                                <i class="fas fa-check-circle"></i> Verified
+                            </span>
+                            {% endif %}
+                        </div>
+                        <span class="application-status {{ app.status }}">{{ app.status|title if app.status else 'Pending' }}</span>
+                    </div>
+
+                    {% if app.bid_amount %}
+                    <div class="bid-amount">
+                        <i class="fas fa-money-bill-wave"></i> Bid: KES {{ "%.0f"|format(app.bid_amount) }}
+                    </div>
+                    {% endif %}
+
+                    <p class="application-message">
+                        <i class="fas fa-quote-left" style="color: #9CA3AF; margin-right: 0.25rem;"></i>
+                        {{ app.message or 'No message provided.' }}
+                    </p>
+
+                    <div class="application-footer">
+                        <div class="application-info">
+                            <small><i class="fas fa-clock"></i> Applied: {{ app.created_at.strftime('%b %d, %Y %H:%M') if app.created_at else 'Recently' }}</small>
+                            {% if app.worker and app.worker.worker_profile %}
+                            <small style="margin-left: 1rem;"><i class="fas fa-briefcase"></i> {{ app.worker.worker_profile.total_jobs_completed }} jobs completed</small>
+                            {% endif %}
+                        </div>
+
+                        <div class="application-actions">
+                            <a href="{{ url_for('worker_profile', worker_id=app.worker.id) }}" class="btn-view-profile" target="_blank">
+                                <i class="fas fa-user-circle"></i> View Profile
+                            </a>
+                            {% if app.status == 'pending' %}
+                            <form method="POST" action="{{ url_for('update_application', app_id=app.id) }}" style="display: inline;">
+                                <input type="hidden" name="status" value="accepted">
+                                <button type="submit" class="btn-success" style="padding: 0.4rem 1rem; font-size: 0.7rem;" onclick="return confirm('Accept this application? The worker will be notified.')">
+                                    <i class="fas fa-check"></i> Accept
+                                </button>
+                            </form>
+                            <form method="POST" action="{{ url_for('update_application', app_id=app.id) }}" style="display: inline;">
+                                <input type="hidden" name="status" value="rejected">
+                                <button type="submit" class="btn-danger" style="padding: 0.4rem 1rem; font-size: 0.7rem;" onclick="return confirm('Reject this application?')">
+                                    <i class="fas fa-times"></i> Reject
+                                </button>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state" style="text-align: center; padding: 2rem;">
+                    <i class="fas fa-users" style="font-size: 2.5rem; color: #9CA3AF; margin-bottom: 1rem;"></i>
+                    <p style="color: #6B7280;">No applications yet. Be the first to apply!</p>
+                </div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% else %}
+        <div class="error-message">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h3>Job Not Found</h3>
+            <p>The job you're looking for doesn't exist or has been removed.</p>
+            <a href="{{ url_for('browse_jobs') }}" class="btn-primary" style="display: inline-block; margin-top: 1rem;">Browse Jobs</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div id="subscribe-popup" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3><i class="fas fa-crown" style="color: #F59E0B;"></i> Upgrade to Premium</h3>
+            <button class="modal-close" onclick="closeSubscribePopup()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div style="text-align: center;">
+                <i class="fas fa-lock" style="font-size: 3rem; color: #F59E0B; margin-bottom: 1rem;"></i>
+                <h4 style="margin-bottom: 1rem;">Premium Required to Apply</h4>
+                <p style="margin-bottom: 1rem; color: #6B7280;">Get unlimited applications, verified badge, and more!</p>
+                <ul style="text-align: left; margin: 1rem 0; list-style: none; padding: 0;">
+                    <li style="margin: 0.5rem 0;"><i class="fas fa-check-circle" style="color: #10B981;"></i> Unlimited job applications</li>
+                    <li style="margin: 0.5rem 0;"><i class="fas fa-check-circle" style="color: #10B981;"></i> Verified badge on profile</li>
+                    <li style="margin: 0.5rem 0;"><i class="fas fa-check-circle" style="color: #10B981;"></i> Featured in search results</li>
+                    <li style="margin: 0.5rem 0;"><i class="fas fa-check-circle" style="color: #10B981;"></i> Priority support</li>
+                </ul>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button onclick="closeSubscribePopup()" class="btn-outline">Cancel</button>
+            <a href="{{ url_for('pricing') }}" class="btn-primary">View Plans →</a>
+        </div>
+    </div>
+</div>
+
+<script>
+function showSubscribePopup(jobId) {
+    const modal = document.getElementById('subscribe-popup');
+    modal.classList.add('active');
+    if (jobId) sessionStorage.setItem('pendingJobId', jobId);
+    document.body.style.overflow = 'hidden';
+}
+
+function closeSubscribePopup() {
+    const modal = document.getElementById('subscribe-popup');
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+document.getElementById('subscribe-popup').addEventListener('click', function(e) {
+    if (e.target === this) closeSubscribePopup();
+});
+</script>
+{% endblock %}

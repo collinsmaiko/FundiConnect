@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="theme-color" content="#059669">
+    <meta name="description" content="{{ settings.platform_name }} - Connect with trusted skilled workers in Kenya. Find plumbers, electricians, carpenters, and more.">
+    <meta name="keywords" content="skilled workers, fundi, Kenya, plumber, electrician, carpenter, handyman, jobs">
+    <meta name="author" content="FundiConnect">
+    <title>{% block title %}{{ settings.platform_name }} - Connect with Trusted Skilled Workers in Kenya{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' stroke='white' stroke-width='2' fill='none'/%3E%3Cpath d='M30 50 L45 65 L70 35' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Ccircle cx='50' cy='50' r='8' fill='white'/%3E%3C/svg%3E">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Modern Navbar with Glassmorphism -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('index') }}" class="logo">
+                <div class="logo-icon">
+                    <svg width="28" height="28" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="48" stroke="white" stroke-width="2" fill="none"/>
+                        <path d="M30 50 L45 65 L70 35" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                        <circle cx="50" cy="50" r="8" fill="white"/>
+                    </svg>
+                </div>
+                <span class="logo-text">{{ settings.platform_name }}</span>
+            </a>
+            <div class="nav-links" id="navLinks">
+                <a href="{{ url_for('workers') }}" {% if request.endpoint == 'workers' %}class="active"{% endif %}>
+                    <i class="fas fa-users"></i> Find Workers
+                </a>
+                <a href="{{ url_for('browse_jobs') }}" {% if request.endpoint == 'browse_jobs' %}class="active"{% endif %}>
+                    <i class="fas fa-briefcase"></i> Browse Jobs
+                </a>
+                <a href="{{ url_for('pricing') }}" {% if request.endpoint == 'pricing' %}class="active"{% endif %}>
+                    <i class="fas fa-crown"></i> Pricing
+                </a>
+                {% if session.user_id %}
+                    <a href="{{ url_for('dashboard') }}" {% if request.endpoint == 'dashboard' %}class="active"{% endif %}>
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                    {% if session.has_admin_access %}
+                        <a href="{{ url_for('admin_dashboard') }}" class="admin-nav-link">
+                            <i class="fas fa-shield-alt"></i> Admin
+                        </a>
+                    {% endif %}
+                    {% if session.user_type == 'customer' %}
+                        <a href="{{ url_for('post_job') }}" class="btn-primary-small" style="color: white;">
+                            <i class="fas fa-plus"></i> Post Job
+                        </a>
+                    {% endif %}
+                    <a href="{{ url_for('logout') }}" class="logout-link">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" {% if request.endpoint == 'login' %}class="active"{% endif %}>
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                    <a href="{{ url_for('register') }}" class="btn-primary-small" style="color: white;">
+                        <i class="fas fa-user-plus"></i> Sign Up
+                    </a>
+                {% endif %}
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Flash Messages Container -->
+    <div class="flash-messages" id="flashMessages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        <i class="fas fa-{% if category == 'success' %}check-circle{% elif category == 'danger' %}exclamation-circle{% elif category == 'warning' %}exclamation-triangle{% else %}info-circle{% endif %}"></i>
+                        <span>{{ message }}</span>
+                        <span class="close-btn">&times;</span>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Modern Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="50" cy="50" r="48" stroke="#10B981" stroke-width="2" fill="white"/>
+                            <path d="M30 50 L45 65 L70 35" stroke="#10B981" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                            <circle cx="50" cy="50" r="8" fill="#10B981"/>
+                        </svg>
+                        <span>{{ settings.platform_name }}</span>
+                    </div>
+                    <p style="color: #9CA3AF; margin-bottom: 1rem; font-size: 0.85rem; line-height: 1.6;">
+                        Connecting Kenya with trusted skilled workers. Verified. Reliable. Local.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>For Workers</h4>
+                    <ul>
+                        <li><a href="{{ url_for('verify') }}"><i class="fas fa-check-circle"></i> Get Verified</a></li>
+                        <li><a href="{{ url_for('subscribe') }}"><i class="fas fa-crown"></i> Subscription Plans</a></li>
+                        <li><a href="{{ url_for('success_stories') }}"><i class="fas fa-star"></i> Success Stories</a></li>
+                        <li><a href="{{ url_for('tips_for_success') }}"><i class="fas fa-lightbulb"></i> Tips for Success</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>For Customers</h4>
+                    <ul>
+                        <li><a href="{{ url_for('workers') }}"><i class="fas fa-search"></i> Find a Fundi</a></li>
+                        <li><a href="{{ url_for('how_it_works') }}"><i class="fas fa-play-circle"></i> How It Works</a></li>
+                        <li><a href="{{ url_for('post_job') }}"><i class="fas fa-plus-circle"></i> Post a Job</a></li>
+                        <li><a href="{{ url_for('safety_tips') }}"><i class="fas fa-shield-alt"></i> Safety Tips</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="{{ url_for('help_center') }}"><i class="fas fa-question-circle"></i> Help Center</a></li>
+                        <li><a href="mailto:{{ settings.contact_email }}"><i class="fas fa-envelope"></i> Contact Us</a></li>
+                        <li><a href="{{ url_for('report_issue') }}"><i class="fas fa-flag"></i> Report an Issue</a></li>
+                        <li><a href="{{ url_for('terms') }}"><i class="fas fa-file-contract"></i> Terms & Conditions</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- User Dashboard Links - Only visible when logged in -->
+            {% if session.user_id %}
+            <div class="footer-user-links">
+                <div class="user-links-container">
+                    <h4 class="quick-access-title">
+                        <i class="fas fa-user-circle"></i> Quick Access
+                    </h4>
+                    <div class="quick-access-links">
+                        {% if session.user_type == 'customer' %}
+                        <a href="{{ url_for('post_job') }}" class="quick-link">
+                            <i class="fas fa-plus-circle"></i> Post a Job
+                        </a>
+                        <a href="{{ url_for('browse_jobs') }}" class="quick-link">
+                            <i class="fas fa-search"></i> Browse Jobs
+                        </a>
+                        {% endif %}
+                        <a href="{{ url_for('my_reports') }}" class="quick-link">
+                            <i class="fas fa-flag-checkered"></i> My Reports
+                        </a>
+                        {% if session.has_admin_access %}
+                        <a href="{{ url_for('admin_dashboard') }}" class="quick-link admin-link">
+                            <i class="fas fa-shield-alt"></i> Admin Panel
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 {{ settings.platform_name }}. All rights reserved.</p>
+                <p style="margin-top: 0.75rem;">
+                    <i class="fas fa-phone-alt"></i> M-Pesa Pochi la Biashara: <strong>{{ settings.mpesa_paybill }}</strong> |
+                    Account: Your Phone Number
+                </p>
+                <p style="margin-top: 0.5rem;">
+                    <i class="fas fa-envelope"></i> {{ settings.contact_email }} |
+                    <i class="fas fa-phone-alt"></i> {{ settings.contact_phone }}
+                </p>
+                {% if session.has_admin_access %}
+                <div class="admin-footer-link">
+                    <a href="{{ url_for('admin_dashboard') }}" class="admin-link">
+                        <i class="fas fa-shield-alt"></i> Admin Dashboard
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Scroll to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+
+        if (mobileMenuBtn && navLinks) {
+            mobileMenuBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                navLinks.classList.toggle('active');
+                const icon = this.querySelector('i');
+                if (icon) {
+                    icon.classList.toggle('fa-bars');
+                    icon.classList.toggle('fa-times');
+                }
+                document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
+            });
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            if (navLinks && navLinks.classList.contains('active')) {
+                if (!navLinks.contains(event.target) && !mobileMenuBtn.contains(event.target)) {
+                    navLinks.classList.remove('active');
+                    const icon = mobileMenuBtn.querySelector('i');
+                    if (icon) {
+                        icon.classList.add('fa-bars');
+                        icon.classList.remove('fa-times');
+                    }
+                    document.body.style.overflow = '';
+                }
+            }
+        });
+
+        // Close mobile menu on window resize (if screen becomes larger)
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768 && navLinks && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                const icon = mobileMenuBtn.querySelector('i');
+                if (icon) {
+                    icon.classList.add('fa-bars');
+                    icon.classList.remove('fa-times');
+                }
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Flash messages auto-dismiss with animation
+        const flashMessages = document.querySelectorAll('.alert');
+        flashMessages.forEach(alert => {
+            const closeBtn = alert.querySelector('.close-btn');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => {
+                    alert.style.animation = 'slideOutRight 0.3s ease forwards';
+                    setTimeout(() => {
+                        if (alert && alert.parentNode) alert.remove();
+                    }, 300);
+                });
+            }
+
+            // Auto dismiss after 5 seconds
+            setTimeout(() => {
+                if (alert && alert.parentNode) {
+                    alert.style.animation = 'slideOutRight 0.3s ease forwards';
+                    setTimeout(() => {
+                        if (alert && alert.parentNode) alert.remove();
+                    }, 300);
+                }
+            }, 5000);
+        });
+
+        // Scroll to top button
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+        if (scrollTopBtn) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    scrollTopBtn.style.display = 'flex';
+                    scrollTopBtn.style.animation = 'fadeInUp 0.3s ease';
+                } else {
+                    scrollTopBtn.style.display = 'none';
+                }
+            });
+
+            scrollTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+        // Add loading state to forms on submit
+        const forms = document.querySelectorAll('form');
+        forms.forEach(form => {
+            form.addEventListener('submit', function(e) {
+                const submitBtn = this.querySelector('button[type="submit"]');
+                if (submitBtn && !submitBtn.disabled) {
+                    const originalText = submitBtn.innerHTML;
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+
+                    // Re-enable after 10 seconds (in case of network issues)
+                    setTimeout(() => {
+                        if (submitBtn.disabled) {
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = originalText;
+                        }
+                    }, 10000);
+                }
+            });
+        });
+
+        // Add active class to current nav link
+        const currentLocation = window.location.pathname;
+        const navLinksList = document.querySelectorAll('.nav-links a');
+        navLinksList.forEach(link => {
+            const linkPath = link.getAttribute('href');
+            if (linkPath && linkPath !== '#' && currentLocation.includes(linkPath) && linkPath !== '/') {
+                link.classList.add('active');
+            }
+        });
+
+        // Prevent flash message from covering content on mobile
+        const adjustFlashMessagePosition = () => {
+            const flashContainer = document.querySelector('.flash-messages');
+            const navbar = document.querySelector('.navbar');
+            if (flashContainer && navbar) {
+                const navbarHeight = navbar.offsetHeight;
+                flashContainer.style.top = `${navbarHeight + 10}px`;
+            }
+        };
+
+        window.addEventListener('load', adjustFlashMessagePosition);
+        window.addEventListener('resize', adjustFlashMessagePosition);
+
+        // Add animation to elements when they come into view
+        const animateOnScroll = () => {
+            const elements = document.querySelectorAll('.feature-card, .worker-card-modern, .job-card, .stat-card');
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.2;
+
+                if (elementPosition < screenPosition) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        };
+
+        // Set initial styles for animated elements
+        const animatedElements = document.querySelectorAll('.feature-card, .worker-card-modern, .job-card, .stat-card');
+        animatedElements.forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        });
+
+        window.addEventListener('scroll', animateOnScroll);
+        window.addEventListener('load', animateOnScroll);
+
+        // Add CSS for slideOutRight animation if not already in style.css
+        if (!document.querySelector('#slideOutAnimation')) {
+            const style = document.createElement('style');
+            style.id = 'slideOutAnimation';
+            style.textContent = `
+                @keyframes slideOutRight {
+                    from {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                    to {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    </script>
+    <style>
+        /* Additional styles for footer user links - modern design */
+        .footer-user-links {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-links-container {
+            text-align: center;
+        }
+
+        .quick-access-title {
+            color: white;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1.25rem;
+            border-radius: 100px;
+            display: inline-flex;
+        }
+
+        .quick-access-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .quick-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #9CA3AF;
+            text-decoration: none;
+            font-size: 0.85rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 100px;
+            transition: all 0.3s ease;
+        }
+
+        .quick-link:hover {
+            background: rgba(5, 150, 105, 0.2);
+            color: #10B981;
+            transform: translateY(-2px);
+        }
+
+        .quick-link.admin-link {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(109, 40, 217, 0.2));
+            color: #A78BFA;
+        }
+
+        .quick-link.admin-link:hover {
+            background: linear-gradient(135deg, #8B5CF6, #6D28D9);
+            color: white;
+        }
+
+        /* Logout link styling */
+        .logout-link {
+            color: #EF4444 !important;
+        }
+
+        .logout-link:hover {
+            color: #DC2626 !important;
+        }
+
+        .logout-link::after {
+            background: #EF4444 !important;
+        }
+
+        /* Active nav link styling */
+        .nav-links a.active {
+            color: #059669;
+        }
+
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        /* Improved mobile menu */
+        @media (max-width: 768px) {
+            .nav-links {
+                max-height: calc(100vh - 60px);
+                overflow-y: auto;
+            }
+
+            .quick-access-links {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.75rem;
+            }
+
+            .quick-link {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .flash-messages {
+                top: 70px;
+                right: 10px;
+                left: 10px;
+            }
+        }
+
+        /* Smooth scroll for anchor links */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Focus styles for accessibility */
+        a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+            outline: 2px solid #059669;
+            outline-offset: 2px;
+        }
+    </style>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

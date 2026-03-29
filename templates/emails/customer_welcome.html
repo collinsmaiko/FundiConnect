@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to FundiConnect Premium - Exclusive Access</title>
+    <style>
+        /* ============================================
+           FILE: customer_welcome.html
+           FundiConnect - Premium Customer Welcome Email
+           Version: 3.0 - Luxury Premium Design
+           ============================================ */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+            padding: 2rem;
+            line-height: 1.6;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(245, 158, 11, 0.1);
+            animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        /* Premium Gold Accent Border */
+        .email-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #F59E0B, #D97706, #F59E0B, #D97706);
+            z-index: 10;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        @keyframes pulseGold {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 0 12px rgba(245, 158, 11, 0);
+            }
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                text-shadow: 0 0 5px rgba(245, 158, 11, 0.3);
+            }
+            50% {
+                text-shadow: 0 0 20px rgba(245, 158, 11, 0.6);
+            }
+        }
+
+        /* Premium Header with Gold Gradient */
+        .email-header {
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #0F172A 100%);
+            padding: 2.5rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .email-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -30%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .email-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #F59E0B, #D97706, #F59E0B, transparent);
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-icon {
+            background: linear-gradient(135deg, #F59E0B, #D97706);
+            border-radius: 14px;
+            padding: 0.5rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+        }
+
+        .logo-icon svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        .logo-text {
+            background: linear-gradient(135deg, #FFFFFF, #F59E0B);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 1.6rem;
+        }
+
+        .hero-icon {
+            position: relative;
+            z-index: 1;
+            margin: 1rem 0;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .hero-icon svg {
+            filter: drop-shadow(0 0 15px rgba(245, 158, 11, 0.3));
+        }
+
+        .email-body {
+            padding: 2.5rem;
+        }
+
+        /* Premium Banner - Luxury Style */
+        .premium-banner {
+            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 50%, #FEF3C7 100%);
+            border-radius: 24px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            animation: pulseGold 2s infinite;
+        }
+
+        .premium-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.2), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        .premium-banner::after {
+            content: '✨';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            font-size: 6rem;
+            opacity: 0.1;
+            transform: rotate(15deg);
+        }
+
+        .premium-banner h3 {
+            color: #7C2D12;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            font-weight: 800;
+        }
+
+        .premium-banner h3 i {
+            font-size: 1.3rem;
+        }
+
+        .premium-banner p {
+            color: #92400E;
+            font-size: 0.85rem;
+            margin-bottom: 0;
+            font-weight: 500;
+        }
+
+        /* Premium Badge - Elegant */
+        .premium-badge {
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.8rem;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.5px;
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+            animation: glow 2s ease-in-out infinite;
+            backdrop-filter: blur(10px);
+        }
+
+        .premium-badge i {
+            font-size: 1rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #0F172A;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #F59E0B, #D97706);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            display: inline-block;
+        }
+
+        .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #F59E0B, #D97706);
+            border-radius: 3px;
+        }
+
+        .greeting-premium {
+            font-size: 1rem;
+            color: #475569;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+            background: linear-gradient(135deg, #FEF3C7, #FFFBEB);
+            padding: 1rem;
+            border-radius: 16px;
+            border-left: 4px solid #F59E0B;
+        }
+
+        /* Stats Grid - Premium Style */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #FEF3C7 0%, #FFFBEB 100%);
+            padding: 1rem;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #F59E0B, #D97706);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.2);
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #F59E0B, #D97706);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: #6B7280;
+            margin-top: 0.25rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Feature List - Premium */
+        .feature-list {
+            margin: 1.5rem 0;
+            background: linear-gradient(135deg, #FFFFFF 0%, #FEF9E8 100%);
+            border-radius: 24px;
+            padding: 1.5rem;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.85rem 0;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.1);
+        }
+
+        .feature-item:last-child {
+            border-bottom: none;
+        }
+
+        .feature-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #FEF3C7, #FFFBEB);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .feature-text {
+            flex: 1;
+        }
+
+        .feature-title {
+            font-weight: 700;
+            color: #0F172A;
+            font-size: 0.95rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .feature-desc {
+            font-size: 0.75rem;
+            color: #6B7280;
+        }
+
+        .premium-feature-item {
+            background: linear-gradient(135deg, #FEF3C7 0%, #FFFBEB 100%);
+            margin: 0 -0.5rem;
+            padding: 0.85rem 1.25rem;
+            border-radius: 16px;
+            border-left: 3px solid #F59E0B;
+        }
+
+        .premium-feature-item .feature-icon {
+            background: linear-gradient(135deg, #F59E0B20, #D9770620);
+            color: #F59E0B;
+        }
+
+        /* CTA Buttons - Premium */
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.9rem 1.8rem;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button-primary {
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+            color: white;
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+        }
+
+        .cta-button-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px -8px rgba(245, 158, 11, 0.5);
+        }
+
+        .cta-button-secondary {
+            background: rgba(245, 158, 11, 0.1);
+            color: #F59E0B;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .cta-button-secondary:hover {
+            background: rgba(245, 158, 11, 0.2);
+            transform: translateY(-3px);
+        }
+
+        /* Premium Benefits Grid */
+        .premium-benefits {
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            border-radius: 24px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .premium-benefits::before {
+            content: '✨';
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            font-size: 8rem;
+            opacity: 0.05;
+            transform: rotate(15deg);
+        }
+
+        .premium-benefits h3 {
+            color: #F59E0B;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .benefit-item {
+            text-align: center;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .benefit-item:hover {
+            background: rgba(245, 158, 11, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .benefit-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .benefit-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .benefit-desc {
+            font-size: 0.65rem;
+            color: #9CA3AF;
+            margin-top: 0.25rem;
+        }
+
+        /* Testimonial */
+        .testimonial {
+            background: linear-gradient(135deg, #FEF3C7 0%, #FFFBEB 100%);
+            border-left: 4px solid #F59E0B;
+            padding: 1.25rem;
+            border-radius: 20px;
+            margin: 1.5rem 0;
+            font-style: italic;
+            font-size: 0.85rem;
+            color: #475569;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .testimonial-author {
+            margin-top: 0.75rem;
+            font-weight: 800;
+            color: #F59E0B;
+            font-style: normal;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .testimonial-author::before {
+            content: '—';
+            font-weight: 400;
+        }
+
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #F59E0B, #D97706, transparent);
+            margin: 2rem 0;
+        }
+
+        /* Support Section */
+        .support-section {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .support-section h3 {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            color: #0F172A;
+            font-weight: 700;
+        }
+
+        .support-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .support-link {
+            color: #F59E0B;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            background: rgba(245, 158, 11, 0.1);
+            border-radius: 100px;
+            transition: all 0.3s ease;
+        }
+
+        .support-link:hover {
+            background: linear-gradient(135deg, #F59E0B, #D97706);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        .email-footer {
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            width: 38px;
+            height: 38px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #9CA3AF;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: linear-gradient(135deg, #F59E0B, #D97706);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .footer-text {
+            font-size: 0.7rem;
+            color: #9CA3AF;
+            line-height: 1.6;
+        }
+
+        .footer-text a {
+            color: #F59E0B;
+            text-decoration: none;
+        }
+
+        .footer-text a:hover {
+            text-decoration: underline;
+        }
+
+        .unsubscribe-link {
+            font-size: 0.65rem;
+            color: #6B7280;
+            margin-top: 1rem;
+            display: inline-block;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            body {
+                padding: 1rem;
+            }
+            .email-body {
+                padding: 1.5rem;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+            .cta-buttons {
+                flex-direction: column;
+            }
+            .cta-button {
+                justify-content: center;
+            }
+            .benefits-grid {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="email-header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="48" stroke="white" stroke-width="2" fill="none"/>
+                        <path d="M30 50 L45 65 L70 35" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                        <circle cx="50" cy="50" r="8" fill="white"/>
+                    </svg>
+                </div>
+                <span class="logo-text">FundiConnect</span>
+            </div>
+            <div class="hero-icon">
+                <svg width="60" height="60" viewBox="0 0 100 100" fill="none">
+                    <circle cx="50" cy="50" r="45" fill="rgba(255,255,255,0.05)" stroke="#F59E0B" stroke-width="2"/>
+                    <path d="M35 50 L45 60 L65 40" stroke="#F59E0B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    <circle cx="50" cy="50" r="8" fill="#F59E0B"/>
+                </svg>
+            </div>
+        </div>
+
+        <div class="email-body">
+            <!-- Premium Banner - Luxury Style -->
+            <div class="premium-banner">
+                <h3>
+                    ✨ PREMIUM ELITE MEMBER ✨
+                </h3>
+                <p>Thank you for choosing the premium experience. You now have access to exclusive benefits.</p>
+            </div>
+
+            <div style="text-align: center;">
+                <div class="premium-badge">
+                    <i class="fas fa-crown">👑</i> PREMIUM MEMBERSHIP
+                </div>
+
+                <h1>Welcome to the <span class="highlight">Premium Circle</span>, {{ user_name }}!</h1>
+                <div class="greeting-premium">
+                    ✨ You've unlocked the ultimate hiring experience. As a Premium member, you get priority access to Kenya's most trusted skilled workers, unlimited job postings, and exclusive features designed to make your projects effortless.
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Premium Verified Workers</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">99.9%</div>
+                    <div class="stat-label">Satisfaction Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">&lt;15min</div>
+                    <div class="stat-label">Avg. Response</div>
+                </div>
+            </div>
+
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="feature-icon">⚡</div>
+                    <div class="feature-text">
+                        <div class="feature-title">Priority Listing</div>
+                        <div class="feature-desc">Your jobs appear at the top of search results - get responses faster</div>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">✅</div>
+                    <div class="feature-text">
+                        <div class="feature-title">Verified Workers Only</div>
+                        <div class="feature-desc">Access to pre-screened, ID-verified professionals only</div>
+                    </div>
+                </div>
+                <div class="feature-item premium-feature-item">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-text">
+                        <div class="feature-title">Advanced Analytics Dashboard</div>
+                        <div class="feature-desc">Track hiring patterns, view detailed insights, and optimize your hiring strategy</div>
+                    </div>
+                </div>
+                <div class="feature-item premium-feature-item">
+                    <div class="feature-icon">∞</div>
+                    <div class="feature-text">
+                        <div class="feature-title">Unlimited Job Posts</div>
+                        <div class="feature-desc">Post unlimited jobs with zero restrictions - no monthly limits</div>
+                    </div>
+                </div>
+                <div class="feature-item premium-feature-item">
+                    <div class="feature-icon">🔒</div>
+                    <div class="feature-text">
+                        <div class="feature-title">View Verification Details</div>
+                        <div class="feature-desc">See complete worker verification documents for complete peace of mind</div>
+                    </div>
+                </div>
+                <div class="feature-item premium-feature-item">
+                    <div class="feature-icon">🎯</div>
+                    <div class="feature-text">
+                        <div class="feature-title">Advanced Search Filters</div>
+                        <div class="feature-desc">Filter by experience, rating, location, and more to find the perfect match</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cta-buttons">
+                <a href="{{ browse_jobs_url }}" class="cta-button cta-button-primary">
+                    🔍 Find Premium Workers
+                </a>
+                <a href="{{ post_job_url }}" class="cta-button cta-button-secondary">
+                    ⚡ Post Your First Job
+                </a>
+            </div>
+
+            <!-- Premium Benefits Section - Luxury Design -->
+            <div class="premium-benefits">
+                <h3>
+                    ✨ Your Premium Benefits ✨
+                </h3>
+                <div class="benefits-grid">
+                    <div class="benefit-item">
+                        <div class="benefit-icon">💎</div>
+                        <div class="benefit-title">Priority Support</div>
+                        <div class="benefit-desc">24/7 dedicated support line</div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">📈</div>
+                        <div class="benefit-title">Hiring Analytics</div>
+                        <div class="benefit-desc">Track your hiring success</div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">⭐</div>
+                        <div class="benefit-title">Featured Badge</div>
+                        <div class="benefit-desc">Your profile gets premium badge</div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🎯</div>
+                        <div class="benefit-title">Smart Matching</div>
+                        <div class="benefit-desc">AI-powered worker recommendations</div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">📋</div>
+                        <div class="benefit-title">Bulk Job Posting</div>
+                        <div class="benefit-desc">Post up to 50 jobs at once</div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🎁</div>
+                        <div class="benefit-title">Exclusive Offers</div>
+                        <div class="benefit-desc">Special discounts and perks</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial">
+                "FundiConnect Premium transformed how I hire. I get responses within minutes, and the quality of workers is exceptional. The verified-only feature gives me complete peace of mind."
+                <div class="testimonial-author">Sarah Wanjiku, Premium Member since 2025</div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="support-section">
+                <h3>Need Help Getting Started?</h3>
+                <p style="font-size: 0.85rem; color: #6B7280; margin-bottom: 1rem;">
+                    As a Premium member, you get priority support. Our team is ready to help you maximize your membership benefits.
+                </p>
+                <div class="support-links">
+                    <a href="{{ support_email }}" class="support-link">📧 Priority Support</a>
+                    <a href="{{ workers_url }}" class="support-link">🔍 Browse Premium Workers</a>
+                    <a href="{{ pricing_url }}" class="support-link">💎 Manage Membership</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="email-footer">
+            <div class="social-links">
+                <a href="#" class="social-link">📘</a>
+                <a href="#" class="social-link">🐦</a>
+                <a href="#" class="social-link">📸</a>
+                <a href="#" class="social-link">💬</a>
+            </div>
+            <div class="footer-text">
+                <p>© 2026 FundiConnect Premium. All rights reserved.</p>
+                <p>{{ contact_email }} | {{ contact_phone }}</p>
+                <p><a href="#">Privacy Policy</a> | <a href="#">Premium Terms</a></p>
+                <p style="margin-top: 0.5rem;">🌟 Elevating Kenya's skilled worker experience 🌟</p>
+                <a href="{{ unsubscribe_url }}" class="unsubscribe-link">Manage email preferences</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

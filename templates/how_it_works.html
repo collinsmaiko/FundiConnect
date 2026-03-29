@@ -1,0 +1,309 @@
+{% extends "base.html" %}
+
+{% block title %}How It Works - {{ settings.platform_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ============================================
+   FILE: how_it_works.html
+   FundiConnect - How It Works Page
+   ============================================ */
+
+.how-it-works-page {
+    padding: 2rem 0;
+    background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+    min-height: calc(100vh - 200px);
+}
+
+.hero-section {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    border-radius: 28px;
+    padding: 3rem 2rem;
+    margin-bottom: 3rem;
+    text-align: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.hero-section h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: white;
+    background: none;
+}
+
+.hero-section p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.steps-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.step-card {
+    background: white;
+    border-radius: 24px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid #E5E7EB;
+    transition: all 0.3s;
+}
+
+.step-card:hover {
+    transform: translateX(8px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    border-color: #059669;
+}
+
+.step-number {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #059669, #047857);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: white;
+    flex-shrink: 0;
+}
+
+.step-content {
+    flex: 1;
+}
+
+.step-content h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: #1F2937;
+}
+
+.step-content p {
+    color: #6B7280;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.step-tip {
+    background: #F3F4F6;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    color: #059669;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.video-section {
+    background: white;
+    border-radius: 24px;
+    padding: 2rem;
+    margin-top: 2rem;
+    text-align: center;
+    border: 1px solid #E5E7EB;
+}
+
+.video-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #1F2937;
+}
+
+.video-placeholder {
+    background: linear-gradient(135deg, #1F2937, #111827);
+    border-radius: 20px;
+    padding: 3rem;
+    margin: 1.5rem 0;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.video-placeholder:hover {
+    transform: scale(1.02);
+}
+
+.video-placeholder i {
+    font-size: 4rem;
+    color: #059669;
+    margin-bottom: 1rem;
+}
+
+.video-placeholder p {
+    color: white;
+    margin-top: 1rem;
+}
+
+.cta-section {
+    background: linear-gradient(135deg, #059669, #047857);
+    border-radius: 28px;
+    padding: 3rem;
+    text-align: center;
+    margin-top: 3rem;
+    color: white;
+}
+
+.cta-section h2 {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+    color: white;
+}
+
+.cta-section p {
+    margin-bottom: 1.5rem;
+    opacity: 0.9;
+}
+
+.cta-section .btn-secondary {
+    background: white;
+    color: #059669;
+    border: none;
+    padding: 0.875rem 2rem;
+    font-size: 1rem;
+}
+
+.cta-section .btn-secondary:hover {
+    background: #F59E0B;
+    color: #1F2937;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .hero-section h1 {
+        font-size: 1.75rem;
+    }
+    .step-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 1rem;
+    }
+    .step-number {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+    .step-tip {
+        display: inline-flex;
+    }
+    .cta-section {
+        padding: 2rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="how-it-works-page">
+    <div class="container">
+        <div class="hero-section">
+            <h1>How FundiConnect Works</h1>
+            <p>Your journey to finding the perfect skilled worker or landing your next job starts here</p>
+        </div>
+
+        <div class="steps-container">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Create Your Free Account</h3>
+                    <p>Sign up in less than 2 minutes. Choose whether you're a worker looking for jobs or a customer needing services. Provide your basic information and get started immediately.</p>
+                    <div class="step-tip">
+                        <i class="fas fa-lightbulb"></i> Tip: Complete your profile to increase visibility
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Build Your Profile (Workers)</h3>
+                    <p>Showcase your skills, experience, and portfolio. Add your hourly rate, location, and a professional description. The more complete your profile, the more customers will trust you.</p>
+                    <div class="step-tip">
+                        <i class="fas fa-star"></i> Pro Tip: Get verified to earn the trusted badge
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Post a Job or Browse Workers</h3>
+                    <p>Customers: Describe your job requirements, set a budget, and post it for free. Workers: Browse available jobs that match your skills and apply with a personalized message.</p>
+                    <div class="step-tip">
+                        <i class="fas fa-search"></i> Tip: Use filters to find exactly what you need
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3>Connect & Communicate</h3>
+                    <p>Review worker profiles, check their ratings, and compare bids. Message directly through our platform to discuss details, timelines, and expectations before hiring.</p>
+                    <div class="step-tip">
+                        <i class="fas fa-comments"></i> Tip: Ask for references or portfolio examples
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <h3>Hire & Complete Work</h3>
+                    <p>Agree on terms and get the job done. For premium subscribers, we offer escrow protection for secure payments. Track progress and communicate throughout the project.</p>
+                    <div class="step-tip">
+                        <i class="fas fa-shield-alt"></i> Tip: Use M-Pesa for secure transactions
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">6</div>
+                <div class="step-content">
+                    <h3>Review & Rate</h3>
+                    <p>After job completion, leave an honest review. Your feedback helps build trust in the community and helps other customers make informed decisions.</p>
+                    <div class="step-tip">
+                        <i class="fas fa-star"></i> Tip: Honest reviews help everyone
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="video-section">
+            <h2>Watch How It Works</h2>
+            <p>See how customers and workers connect on FundiConnect</p>
+            <div class="video-placeholder" onclick="alert('Video tutorial coming soon! Stay tuned.')">
+                <i class="fas fa-play-circle"></i>
+                <p>Click to watch tutorial video</p>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2>Ready to Get Started?</h2>
+            <p>Join thousands of satisfied users on FundiConnect today</p>
+            <a href="{{ url_for('register') }}" class="btn-secondary">Create Free Account</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

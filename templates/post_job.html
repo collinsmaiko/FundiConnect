@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+
+{% block title %}Post a Job - {{ settings.platform_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ============================================
+   FILE: post_job.html
+   FundiConnect - Modern Post Job Page
+   ============================================ */
+
+.post-job-page {
+    padding: 2rem 0;
+    background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+    min-height: calc(100vh - 200px);
+}
+
+.post-job-card {
+    background: white;
+    border-radius: 28px;
+    padding: 2rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    max-width: 800px;
+    margin: 0 auto;
+    border: 1px solid #E5E7EB;
+}
+
+.post-job-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #059669;
+}
+
+.post-job-header h2 {
+    font-size: 1.5rem;
+    color: #1F2937;
+    margin-bottom: 0.5rem;
+}
+
+.post-job-header p {
+    color: #6B7280;
+    font-size: 0.85rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.85rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+    background: #F9FAFB;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #059669;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+}
+
+.form-group input:hover,
+.form-group select:hover,
+.form-group textarea:hover {
+    border-color: #9CA3AF;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.form-text {
+    font-size: 0.7rem;
+    color: #6B7280;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    justify-content: flex-end;
+}
+
+.info-tip {
+    background: #F0FDF4;
+    border-left: 4px solid #059669;
+    padding: 1rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.info-tip i {
+    color: #059669;
+    font-size: 1.1rem;
+}
+
+.info-tip p {
+    margin: 0;
+    color: #6B7280;
+    font-size: 0.8rem;
+}
+
+@media (max-width: 768px) {
+    .post-job-page {
+        padding: 1rem;
+    }
+    .post-job-card {
+        padding: 1.25rem;
+    }
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+    .form-actions {
+        flex-direction: column;
+    }
+    .form-actions button,
+    .form-actions a {
+        width: 100%;
+        justify-content: center;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="post-job-page">
+    <div class="container">
+        <div class="post-job-card">
+            <div class="post-job-header">
+                <h2><i class="fas fa-plus-circle"></i> Post a New Job</h2>
+                <p>Describe your job and find the perfect skilled worker</p>
+            </div>
+
+            <div class="info-tip">
+                <i class="fas fa-lightbulb"></i>
+                <p><strong>Pro Tip:</strong> Be specific about your job requirements to attract the right candidates. Include details about the project scope, timeline, and any special requirements.</p>
+            </div>
+
+            <form method="POST">
+                <div class="form-group">
+                    <label><i class="fas fa-heading"></i> Job Title <span class="required-star" style="color: #EF4444;">*</span></label>
+                    <input type="text" name="title" placeholder="e.g., Need a Plumber for Bathroom Repair" required>
+                    <small class="form-text">A clear, descriptive title helps workers find your job</small>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-align-left"></i> Job Description <span class="required-star" style="color: #EF4444;">*</span></label>
+                    <textarea name="description" rows="6" placeholder="Describe the job in detail. Include what needs to be done, materials needed, timeline, and any special requirements." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-map-marker-alt"></i> Location</label>
+                    <input type="text" name="location" placeholder="e.g., Nairobi, Westlands">
+                    <small class="form-text">Specify the work location (optional)</small>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-money-bill-wave"></i> Minimum Budget (KES)</label>
+                        <input type="number" name="budget_min" placeholder="e.g., 1000">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-money-bill-wave"></i> Maximum Budget (KES)</label>
+                        <input type="number" name="budget_max" placeholder="e.g., 5000">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-tags"></i> Category</label>
+                        <select name="job_category">
+                            <option value="general">General</option>
+                            {% for key, cat in categories.items() %}
+                            <option value="{{ key }}">{{ cat.icon }} {{ cat.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-calendar"></i> Deadline (Optional)</label>
+                        <input type="date" name="deadline">
+                        <small class="form-text">When do you need this job completed?</small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-code-branch"></i> Required Skills (Optional)</label>
+                    <input type="text" name="skills_required" placeholder="e.g., Plumbing, Pipe fitting, Leak detection">
+                    <small class="form-text">Comma separated list of skills required for this job</small>
+                </div>
+
+                <div class="form-actions">
+                    <a href="{{ url_for('dashboard') }}" class="btn-outline">Cancel</a>
+                    <button type="submit" class="btn-primary">Post Job</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,1505 @@
+{% extends "base.html" %}
+
+{% block title %}{{ settings.platform_name }} - Kenya's Most Trusted Skilled Workers Network{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ============================================
+    INDEX.HTML - AUTHORITATIVE EDITION
+    Trust | Power | Leadership | Simple Words
+============================================ */
+
+:root {
+    --primary: #047857;
+    --primary-dark: #065F46;
+    --primary-darker: #064E3B;
+    --secondary: #F59E0B;
+    --secondary-dark: #D97706;
+    --gold: #D4AF37;
+    --dark: #030712;
+    --dark-soft: #111827;
+    --white: #FFFFFF;
+}
+
+/* Hero Section */
+.hero-modern {
+    position: relative;
+    background: linear-gradient(135deg, #030712 0%, #064E3B 50%, #047857 100%);
+    overflow: hidden;
+    min-height: 95vh;
+    display: flex;
+    align-items: center;
+}
+
+.hero-modern::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?w=1920&q=80') center/cover;
+    opacity: 0.08;
+    pointer-events: none;
+}
+
+.hero-modern::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 150px;
+    background: linear-gradient(to top, #030712, transparent);
+    pointer-events: none;
+}
+
+.hero-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-content {
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(212, 175, 55, 0.15);
+    backdrop-filter: blur(12px);
+    padding: 0.6rem 1.5rem;
+    border-radius: 100px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 2rem;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.hero-badge i {
+    color: var(--gold);
+}
+
+.hero-content h1 {
+    font-size: 4rem;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    color: white;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.hero-content h1 .highlight {
+    color: var(--gold);
+    position: relative;
+    display: inline-block;
+}
+
+.hero-content h1 .highlight::after {
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gold);
+    border-radius: 4px;
+}
+
+.hero-content p {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 2rem;
+    line-height: 1.7;
+    max-width: 90%;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+    margin-bottom: 2.5rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--gold), var(--secondary));
+    color: var(--dark);
+    padding: 1rem 2.2rem;
+    border-radius: 100px;
+    font-weight: 800;
+    font-size: 1rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+    gap: 1rem;
+}
+
+.btn-outline {
+    border: 2px solid rgba(212, 175, 55, 0.6);
+    background: transparent;
+    color: white;
+    padding: 1rem 2.2rem;
+    border-radius: 100px;
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+    border-color: var(--gold);
+    background: rgba(212, 175, 55, 0.1);
+    transform: translateY(-3px);
+}
+
+.trust-badges {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.trust-badges span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 100px;
+}
+
+.trust-badges span i {
+    color: var(--gold);
+}
+
+.hero-image {
+    animation: fadeInRight 0.8s ease-out;
+    position: relative;
+}
+
+.hero-image img {
+    width: 100%;
+    border-radius: 32px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.hero-stats-card {
+    position: absolute;
+    bottom: -30px;
+    left: -30px;
+    background: rgba(3, 7, 18, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 28px;
+    padding: 1.5rem 2rem;
+    display: flex;
+    gap: 2rem;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.3);
+    animation: float 4s ease-in-out infinite;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: -1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 40px;
+    background: rgba(212, 175, 55, 0.3);
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--gold);
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 0.25rem;
+}
+
+/* Trust Section */
+.trust-section {
+    background: linear-gradient(135deg, var(--dark) 0%, var(--primary-darker) 100%);
+    padding: 5rem 0;
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.trust-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.trust-item {
+    text-align: center;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 28px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.trust-item:hover {
+    transform: translateY(-5px);
+    border-color: rgba(212, 175, 55, 0.4);
+}
+
+.trust-item i {
+    font-size: 2.8rem;
+    margin-bottom: 1rem;
+    display: inline-block;
+    color: var(--gold);
+}
+
+.trust-item h4 {
+    color: white;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.trust-item p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+/* Search Section */
+.search-section {
+    padding: 5rem 0;
+    background: var(--dark);
+}
+
+.search-section h2 {
+    text-align: center;
+    font-size: 2.2rem;
+    margin-bottom: 2rem;
+    color: white;
+    font-weight: 700;
+}
+
+.search-box-modern {
+    max-width: 900px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 80px;
+    padding: 0.5rem;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    display: flex;
+    gap: 0.5rem;
+}
+
+.search-input-group {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 0.875rem 1.5rem;
+    border-radius: 60px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    transition: all 0.3s;
+}
+
+.search-input-group:focus-within {
+    border-color: var(--gold);
+}
+
+.search-input-group i {
+    color: var(--gold);
+}
+
+.search-input-group input {
+    border: none;
+    outline: none;
+    flex: 1;
+    font-size: 1rem;
+    background: transparent;
+    color: white;
+}
+
+.search-input-group input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.search-box-modern button {
+    background: linear-gradient(135deg, var(--gold), var(--secondary));
+    border: none;
+    padding: 0 2rem;
+    border-radius: 60px;
+    color: var(--dark);
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.search-box-modern button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+    gap: 0.8rem;
+}
+
+/* Categories Section */
+.categories-section {
+    padding: 5rem 0;
+    background: linear-gradient(135deg, var(--dark-soft) 0%, var(--dark) 100%);
+}
+
+.categories-section h2 {
+    text-align: center;
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+    color: white;
+    font-weight: 700;
+}
+
+.section-subtitle {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 3rem;
+    font-size: 1rem;
+}
+
+.categories-grid-modern {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.75rem;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.category-card-modern {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 24px;
+    padding: 1.75rem 1rem;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.category-card-modern:hover {
+    transform: translateY(-5px);
+    border-color: var(--gold);
+    background: rgba(212, 175, 55, 0.05);
+}
+
+.category-icon {
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 1rem;
+    background: rgba(212, 175, 55, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem;
+    transition: all 0.3s;
+}
+
+.category-card-modern:hover .category-icon {
+    transform: scale(1.05);
+    background: linear-gradient(135deg, var(--gold), var(--secondary));
+}
+
+.category-card-modern:hover .category-icon span {
+    filter: brightness(0) invert(1);
+}
+
+.category-card-modern h6 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: white;
+    margin-top: 0.75rem;
+}
+
+.category-card-modern p {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 0.25rem;
+}
+
+/* Featured Workers */
+.featured-workers {
+    padding: 5rem 0;
+    background: var(--dark);
+}
+
+.section-header-modern {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 2rem;
+}
+
+.section-header-modern h2 {
+    font-size: 2rem;
+    color: white;
+    font-weight: 700;
+    position: relative;
+}
+
+.section-header-modern h2::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: var(--gold);
+}
+
+.view-all {
+    color: var(--gold);
+    text-decoration: none;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s;
+    padding: 0.5rem 1rem;
+    border-radius: 100px;
+    background: rgba(212, 175, 55, 0.1);
+}
+
+.view-all:hover {
+    gap: 0.75rem;
+    background: var(--gold);
+    color: var(--dark);
+}
+
+/* Worker Cards */
+.workers-grid-modern {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 2rem;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.worker-card-modern {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 28px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.worker-card-modern:hover {
+    transform: translateY(-8px);
+    border-color: var(--gold);
+}
+
+.worker-image-modern {
+    position: relative;
+    height: 280px;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--primary), var(--primary-darker));
+}
+
+.worker-image-modern img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.worker-card-modern:hover .worker-image-modern img {
+    transform: scale(1.05);
+}
+
+.available-badge-modern {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--gold);
+    color: var(--dark);
+    padding: 0.3rem 0.8rem;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.worker-info-modern {
+    padding: 1.5rem;
+}
+
+.worker-name-modern {
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    color: white;
+}
+
+.verified-badge-worker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: linear-gradient(135deg, var(--gold), var(--secondary));
+    padding: 0.25rem 0.75rem;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--dark);
+}
+
+.worker-category {
+    display: inline-block;
+    background: rgba(212, 175, 55, 0.1);
+    color: var(--gold);
+    padding: 0.25rem 0.75rem;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.worker-rating-modern {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.stars-modern {
+    color: var(--gold);
+    font-size: 0.85rem;
+}
+
+.worker-skills-modern {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.5;
+}
+
+.worker-location-modern {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.8rem;
+    margin-bottom: 0.75rem;
+}
+
+.worker-rate-modern {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--gold);
+    margin-bottom: 1rem;
+}
+
+.worker-stats-modern {
+    display: flex;
+    gap: 1rem;
+    margin: 0.75rem 0;
+    padding: 0.75rem 0;
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.stat-item-modern {
+    flex: 1;
+    text-align: center;
+}
+
+.stat-value-modern {
+    font-weight: 800;
+    color: var(--gold);
+    font-size: 0.9rem;
+}
+
+.stat-label-modern {
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.btn-view-modern {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.8rem;
+    background: linear-gradient(135deg, var(--gold), var(--secondary));
+    color: var(--dark);
+    border-radius: 100px;
+    text-decoration: none;
+    font-weight: 800;
+    transition: all 0.3s;
+    margin-top: 0.5rem;
+}
+
+.btn-view-modern:hover {
+    transform: translateY(-2px);
+    gap: 0.8rem;
+}
+
+/* ==================== FEATURED STORIES SECTION ==================== */
+.featured-stories {
+    padding: 5rem 0;
+    background: linear-gradient(135deg, var(--dark-soft) 0%, var(--primary-darker) 100%);
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.stories-grid-modern {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 2rem;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.story-card-modern {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 28px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(212, 175, 55, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.story-card-modern:hover {
+    transform: translateY(-8px);
+    border-color: var(--gold);
+    box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.3);
+}
+
+.story-header {
+    padding: 1.5rem 1.5rem 0.5rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.story-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--dark);
+    flex-shrink: 0;
+    border: 2px solid var(--gold);
+}
+
+.story-avatar-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.story-user-info {
+    flex: 1;
+}
+
+.story-user-name {
+    font-weight: 800;
+    color: white;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.story-user-category {
+    font-size: 0.7rem;
+    color: var(--gold);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: rgba(212, 175, 55, 0.15);
+    padding: 0.2rem 0.6rem;
+    border-radius: 100px;
+}
+
+.story-quote-icon {
+    color: var(--gold);
+    font-size: 1.2rem;
+    opacity: 0.5;
+}
+
+.story-content {
+    padding: 0 1.5rem 1rem 1.5rem;
+}
+
+.story-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
+}
+
+.story-text {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.story-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-bottom: 0.75rem;
+}
+
+.story-rating i {
+    color: var(--gold);
+    font-size: 0.8rem;
+}
+
+.story-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid rgba(212, 175, 55, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.story-date i {
+    margin-right: 0.25rem;
+}
+
+.story-badge {
+    background: linear-gradient(135deg, var(--gold), var(--secondary));
+    color: var(--dark);
+    padding: 0.25rem 0.75rem;
+    border-radius: 100px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* Recent Jobs */
+.recent-jobs {
+    padding: 5rem 0;
+    background: linear-gradient(135deg, var(--dark-soft) 0%, var(--dark) 100%);
+}
+
+.jobs-list-modern {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.job-card-modern {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 20px;
+    padding: 1.5rem;
+    border: 1px solid rgba(212, 175, 55, 0.1);
+    transition: all 0.3s;
+}
+
+.job-card-modern:hover {
+    transform: translateX(5px);
+    border-color: var(--gold);
+}
+
+.job-header-modern {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.job-header-modern h3 {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: white;
+}
+
+.job-budget-modern {
+    font-weight: 800;
+    color: var(--gold);
+    font-size: 1rem;
+    background: rgba(212, 175, 55, 0.1);
+    padding: 0.3rem 0.8rem;
+    border-radius: 100px;
+}
+
+.job-description-modern {
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 0.75rem;
+    line-height: 1.5;
+    font-size: 0.9rem;
+}
+
+.job-meta-modern {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 0.75rem;
+}
+
+/* How It Works */
+.how-it-works {
+    padding: 5rem 0;
+    background: linear-gradient(135deg, var(--primary-darker) 0%, var(--dark) 100%);
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.how-it-works h2 {
+    text-align: center;
+    font-size: 2.2rem;
+    margin-bottom: 3rem;
+    color: white;
+    font-weight: 700;
+}
+
+.steps-grid-modern {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.step-modern {
+    text-align: center;
+}
+
+.step-icon-modern {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 1.2rem;
+    background: rgba(212, 175, 55, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    transition: all 0.3s;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    color: var(--gold);
+}
+
+.step-modern:hover .step-icon-modern {
+    transform: scale(1.05);
+    background: linear-gradient(135deg, var(--gold), var(--secondary));
+    color: var(--dark);
+}
+
+.step-modern h4 {
+    color: white;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.step-modern p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85rem;
+}
+
+/* CTA Section */
+.cta-section-modern {
+    background: linear-gradient(135deg, var(--dark) 0%, #030712 100%);
+    padding: 5rem 0;
+}
+
+.cta-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.cta-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: white;
+    font-weight: 800;
+}
+
+.cta-content p {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.cta-buttons .btn-secondary {
+    background: linear-gradient(135deg, var(--gold), var(--secondary));
+    color: var(--dark);
+    border: none;
+    font-weight: 800;
+    padding: 0.9rem 1.8rem;
+    transition: all 0.3s;
+}
+
+.cta-buttons .btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(212, 175, 55, 0.3);
+}
+
+.cta-buttons .btn-outline {
+    border: 2px solid rgba(212, 175, 55, 0.5);
+    color: white;
+    padding: 0.9rem 1.8rem;
+    transition: all 0.3s;
+}
+
+.cta-buttons .btn-outline:hover {
+    border-color: var(--gold);
+    background: rgba(212, 175, 55, 0.1);
+    transform: translateY(-2px);
+}
+
+.cta-image img {
+    max-width: 100%;
+    border-radius: 28px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    animation: float 5s ease-in-out infinite;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInRight {
+    from { opacity: 0; transform: translateX(40px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .hero-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 2rem;
+    }
+    .hero-content p {
+        max-width: 100%;
+    }
+    .hero-stats-card {
+        position: static;
+        margin-top: 2rem;
+        display: inline-flex;
+    }
+    .trust-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .steps-grid-modern {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .cta-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    .cta-buttons {
+        justify-content: center;
+    }
+    .search-box-modern {
+        flex-direction: column;
+        border-radius: 30px;
+    }
+    .search-input-group {
+        border-radius: 50px;
+    }
+    .search-box-modern button {
+        padding: 0.9rem;
+        border-radius: 50px;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+    .trust-grid {
+        grid-template-columns: 1fr;
+    }
+    .steps-grid-modern {
+        grid-template-columns: 1fr;
+    }
+    .workers-grid-modern {
+        grid-template-columns: 1fr;
+    }
+    .stories-grid-modern {
+        grid-template-columns: 1fr;
+    }
+    .categories-grid-modern {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .hero-stats-card {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .stat-item:not(:last-child)::after {
+        display: none;
+    }
+    .section-header-modern {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+    .section-header-modern h2::before {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-content h1 {
+        font-size: 1.8rem;
+    }
+    .categories-grid-modern {
+        grid-template-columns: 1fr;
+    }
+    .hero-buttons {
+        flex-direction: column;
+    }
+    .btn-primary, .btn-outline {
+        width: 100%;
+        justify-content: center;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-modern">
+    <div class="hero-container">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fas fa-star"></i> KENYA'S MOST TRUSTED PLATFORM
+            </div>
+            <h1>
+                Find Trusted <span class="highlight">Skilled Workers</span><br>
+                in Kenya Instantly
+            </h1>
+            <p>Connect with verified plumbers, electricians, carpenters, and more. Post jobs, get quotes, and hire with confidence. 100% satisfaction guaranteed.</p>
+            <div class="hero-buttons">
+                <a href="{{ url_for('register') }}" class="btn-primary">
+                    <i class="fas fa-user-plus"></i> Get Started Free
+                </a>
+                <a href="{{ url_for('workers') }}" class="btn-outline">
+                    <i class="fas fa-search"></i> Find Workers
+                </a>
+            </div>
+            <div class="trust-badges">
+                <span><i class="fas fa-check-circle"></i> Verified Workers</span>
+                <span><i class="fas fa-shield-alt"></i> Secure M-Pesa Payments</span>
+                <span><i class="fas fa-headset"></i> 24/7 Support</span>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?w=600&q=80" alt="Skilled worker in action">
+            <div class="hero-stats-card">
+                <div class="stat-item">
+                    <div class="stat-number">{{ stats.workers }}+</div>
+                    <div class="stat-label">Skilled Workers</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">{{ stats.jobs }}+</div>
+                    <div class="stat-label">Jobs Completed</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">{{ stats.rating }}</div>
+                    <div class="stat-label">Customer Rating</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Trust Section -->
+<section class="trust-section">
+    <div class="trust-grid">
+        <div class="trust-item">
+            <i class="fas fa-id-card"></i>
+            <h4>Verified Profiles</h4>
+            <p>All workers are verified and reviewed by real customers</p>
+        </div>
+        <div class="trust-item">
+            <i class="fas fa-lock"></i>
+            <h4>Secure Payments</h4>
+            <p>M-Pesa integration with escrow protection</p>
+        </div>
+        <div class="trust-item">
+            <i class="fas fa-headset"></i>
+            <h4>24/7 Support</h4>
+            <p>Dedicated customer support team ready to help</p>
+        </div>
+        <div class="trust-item">
+            <i class="fas fa-chart-line"></i>
+            <h4>Satisfaction Guarantee</h4>
+            <p>Quality work guaranteed or your money back</p>
+        </div>
+    </div>
+</section>
+
+<!-- Search Section -->
+<section class="search-section">
+    <div class="container">
+        <h2>Find the Right Worker for Your Job</h2>
+        <div class="search-box-modern">
+            <div class="search-input-group">
+                <i class="fas fa-search"></i>
+                <input type="text" name="skill" id="searchSkill" placeholder="What service do you need? e.g., plumbing, electrical">
+            </div>
+            <div class="search-input-group">
+                <i class="fas fa-map-marker-alt"></i>
+                <input type="text" name="location" id="searchLocation" placeholder="Location e.g., Nairobi, Kisumu">
+            </div>
+            <button type="submit" onclick="searchWorkers()">
+                <i class="fas fa-search"></i> Search Workers
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Categories Section -->
+<section class="categories-section">
+    <div class="container">
+        <h2>Browse by Category</h2>
+        <p class="section-subtitle">Find skilled professionals in your preferred field</p>
+        <div class="categories-grid-modern">
+            {% for key, category in categories.items() %}
+            <a href="{{ url_for('workers', category=key) }}" class="category-card-modern">
+                <div class="category-icon">
+                    <span>{{ category.icon }}</span>
+                </div>
+                <h6>{{ category.name }}</h6>
+                <p>{{ category.description[:40] }}...</p>
+            </a>
+            {% endfor %}
+        </div>
+        <div style="text-align: center; margin-top: 2.5rem;">
+            <a href="{{ url_for('workers') }}" class="view-all">View All Categories <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Workers -->
+<section class="featured-workers">
+    <div class="section-header-modern">
+        <h2>Featured Verified Workers</h2>
+        <a href="{{ url_for('workers') }}" class="view-all">View All Workers <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="workers-grid-modern">
+        {% for worker in featured_workers[:3] %}
+        <div class="worker-card-modern">
+            <div class="worker-image-modern">
+                <img src="{{ url_for('static', filename='uploads/' + (worker.cover_image if worker.cover_image and worker.cover_image != 'default-cover.jpg' else 'default-cover.jpg')) }}" alt="{{ worker.business_name or worker.user.name }}" loading="lazy">
+                {% if worker.is_available %}
+                <span class="available-badge-modern">
+                    <i class="fas fa-circle"></i> Available
+                </span>
+                {% endif %}
+            </div>
+            <div class="worker-info-modern">
+                <div class="worker-name-modern">
+                    {{ worker.business_name or worker.user.name }}
+                    {% if worker.is_verified %}
+                    <span class="verified-badge-worker">
+                        <i class="fas fa-check-circle"></i> Verified
+                    </span>
+                    {% endif %}
+                </div>
+                <div class="worker-category">
+                    {% if worker.primary_category and categories[worker.primary_category] %}
+                        {{ categories[worker.primary_category].name }}
+                    {% else %}
+                        General
+                    {% endif %}
+                </div>
+                <div class="worker-rating-modern">
+                    <div class="stars-modern">
+                        {% set rating = worker.rating_score|default(0) %}
+                        {% for i in range(5) %}
+                            {% if i < rating|int %}
+                                <i class="fas fa-star"></i>
+                            {% elif i < rating %}
+                                <i class="fas fa-star-half-alt"></i>
+                            {% else %}
+                                <i class="far fa-star"></i>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <span style="font-size: 0.7rem; color: rgba(255,255,255,0.5);">({{ worker.rating_count|default(0) }} reviews)</span>
+                </div>
+                <p class="worker-skills-modern">{{ worker.skills[:100] if worker.skills else 'No skills listed' }}{% if worker.skills and worker.skills|length > 100 %}...{% endif %}</p>
+                <div class="worker-location-modern">
+                    <i class="fas fa-map-marker-alt"></i> {{ worker.location or 'Location not specified' }}
+                </div>
+                {% if worker.hourly_rate %}
+                <div class="worker-rate-modern">
+                    KES {{ "%.0f"|format(worker.hourly_rate) }} <span>/hour</span>
+                </div>
+                {% endif %}
+                <div class="worker-stats-modern">
+                    <div class="stat-item-modern">
+                        <div class="stat-value-modern">{{ worker.total_jobs_completed|default(0) }}</div>
+                        <div class="stat-label-modern">Jobs Done</div>
+                    </div>
+                    <div class="stat-item-modern">
+                        <div class="stat-value-modern">{{ worker.years_experience|default(0) }}</div>
+                        <div class="stat-label-modern">Years Exp</div>
+                    </div>
+                    <div class="stat-item-modern">
+                        <div class="stat-value-modern">{{ worker.response_time_avg|default(60) }}min</div>
+                        <div class="stat-label-modern">Response</div>
+                    </div>
+                </div>
+                <a href="{{ url_for('worker_profile', worker_id=worker.user_id) }}" class="btn-view-modern">
+                    View Profile <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Featured Stories Section - Added right after Featured Workers -->
+<section class="featured-stories">
+    <div class="section-header-modern">
+        <h2>Success Stories</h2>
+        <a href="{{ url_for('success_stories') }}" class="view-all">View All Stories <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="stories-grid-modern">
+        {% for story in featured_stories[:3] %}
+        <div class="story-card-modern">
+            <div class="story-header">
+                <div class="story-avatar">
+                    {% if story.get_profile_picture() %}
+                    <img src="{{ url_for('static', filename='uploads/' + story.get_profile_picture()) }}" alt="{{ story.name }}" class="story-avatar-img">
+                    {% else %}
+                    <span>{{ story.get_avatar_initials() }}</span>
+                    {% endif %}
+                </div>
+                <div class="story-user-info">
+                    <div class="story-user-name">{{ story.name }}</div>
+                    <div class="story-user-category">
+                        <i class="fas fa-tag"></i> {{ categories[story.category].name if categories[story.category] else story.category|title }}
+                    </div>
+                </div>
+                <div class="story-quote-icon">
+                    <i class="fas fa-quote-right"></i>
+                </div>
+            </div>
+            <div class="story-content">
+                <div class="story-title">{{ story.title[:60] }}{% if story.title|length > 60 %}...{% endif %}</div>
+                <div class="story-text">{{ story.story[:120] }}{% if story.story|length > 120 %}...{% endif %}</div>
+                <div class="story-rating">
+                    {% for i in range(5) %}
+                        {% if i < story.rating %}
+                            <i class="fas fa-star"></i>
+                        {% else %}
+                            <i class="far fa-star"></i>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="story-footer">
+                <span class="story-date"><i class="fas fa-calendar-alt"></i> {{ story.created_at.strftime('%b %d, %Y') }}</span>
+                <span class="story-badge"><i class="fas fa-star"></i> Featured Story</span>
+            </div>
+        </div>
+        {% else %}
+        <div style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
+            <i class="fas fa-star" style="font-size: 3rem; color: var(--gold); opacity: 0.5; margin-bottom: 1rem; display: inline-block;"></i>
+            <h3 style="color: white; margin-bottom: 0.5rem;">Be the First Success Story!</h3>
+            <p style="color: rgba(255,255,255,0.6);">Share your experience and inspire others in the community.</p>
+            <a href="{{ url_for('success_stories') }}" class="view-all" style="margin-top: 1rem; display: inline-flex;">Share Your Story <i class="fas fa-arrow-right"></i></a>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Recent Jobs -->
+<section class="recent-jobs">
+    <div class="section-header-modern">
+        <h2>Recent Job Opportunities</h2>
+        <a href="{{ url_for('browse_jobs') }}" class="view-all">View All Jobs <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="jobs-list-modern">
+        {% for job in recent_jobs[:5] %}
+        <div class="job-card-modern">
+            <div class="job-header-modern">
+                <h3>{{ job.title }}</h3>
+                <span class="job-budget-modern">
+                    KES {{ "%.0f"|format(job.budget_min or 0) }} - {{ "%.0f"|format(job.budget_max or 0) }}
+                </span>
+            </div>
+            <p class="job-description-modern">{{ job.description[:120] }}{% if job.description|length > 120 %}...{% endif %}</p>
+            <div class="job-meta-modern">
+                <span><i class="fas fa-map-marker-alt"></i> {{ job.location or 'Location not specified' }}</span>
+                <span><i class="fas fa-tag"></i> {{ categories[job.category].name if job.category else 'General' }}</span>
+                <span><i class="fas fa-calendar"></i> Posted: {{ job.created_at.strftime('%b %d, %Y') }}</span>
+            </div>
+            <div style="margin-top: 0.75rem;">
+                <a href="{{ url_for('job_detail', job_id=job.id) }}" class="btn-outline-small" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border: 1px solid var(--gold); border-radius: 100px; color: var(--gold); text-decoration: none;">
+                    View Details <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- How It Works -->
+<section class="how-it-works">
+    <h2>How FundiConnect Works</h2>
+    <div class="steps-grid-modern">
+        <div class="step-modern">
+            <div class="step-icon-modern">
+                <i class="fas fa-user-plus"></i>
+            </div>
+            <h4>Create Account</h4>
+            <p>Sign up as a worker or customer in 2 minutes</p>
+        </div>
+        <div class="step-modern">
+            <div class="step-icon-modern">
+                <i class="fas fa-search"></i>
+            </div>
+            <h4>Find or Post Job</h4>
+            <p>Browse skilled workers or post your job for free</p>
+        </div>
+        <div class="step-modern">
+            <div class="step-icon-modern">
+                <i class="fas fa-handshake"></i>
+            </div>
+            <h4>Connect & Hire</h4>
+            <p>Review profiles, compare quotes, hire the best fit</p>
+        </div>
+        <div class="step-modern">
+            <div class="step-icon-modern">
+                <i class="fas fa-star"></i>
+            </div>
+            <h4>Review & Rate</h4>
+            <p>Leave feedback and help others find quality workers</p>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section-modern">
+    <div class="cta-container">
+        <div class="cta-content">
+            <h2>Ready to Grow Your Business?</h2>
+            <p>Join thousands of skilled workers and customers on FundiConnect. Start your journey today and unlock new opportunities!</p>
+            <div class="cta-buttons">
+                <a href="{{ url_for('register') }}" class="btn-secondary">
+                    <i class="fas fa-user-plus"></i> Sign Up Free
+                </a>
+                <a href="{{ url_for('subscribe') }}" class="btn-outline">
+                    <i class="fas fa-crown"></i> View Premium Plans
+                </a>
+            </div>
+        </div>
+        <div class="cta-image">
+            <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400&q=80" alt="Business growth illustration">
+        </div>
+    </div>
+</section>
+
+<script>
+function searchWorkers() {
+    const skill = document.getElementById('searchSkill').value;
+    const location = document.getElementById('searchLocation').value;
+    let url = "{{ url_for('workers') }}";
+    const params = new URLSearchParams();
+    if (skill) params.append('skill', skill);
+    if (location) params.append('location', location);
+    if (params.toString()) {
+        url += '?' + params.toString();
+    }
+    window.location.href = url;
+}
+</script>
+{% endblock %}

@@ -1,0 +1,271 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics Dashboard - {{ settings.platform_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+.analytics-page {
+    padding: 2rem 0;
+    background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+    min-height: calc(100vh - 200px);
+}
+
+.analytics-header {
+    background: linear-gradient(135deg, #1F2937 0%, #111827 100%);
+    border-radius: 24px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    color: white;
+}
+
+.analytics-header h1 {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: rgb(22, 198, 142);
+}
+
+.analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.analytics-card {
+    background: white;
+    border-radius: 20px;
+    padding: 1.5rem;
+    text-align: center;
+    border: 1px solid #E5E7EB;
+    transition: all 0.3s;
+}
+
+.analytics-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.analytics-value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #059669;
+    margin-bottom: 0.5rem;
+}
+
+.analytics-label {
+    color: #6B7280;
+    font-size: 0.8rem;
+}
+
+.chart-container {
+    background: white;
+    border-radius: 24px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid #E5E7EB;
+}
+
+.chart-container h3 {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    color: #1F2937;
+}
+
+.performance-section {
+    background: white;
+    border-radius: 24px;
+    padding: 1.5rem;
+    border: 1px solid #E5E7EB;
+}
+
+.performance-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid #F3F4F6;
+}
+
+.performance-item:last-child {
+    border-bottom: none;
+}
+
+.performance-label {
+    font-weight: 500;
+    color: #374151;
+}
+
+.performance-value {
+    font-weight: 600;
+    color: #059669;
+}
+
+.upgrade-message {
+    text-align: center;
+    padding: 3rem;
+    background: white;
+    border-radius: 24px;
+    border: 1px solid #E5E7EB;
+}
+
+.upgrade-message i {
+    font-size: 4rem;
+    color: #F59E0B;
+    margin-bottom: 1rem;
+}
+
+.upgrade-message h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 1024px) {
+    .analytics-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .analytics-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="analytics-page">
+    <div class="container">
+        <div class="analytics-header">
+            <h1>
+                <i class="fas fa-chart-line"></i>
+                Analytics Dashboard
+            </h1>
+            <p>Track your performance and grow your business</p>
+        </div>
+
+        {% if user_has_feature('analytics') %}
+        <div class="analytics-grid">
+            <div class="analytics-card">
+                <div class="analytics-value">{{ total_applications|default(0) }}</div>
+                <div class="analytics-label">Total Applications</div>
+            </div>
+            <div class="analytics-card">
+                <div class="analytics-value">{{ accepted_applications|default(0) }}</div>
+                <div class="analytics-label">Accepted Jobs</div>
+            </div>
+            <div class="analytics-card">
+                <div class="analytics-value">{{ completion_rate|default(0) }}%</div>
+                <div class="analytics-label">Completion Rate</div>
+            </div>
+            <div class="analytics-card">
+                <div class="analytics-value">{{ "%.1f"|format(avg_rating|default(0)) }}</div>
+                <div class="analytics-label">Average Rating</div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <h3><i class="fas fa-chart-bar"></i> Applications Over Time (Last 30 Days)</h3>
+            <canvas id="applicationsChart" style="width: 100%; height: 300px;"></canvas>
+        </div>
+
+        <div class="performance-section">
+            <h3><i class="fas fa-trophy"></i> Performance Insights</h3>
+            <div class="performance-item">
+                <span class="performance-label">Profile Views</span>
+                <span class="performance-value">{{ profile_views|default(0) }}</span>
+            </div>
+            <div class="performance-item">
+                <span class="performance-label">Response Rate</span>
+                <span class="performance-value">{{ response_rate|default(0) }}%</span>
+            </div>
+            <div class="performance-item">
+                <span class="performance-label">Average Response Time</span>
+                <span class="performance-value">{{ worker.response_time_avg }} minutes</span>
+            </div>
+            <div class="performance-item">
+                <span class="performance-label">Total Earnings</span>
+                <span class="performance-value">KES {{ "{:,.0f}".format(total_earnings|default(0)) }}</span>
+            </div>
+            <div class="performance-item">
+                <span class="performance-label">Jobs Completed</span>
+                <span class="performance-value">{{ worker.total_jobs_completed }}</span>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('applicationsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: {{ chart_labels|tojson }},
+                    datasets: [{
+                        label: 'Applications',
+                        data: {{ chart_data|tojson }},
+                        borderColor: '#059669',
+                        backgroundColor: 'rgba(5, 150, 105, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.raw + ' application' + (context.raw !== 1 ? 's' : '');
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1,
+                                callback: function(value) {
+                                    return value + ' apps';
+                                }
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                maxRotation: 45,
+                                minRotation: 45
+                            }
+                        }
+                    }
+                }
+            });
+        });
+        </script>
+        {% else %}
+        <div class="upgrade-message">
+            <i class="fas fa-chart-line"></i>
+            <h2>Analytics Dashboard Unlocked with Premium</h2>
+            <p>Upgrade to Weekly, Monthly, or Annual plan to access detailed analytics and track your performance.</p>
+            <p style="margin-top: 1rem; font-size: 0.9rem;">With analytics you can:</p>
+            <ul style="text-align: left; max-width: 300px; margin: 1rem auto;">
+                <li>✓ Track application trends</li>
+                <li>✓ Monitor your response rate</li>
+                <li>✓ See your earnings growth</li>
+                <li>✓ Identify peak opportunities</li>
+            </ul>
+            <a href="{{ url_for('subscribe') }}" class="btn-primary" style="margin-top: 1rem; display: inline-block;">
+                <i class="fas fa-crown"></i> Upgrade to Premium
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
